@@ -1,0 +1,14 @@
+{
+  "sensor": [
+    {
+      "platform": "template",
+      "sensors": {
+        "average_system_temperature": {
+          "friendly_name": "Average System Temperature Test",
+          "unit_of_measurement": "°C",
+          "value_template": "{% set domains = ['sensor', 'climate'] %} {% set temps = states\n  | selectattr('domain', 'in', domains)\n  | selectattr('entity_id', 'contains', 'temp')\n  | rejectattr('entity_id', 'contains', 'battery')\n  | rejectattr('entity_id', 'contains', 'average')\n  | reject('none')\n  | rejectattr('state', 'eq', 'unavailable')\n  | map(attribute='state')\n  | map('float')\n  | list %}\n{% if temps %}\n  {{ temps | sum / temps | length | round(1) }}\n{% else %}\n  Unavailable\n{% endif %}"
+        }
+      }
+    }
+  ]
+}
