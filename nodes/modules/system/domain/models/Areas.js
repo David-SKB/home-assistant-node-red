@@ -6,7 +6,7 @@ class Areas {
         // Load the area registry upon instantiation
         this.areas = undefined;
         this.area_registry = undefined;
-        //this.loadAreaRegistry();
+        this.loadAreaRegistry();
     }
 
     loadAreaRegistry() {

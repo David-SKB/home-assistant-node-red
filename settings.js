@@ -163,11 +163,11 @@ module.exports = {
   },
 
   // Added for persistant storage
-  contextStorage: {
-    default: {
-        module: "localfilesystem"
-    }
- },
+//   contextStorage: {
+//     default: {
+//         module: "localfilesystem"
+//     }
+//  },
 
   // The following property can be used to order the categories in the editor
   // palette. If a node's category is not in the list, the category will get

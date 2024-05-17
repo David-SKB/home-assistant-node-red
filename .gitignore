@@ -1,6 +1,5 @@
 .storage/
 context/
-lib/
 flows_cred.json
 .env
 *package-lock.json
