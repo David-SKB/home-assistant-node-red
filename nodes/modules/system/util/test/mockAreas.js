@@ -15,7 +15,7 @@ const mockAreas = {
   setup: (areas) => {
     jest.mock('../../domain/models/Areas', () => this);
     // Mock the readFileSync method to return the provided entities data
-    fs.readFileSync.mockReturnValue(JSON.stringify({ data: { areas } }));
+    fs.readFileSync.mockReturnValue(JSON.stringify(areas));
 
     // Trigger the loadEntityRegistry method
     Areas.loadAreaRegistry();

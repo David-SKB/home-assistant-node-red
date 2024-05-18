@@ -15,7 +15,7 @@ const mockEntities = {
   setup: (entities) => {
     jest.mock('../../domain/models/Entities', () => this);
     // Mock the readFileSync method to return the provided entities data
-    fs.readFileSync.mockReturnValue(JSON.stringify({ data: { entities } }));
+    fs.readFileSync.mockReturnValue(JSON.stringify(entities));
 
     // Trigger the loadEntityRegistry method
     Entities.loadEntityRegistry();

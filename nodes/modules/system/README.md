@@ -19,7 +19,7 @@ git clone <repository-url>
 ```
 2. Navigate to the project directory:
 ```shell
-cd node-red/nodes/modules/system
+cd nodes/modules/system
 ```
 3. Install dependencies using npm or yarn:
 ```shell

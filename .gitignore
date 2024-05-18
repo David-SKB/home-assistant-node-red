@@ -16,3 +16,4 @@ secrets.yaml
 .config.users.json
 .config.users.json.backup
 node-red-contrib-home-assistant-websocket.json
+coverage

@@ -12,11 +12,7 @@ describe('Areas', () => {
 
   beforeAll(() => {
     // Mock the readFileSync method
-    fs.readFileSync.mockReturnValue(JSON.stringify({
-      data: {
-          areas: [testArea] // Assuming testArea is the mock area data
-      }
-    }));
+    fs.readFileSync.mockReturnValue(JSON.stringify([testArea]));
   });
 
   afterAll(() => {
