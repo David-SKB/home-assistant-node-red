@@ -140,7 +140,7 @@ class OccupancyService {
                 console.log("setOccupancy function");
                 console.log(this._setOccupancy);
                 this._setOccupancy(area_id, false);
-            }, TimeoutConverter.convertTimeoutString(timeout), this);
+            }, TimeoutConverter.convertTimeoutString(timeout));
         } else {
             console.log(`[WARN] No timeout set for area (${area_id}): ${timeout}`);
         }
