@@ -20,16 +20,4 @@ class ContextMonitor {
     }
 }
 
-// // Example usage:
-// const global_context = {}; // Your global context object
-// const ContextMonitor = ContextMonitor.initialize(global_context);
-
-// // Set a value in the global context
-// ContextMonitor.set('exampleKey', 'exampleValue');
-
-// // Get a value from the global context
-// const value = ContextMonitor.get('exampleKey');
-// console.log(value); // Output: 'exampleValue'
-
-
 module.exports = ContextMonitor;
