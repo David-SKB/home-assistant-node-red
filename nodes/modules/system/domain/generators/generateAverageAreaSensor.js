@@ -12,27 +12,35 @@ function generateAverageAreaSensor(area_id, metric, options = {}) {
     unit_of_measurement = '%'
   } = options;
 
-  const inclusions_string = inclusions.map(inclusion => `  | selectattr('entity_id', 'contains', '${inclusion}')`).join('\n');
-  const exclusions_string = exclusions.map(exclusion => `  | rejectattr('entity_id', 'contains', '${exclusion}')`).join('\n');
-
-  const stateTemplate = `
-{% set domains = ${JSON.stringify(domains)} %}
-{% set area_entities_list = area_entities('${area_id}') %}
-{% set temps = states
-  | selectattr('domain', 'in', domains)
-${inclusions_string}
-  | selectattr('entity_id', 'in', area_entities_list)
-${exclusions_string}
-  | reject('none')
-  | rejectattr('state', 'eq', 'unavailable')
+  const inclusions_string = inclusions.map(inclusion => `
+{% set ${inclusion}_states = all_states
+  | selectattr('entity_id', 'contains', '${inclusion}')
   | map(attribute='state')
   | map('float')
   | list %}
-{% if temps | length > 0 %}
-  {% set average_temp = temps | sum / temps | length %}
-  {{ average_temp | round(1) }}
+{% set combined_states = combined_states + ${inclusion}_states %}`).join('\n');
+  
+  const exclusions_string = exclusions.map(exclusion => `
+  | rejectattr('entity_id', 'contains', '${exclusion}')`).join('\n');
+
+  const stateTemplate = `
+{% set domains = ${JSON.stringify(domains)} %}
+{% set combined_states = [] %}
+{% set all_states = states
+  | selectattr('domain', 'in', domains)
+  | selectattr('entity_id', 'in', area_entities('${area_id}'))
+  | rejectattr('state', 'eq', 'unavailable')
+${exclusions_string}
+  | list %}
+${inclusions_string}
+
+{% set unique_states = combined_states | unique | list %}
+
+{% if unique_states | length > 0 %}
+{% set average_state = unique_states | sum / unique_states | length %}
+{{ average_state | round(1) }}
 {% else %}
-  Unavailable
+Unavailable
 {% endif %}`;
 
   const path = `${base_path}${file_name}`;

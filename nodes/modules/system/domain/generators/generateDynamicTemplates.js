@@ -16,7 +16,7 @@ function generateDynamicTemplates(
     /** CLIMATE **/
     let base_path = `${directory_path}climate/`;
 
-    // Generate Average Temperature Area Sensor Templates
+    // Generate Average Temperature Sensor Templates
     template = generateAverageAreaSensor(area_id, 'temperature', {
       area_name: areas[area_id].name,
       base_path,
@@ -27,7 +27,7 @@ function generateDynamicTemplates(
     });
     createFileSync(template.path, template.payload);
 
-    // Generate Average Humidity Area Sensor Templates
+    // Generate Average Humidity Sensor Templates
     template = generateAverageAreaSensor(area_id, 'humidity', {
       area_name: areas[area_id].name,
       base_path,
@@ -35,6 +35,17 @@ function generateDynamicTemplates(
       inclusions: ['humidity'],
       exclusions: ['average', 'battery'],
       unit_of_measurement: '%'
+    });
+    createFileSync(template.path, template.payload);
+
+    // Generate Average Illuminance Sensor Templates
+    template = generateAverageAreaSensor(area_id, 'illuminance', {
+      area_name: areas[area_id].name,
+      base_path,
+      domains: ['sensor'],
+      inclusions: ['illuminance', 'lux'],
+      exclusions: ['average', 'battery'],
+      unit_of_measurement: 'lx'
     });
     createFileSync(template.path, template.payload);
 
