@@ -1,17 +1,13 @@
-const fs = require('fs');
-const jsYaml = require('js-yaml');
 const { Areas, Entities } = require('../models');
-//const { exists } = require('../../util/common');
-//const { generateAverageAreaSensor } = require('./generateAverageAreaSensor');
+const createFileSync = require('../../util/file/createFileSync');
 const generateAverageAreaSensor = require('./generateAverageAreaSensor');
-function generateDynamicTemplates(options = {}) {
-  
-  let {
-    areas = Areas.getAreas(), 
-    entities = Entities.getEntities(), 
-    directory_path = "/config/.storage/generated_templates/dynamic/"
-  } = options;
-  
+
+function generateDynamicTemplates(
+  areas = Areas.getAreas(), 
+  entities = Entities.getEntities(), 
+  directory_path = "/config/.storage/generated_templates/dynamic/"
+) {
+
   let template = {}
 
   // Generate Area Templates
@@ -20,30 +16,31 @@ function generateDynamicTemplates(options = {}) {
     /** CLIMATE **/
     let base_path = `${directory_path}climate/`;
 
-    //Generate Average Temperature Area Sensor Templates
+    // Generate Average Temperature Area Sensor Templates
     template = generateAverageAreaSensor(area_id, 'temperature', {
+      area_name: areas[area_id].name,
       base_path,
       domains: ['sensor', 'climate'],
       inclusions: ['temp'],
       exclusions: ['average', 'battery'],
       unit_of_measurement: '°C',
     });
-    fs.writeFileSync(template.path, jsYaml.dump(template.payload), 'utf8');
+    createFileSync(template.path, template.payload);
 
     // Generate Average Humidity Area Sensor Templates
     template = generateAverageAreaSensor(area_id, 'humidity', {
+      area_name: areas[area_id].name,
       base_path,
       domains: ['sensor', 'climate'],
       inclusions: ['humidity'],
       exclusions: ['average', 'battery'],
       unit_of_measurement: '%'
     });
-    fs.writeFileSync(template.path, jsYaml.dump(template.payload), 'utf8');
+    createFileSync(template.path, template.payload);
 
   }
 
   // More dynamic template generators can go here...
-
 }
 
 module.exports = generateDynamicTemplates;
