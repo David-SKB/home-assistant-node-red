@@ -37,21 +37,24 @@ describe('generateAverageAreaSensor', () => {
 
     // Generate Average Temperature Area Sensor Template
     const average_temperature_template = generateAverageAreaSensor(area_id, 'temperature', {
-      area_name:areas[0].name,
+      area_name: areas[0].name,
       domains: ['sensor', 'climate'],
       inclusions: ['temp'],
       exclusions: ['average', 'battery'],
       unit_of_measurement: '°C',
     });
 
-    const expected = fs.readFileSync(path.join(__dirname, '../mocks/average_temperature_area1_sensor.yaml'), 'utf8');
+    const expected_yaml = fs.readFileSync(path.join(__dirname, '../mocks/average_temperature_area1_sensor.yaml'), 'utf8');
+    const expected = jsYaml.load(expected_yaml);
+
+    // Parse the payload from YAML to JavaScript object
+    const generated_template = jsYaml.load(average_temperature_template.payload);
 
     // Assert that the file path has been generated correctly
     expect(average_temperature_template.path).toBe(`${default_base_path}average_temperature_${area_id}_sensor.yaml`);
 
     // Assert that the template has been generated correctly
-    expect(average_temperature_template.payload).toBe(expected);
-
+    expect(generated_template).toEqual(expected);
   });
 
   it('should generate the expected template for multiple inclusions', () => {
@@ -60,21 +63,24 @@ describe('generateAverageAreaSensor', () => {
 
     // Generate Average Illuminance Area Sensor Template
     const average_temperature_template = generateAverageAreaSensor(area_id, 'illuminance', {
-      area_name:areas[0].name,
+      area_name: areas[0].name,
       domains: ['sensor'],
       inclusions: ['illuminance', 'lux'],
       exclusions: ['average', 'battery'],
       unit_of_measurement: 'lx'
     });
 
-    const expected = fs.readFileSync(path.join(__dirname, '../mocks/average_illuminance_area1_sensor.yaml'), 'utf8');
+    const expected_yaml = fs.readFileSync(path.join(__dirname, '../mocks/average_illuminance_area1_sensor.yaml'), 'utf8');
+    const expected = jsYaml.load(expected_yaml);
+
+    // Parse the payload from YAML to JavaScript object
+    const generated_template = jsYaml.load(average_temperature_template.payload);
 
     // Assert that the file path has been generated correctly
     expect(average_temperature_template.path).toBe(`${default_base_path}average_illuminance_${area_id}_sensor.yaml`);
 
     // Assert that the template has been generated correctly
-    expect(average_temperature_template.payload).toBe(expected);
-
+    expect(generated_template).toEqual(expected);
   });
 
   it('should generate the expected template with the correct path if when specified', () => {
@@ -84,21 +90,24 @@ describe('generateAverageAreaSensor', () => {
     // Generate Average Temperature Area Sensor Template
     const average_temperature_template = generateAverageAreaSensor(area_id, 'temperature', {
       base_path,
-      area_name:areas[0].name,
+      area_name: areas[0].name,
       domains: ['sensor', 'climate'],
       inclusions: ['temp'],
       exclusions: ['average', 'battery'],
       unit_of_measurement: '°C',
     });
 
-    const expected = fs.readFileSync(path.join(__dirname, '../mocks/average_temperature_area1_sensor.yaml'), 'utf8');
+    const expected_yaml = fs.readFileSync(path.join(__dirname, '../mocks/average_temperature_area1_sensor.yaml'), 'utf8');
+    const expected = jsYaml.load(expected_yaml);
+
+    // Parse the payload from YAML to JavaScript object
+    const generated_template = jsYaml.load(average_temperature_template.payload);
 
     // Assert that the file path has been generated correctly
     expect(average_temperature_template.path).toBe(`${base_path}average_temperature_${area_id}_sensor.yaml`);
 
     // Assert that the template has been generated correctly
-    expect(average_temperature_template.payload).toBe(expected);
-
+    expect(generated_template).toEqual(expected);
   });
 
   // Add more test cases as needed
