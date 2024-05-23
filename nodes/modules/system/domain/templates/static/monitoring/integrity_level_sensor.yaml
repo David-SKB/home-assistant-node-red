@@ -1,0 +1,10 @@
+template:
+  - sensor:
+      - name: "Integrity Level"
+        unit_of_measurement: "%"
+        state: >
+          {% set total_entities = states | count %}
+          {% set available_entities = states | selectattr('state', 'ne', 'unavailable') | list | count %}
+          {% set integrity_level = (available_entities / total_entities) * 100 %}
+          {{ integrity_level | round(1) }}
+        icon: mdi:shield-link-variant

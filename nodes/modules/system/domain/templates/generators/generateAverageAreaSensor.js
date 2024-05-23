@@ -3,7 +3,7 @@ const jsYaml = require('js-yaml');
 function generateAverageAreaSensor(area_id, metric, options = {}) {
   const {
     area_name = area_id,
-    base_path = "/config/.storage/generated_templates/dynamic/",
+    base_path = "/config/.storage/packages/dynamic/",
     file_name = `average_${metric}_${area_id}_sensor.yaml`,
     domains = ['sensor'],
     inclusions = [metric],

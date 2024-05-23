@@ -1,11 +1,12 @@
-const generators = require("./generators");
+
 const models = require("./models");
 const services = require("./services");
+const templates = require("./templates");
 //const processRawMotionEvent = require("./processRawMotionEvent");
 
 module.exports = {
-    generators,
     models,
     services,
+    templates
     //processRawMotionEvent
 };

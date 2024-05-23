@@ -1,11 +1,11 @@
-const { Areas, Entities } = require('../models');
-const createFileSync = require('../../util/file/createFileSync');
+const { Areas, Entities } = require('../../models');
+const createFileSync = require('../../../util/file/createFileSync');
 const generateAverageAreaSensor = require('./generateAverageAreaSensor');
 
 function generateDynamicTemplates(
   areas = Areas.getAreas(), 
   entities = Entities.getEntities(), 
-  directory_path = "/config/.storage/generated_templates/dynamic/"
+  directory_path = "/config/.storage/packages/dynamic/"
 ) {
 
   let template = {}

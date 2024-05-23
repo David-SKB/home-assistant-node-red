@@ -1,0 +1,22 @@
+template:
+  - sensor:
+      - name: "Average Humidity"
+        unit_of_measurement: "°C"
+        state: >-
+          {% set domains = ['sensor', 'climate'] %}
+          {% set humidity = states
+            | selectattr('domain', 'in', domains)
+            | selectattr('entity_id', 'contains', 'humidity')
+            | rejectattr('entity_id', 'contains', 'battery')
+            | rejectattr('entity_id', 'contains', 'average')
+            | reject('none')
+            | rejectattr('state', 'eq', 'unavailable')
+            | map(attribute='state')
+            | map('float')
+            | list %}
+          {% if humidity %}
+            {% set average_humidity = humidity | sum / humidity | length %}
+            {{ average_humidity | round(1) }}
+          {% else %}
+            Unavailable
+          {% endif %}

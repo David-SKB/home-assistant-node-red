@@ -1,0 +1,22 @@
+template:
+  - sensor:
+      - name: "Average Temperature"
+        unit_of_measurement: "°C"
+        state: >-
+          {% set domains = ['sensor', 'climate'] %}
+          {% set temps = states
+            | selectattr('domain', 'in', domains)
+            | selectattr('entity_id', 'contains', 'temp')
+            | rejectattr('entity_id', 'contains', 'battery')
+            | rejectattr('entity_id', 'contains', 'average')
+            | reject('none')
+            | rejectattr('state', 'eq', 'unavailable')
+            | map(attribute='state')
+            | map('float')
+            | list %}
+          {% if temps %}
+            {% set average_temp = temps | sum / temps | length %}
+            {{ average_temp | round(1) }}
+          {% else %}
+            Unavailable
+          {% endif %}
