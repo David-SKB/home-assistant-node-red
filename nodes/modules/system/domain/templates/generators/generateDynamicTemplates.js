@@ -2,13 +2,16 @@ const { Areas, Entities } = require('../../models');
 const createFileSync = require('../../../util/file/createFileSync');
 const generateAverageAreaSensor = require('./generateAverageAreaSensor');
 
-function generateDynamicTemplates(
-  areas = Areas.getAreas(), 
-  entities = Entities.getEntities(), 
-  directory_path = "/config/.storage/packages/dynamic/"
-) {
+function generateDynamicTemplates(options = {}) {
 
-  let template = {}
+  // Extract options
+  const { 
+    areas = Areas.getAreas(), 
+    entities = Entities.getEntities(), 
+    directory_path = "/config/.storage/packages/dynamic/"
+  } = options;
+
+  let template = {};
 
   // Generate Area Templates
   for (const area_id in areas) {
