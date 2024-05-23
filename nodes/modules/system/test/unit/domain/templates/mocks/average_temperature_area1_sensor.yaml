@@ -1,0 +1,32 @@
+template:
+  - sensor:
+      - name: Average Temperature Area 1
+        unit_of_measurement: °C
+        state: >-
+          {% set domains = ["sensor","climate"] %}
+          {% set combined_states = [] %}
+          {% set all_states = states
+            | selectattr('domain', 'in', domains)
+            | selectattr('entity_id', 'in', area_entities('area1'))
+            | rejectattr('state', 'eq', 'unavailable')
+
+            | rejectattr('entity_id', 'contains', 'average')
+
+            | rejectattr('entity_id', 'contains', 'battery')
+            | list %}
+
+          {% set temp_states = all_states
+            | selectattr('entity_id', 'contains', 'temp')
+            | map(attribute='state')
+            | map('float')
+            | list %}
+          {% set combined_states = combined_states + temp_states %}
+
+          {% set unique_states = combined_states | unique | list %}
+
+          {% if unique_states | length > 0 %}
+          {% set average_state = unique_states | sum / unique_states | length %}
+          {{ average_state | round(1) }}
+          {% else %}
+          Unavailable
+          {% endif %}

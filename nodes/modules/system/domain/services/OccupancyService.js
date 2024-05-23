@@ -69,7 +69,7 @@ class OccupancyService {
 
     // Private method to update occupancy status
     _setOccupancy(area_id, state = true, timestamp = new Date()) {
-        console.log(`Setting occupancy for area ${area_id} to ${state} at ${timestamp}`);
+        //console.log(`Setting occupancy for area ${area_id} to ${state} at ${timestamp}`);
         
         // Cast timestamp to Date object
         if (!(timestamp instanceof Date)) timestamp = new Date(timestamp);
