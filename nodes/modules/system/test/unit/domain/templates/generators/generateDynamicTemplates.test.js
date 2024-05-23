@@ -1,9 +1,9 @@
-const { mockAreas, mockEntities } = require('../../../../util/test');
-const getRandomIndex = require('../../../../util/test/getRandomIndex');
+const { mockAreas, mockEntities } = require('../../../../../util/test');
+const getRandomIndex = require('../../../../../util/test/getRandomIndex');
 const fs = require('fs');
 const jsYaml = require('js-yaml');
 
-const { generateDynamicTemplates, generateAverageAreaSensor } = require('../../../../domain/generators');
+const { generateDynamicTemplates, generateAverageAreaSensor } = require('../../../../../domain/templates/generators');
 
 describe('generateDynamicTemplates', () => {
 
