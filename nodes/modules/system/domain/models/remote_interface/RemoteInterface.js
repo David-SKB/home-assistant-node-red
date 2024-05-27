@@ -1,5 +1,5 @@
-const Remote = require("./Button");
-const Button = require("./Button");
+const Remote = require("../Button");
+const Button = require("../Button");
 const Command = require("./Command");
 
 class RemoteInterface {

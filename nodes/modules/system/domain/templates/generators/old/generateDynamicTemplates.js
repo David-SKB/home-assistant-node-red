@@ -1,7 +1,8 @@
 const { Areas, Entities } = require('../../models');
 const createFileSync = require('../../../util/file/createFileSync');
-const generateAverageAreaSensor = require('./area/generateAverageAreaSensor');
-const generateMotionLightingAreaTemplates = require('./area/generateMotionLightingAreaTemplates.js');
+const generateAverageAreaSensor = require('./generateAverageAreaSensor');
+const generateMotionLightingAreaTemplates = require('./generateMotionLightingAreaTemplates');
+//const TemplateDirector = require('./builders/TemplateDirector');
 
 function generateDynamicTemplates(options = {}) {
 
@@ -57,7 +58,7 @@ function generateDynamicTemplates(options = {}) {
 
     // Generate Motion Lighting Templates
     generateMotionLightingAreaTemplates(area_id, {
-      base_path: `${directory_path}motion_lighting/${area_id}/`,
+      base_path,
       area_name
     }).forEach(template => {
       createFileSync(template.path, template.payload);

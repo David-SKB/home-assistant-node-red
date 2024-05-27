@@ -1,7 +1,7 @@
 //const Remote = require("../../domain/models/Remote");
 //const Button = require("../../domain/models/Button");
 const Button = require("./Button");
-const validateButton = require("../validateButton");
+const validateButton = require("../../validateButton");
 
 class Remote {
     constructor(remote_id, buttons = {}) {

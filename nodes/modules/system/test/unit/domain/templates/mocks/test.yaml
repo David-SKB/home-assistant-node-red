@@ -1,0 +1,17 @@
+template:
+  - trigger:
+      - platform: webhook
+        webhook_id: my-super-secret-webhook-id
+    sensor:
+      - name: "Webhook Temperature"
+        state: "{{ trigger.json.temperature }}"
+        unit_of_measurement: °C
+
+      - name: "Webhook Humidity"
+        state: "{{ trigger.json.humidity }}"
+        unit_of_measurement: %
+
+    binary_sensor:
+      - name: "Motion"
+        state: "{{ trigger.json.motion }}"
+        device_class: motion

@@ -1,11 +1,11 @@
-const { mockAreas, mockEntities } = require('../../../../../util/test');
-const getRandomIndex = require('../../../../../util/test/getRandomIndex');
+const { mockAreas, mockEntities } = require('../../../../../../util/test');
+const getRandomIndex = require('../../../../../../util/test/getRandomIndex');
 const fs = require('fs');
 const jsYaml = require('js-yaml');
 
-//const { generateDynamicTemplates, generateAverageAreaSensor } = require('../../../../../domain/templates/generators');
+//const { generateAreaTemplates, generateAverageAreaSensor } = require('../../../../../../domain/templates/generators/area');
 
-describe('generateDynamicTemplates', () => {
+describe('generateAreaTemplates', () => {
 
   const areas = [
     { aliases: [], name: "Area 1", id: "area1", picture: null },
@@ -18,7 +18,17 @@ describe('generateDynamicTemplates', () => {
     { entity_id: 'binary_sensor.area2_motion', area_id: 'area2' },
   ];
 
-  const available_templates = ['Temperature', 'Humidity', 'Illuminance'];
+  const available_templates = [
+    'Temperature                    : sensor', 
+    'Humidity                       : sensor', 
+    'Illuminance                    : sensor',
+    'Motion Lighting Mode           : input_select',
+    'Motion Lighting Timeout        : input_datetime',
+    'Motion Lighting Target         : input_text',
+    'Motion Lighting Hybrid Target  : input_text',
+    'Motion Lighting Target         : template_select',
+    'Motion Lighting Hybrid Target  : template_select'
+  ];
 
   beforeEach(() => {
     // Initialize areas before each test case
@@ -36,7 +46,7 @@ describe('generateDynamicTemplates', () => {
     const area_id = 'area1';
     const directory_path = "/test/output/";
     //generateAverageAreaSensor(area_id, 'temperature');
-    generateDynamicTemplates({directory_path});
+    generateAreaTemplates({directory_path});
 
     expect(fs.writeFileSync).toHaveBeenNthCalledWith(1, 
       `${directory_path}climate/average_temperature_${area_id}_sensor.yaml`, 

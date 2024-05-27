@@ -1,7 +1,7 @@
 template:
   - sensor:
       - name: Average Temperature Area 1
-        unit_of_measurement: '°C'
+        unit_of_measurement: °C
         state: >-
           {% set domains = ["sensor","climate"] %}
           {% set combined_states = [] %}
@@ -11,8 +11,6 @@ template:
             | rejectattr('state', 'eq', 'unavailable')
 
             | rejectattr('entity_id', 'contains', 'average')
-
-            | rejectattr('entity_id', 'contains', 'battery')
             | list %}
 
           {% set temp_states = all_states

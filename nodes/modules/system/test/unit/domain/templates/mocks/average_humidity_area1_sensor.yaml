@@ -1,7 +1,7 @@
 template:
   - sensor:
-      - name: Average Temperature Area 1
-        unit_of_measurement: '°C'
+      - name: Average Humidity Area 1
+        unit_of_measurement: '%'
         state: >-
           {% set domains = ["sensor","climate"] %}
           {% set combined_states = [] %}
@@ -15,12 +15,12 @@ template:
             | rejectattr('entity_id', 'contains', 'battery')
             | list %}
 
-          {% set temp_states = all_states
-            | selectattr('entity_id', 'contains', 'temp')
+          {% set humidity_states = all_states
+            | selectattr('entity_id', 'contains', 'humidity')
             | map(attribute='state')
             | map('float')
             | list %}
-          {% set combined_states = combined_states + temp_states %}
+          {% set combined_states = combined_states + humidity_states %}
 
           {% set unique_states = combined_states | unique | list %}
 

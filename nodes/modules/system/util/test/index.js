@@ -4,6 +4,7 @@ const mockFunction = require("./mockFunction");
 const mockGlobal = require("./mockGlobal");
 const mockNode = require("./mockNode");
 const mockPresenceService = require("./mockPresenceService");
+const normalizeMultilineString = require("./normalizeMultilineString");
 
 module.exports = {
     mockAreas,
@@ -11,5 +12,6 @@ module.exports = {
     mockFunction,
     mockGlobal,
     mockNode,
-    mockPresenceService
+    mockPresenceService,
+    normalizeMultilineString
 };

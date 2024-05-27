@@ -1,16 +1,12 @@
-const { Areas, Entities } = require('../../models');
-const createFileSync = require('../../../util/file/createFileSync');
-const generateAverageAreaSensor = require('./area/generateAverageAreaSensor');
-const generateMotionLightingAreaTemplates = require('./area/generateMotionLightingAreaTemplates.js');
+const { Areas, Entities } = require('../../../models');
+const createFileSync = require('../../../../util/file/createFileSync');
+const generateAverageAreaSensor = require('./../area/generateAverageAreaSensor');
+const generateMotionLightingAreaTemplates = require('./generateMotionLightingAreaTemplates.js');
 
-function generateDynamicTemplates(options = {}) {
-
-  // Extract options
-  const { 
-    areas = Areas.getAreas(), 
-    entities = Entities.getEntities(), 
-    directory_path = "/config/.storage/packages/dynamic/"
-  } = options;
+function generateAreaTemplates({ 
+  areas = Areas.getAreas(), 
+  directory_path = "/config/.storage/packages/dynamic/"
+}) {
 
   let template = {};
 
@@ -69,4 +65,4 @@ function generateDynamicTemplates(options = {}) {
   // More dynamic template generators can go here...
 }
 
-module.exports = generateDynamicTemplates;
+module.exports = generateAreaTemplates;
