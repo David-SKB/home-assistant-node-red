@@ -19,10 +19,9 @@ class AreaTemplate extends Template {
       // Defaults
       base_path: `/config/.storage/templates/area/${area_id}`,
       file_name: `${area_id}_template.yaml`,
-      iterable: Areas.getAreaRegistry().map(area => ({ 
-        area_id: area.id, 
-        area_name: area.name 
-      })),
+      iterable: Areas.getAreaRegistry().map(area => (
+        [ area.id, { area_name: area.name } ]
+      )),
       
       // Optional
       area_name,

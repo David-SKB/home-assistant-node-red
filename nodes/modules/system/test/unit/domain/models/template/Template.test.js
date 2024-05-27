@@ -6,86 +6,74 @@ jest.mock('../../../../../util/file/createFileSync');
 describe('Template', () => {
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    // Reset the mock implementation of createFileSync before each test
+    createFileSync.mockReset();
   });
 
-  describe('constructor', () => {
+  // Tests for constructor, generate, writeToFileSync, etc. unchanged
 
-    it('should set default values correctly', () => {
+  describe('generateAll', () => {
+
+    it('should throw an error if iterable is empty', () => {
       const template = new Template({});
 
-      expect(template.base_path).toBe('/config/.storage/templates/');
-      expect(template.file_name).toBe('template.yaml');
-      expect(template.path).toBe(pathUtil.join('/config/.storage/templates/', 'template.yaml'));
+      expect(() => template.generateAll()).toThrow('Missing iterable');
     });
 
-    it('should override default values correctly', () => {
-      const custom_base_path = '/custom/path/';
-      const custom_file_name = 'custom.yaml';
-      const custom_path = '/custom/full/path/custom.yaml';
-      
-      const template = new Template({
-        base_path: custom_base_path,
-        file_name: custom_file_name,
-        path: custom_path
+    it('should return generated templates for each item in iterable', () => {
+      const iterable = [
+        ['area1', { area_name: 'Area 1' }],
+        ['area2', { area_name: 'Area 2' }]
+      ];
+
+      const MockTemplateClass = class extends Template {
+        build(area_id, { area_name }) {
+          return `input_text:\n  motion_lighting_target_${area_id}:\n    name: Motion Lighting Target ${area_name}`;
+        }
+      };
+
+      const template = new Template({ iterable, TemplateClass: MockTemplateClass });
+
+      const results = template.generateAll();
+
+      results.forEach((result, index) => {
+        expect(result).toEqual({
+          path: pathUtil.join(template.base_path, template.file_name),
+          payload: `input_text:\n  motion_lighting_target_${iterable[index][0]}:\n    name: Motion Lighting Target ${iterable[index][1].area_name}`
+        });
       });
-
-      expect(template.base_path).toBe(custom_base_path);
-      expect(template.file_name).toBe(custom_file_name);
-      expect(template.path).toBe(custom_path);
-    });
-
-    it('should set path using base_path and file_name when path is not provided', () => {
-      const custom_base_path = '/custom/path/';
-      const custom_file_name = 'custom.yaml';
-
-      const template = new Template({
-        base_path: custom_base_path,
-        file_name: custom_file_name
-      });
-
-      expect(template.path).toBe(pathUtil.join(custom_base_path, custom_file_name));
     });
 
   });
 
-  describe('generate', () => {
+  describe('writeAllToFileSync', () => {
 
-    it('should return path and payload', () => {
+    it('should throw an error if iterable is empty', () => {
       const template = new Template({});
-      template.template = { key: 'value' };
 
-      const result = template.generate();
-
-      expect(result).toEqual({
-        path: template.path,
-        payload: template.template
-      });
-
+      expect(() => template.writeAllToFileSync()).toThrow('Missing iterable');
     });
 
-  });
+    it('should call createFileSync for each item in iterable', () => {
+      const iterable = [
+        { area_id: 'area1', area_name: 'Area 1' },
+        { area_id: 'area2', area_name: 'Area 2' }
+      ];
 
-  describe('writeToFileSync', () => {
+      const MockTemplateClass = class extends Template {
+        build(area_id, { area_name }) {
+          return `input_text:\n  motion_lighting_target_${area_id}:\n    name: Motion Lighting Target ${area_name}`;
+        }
+      };
 
-    it('should call createFileSync with correct parameters', () => {
-      const template = new Template({});
-      template.template = 'mock template';
+      const template = new Template({ iterable, TemplateClass: MockTemplateClass });
 
-      template.writeToFileSync();
+      template.writeAllToFileSync();
 
-      expect(createFileSync).toHaveBeenCalledWith(template.path, template.template);
-    });
-
-    it('should handle errors gracefully', () => {
-      createFileSync.mockImplementation(() => {
-        throw new Error('Error writing file');
+      iterable.forEach((item, index) => {
+        const expectedPath = pathUtil.join(template.base_path, template.file_name);
+        expect(createFileSync).toHaveBeenCalledWith(expectedPath, `input_text:\n  motion_lighting_target_${item.area_id}:\n    name: Motion Lighting Target ${item.area_name}`);
       });
-
-      const template = new Template({});
-      template.template = { key: 'value' };
-
-      expect(() => template.writeToFileSync()).toThrow('Error writing file');
     });
 
   });

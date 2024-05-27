@@ -1,9 +1,9 @@
-const HumiditySensor = require("./AverageHumidityAreaSensor");
-const LuxSensor = require("./AverageLuxAreaSensor");
+const AverageHumidityAreaSensor = require("./AverageHumidityAreaSensor");
+const AverageLuxAreaSensor = require("./AverageLuxAreaSensor");
 const AverageTemperatureAreaSensor = require("./AverageTemperatureAreaSensor");
 
 module.exports = {
-    HumiditySensor,
-    LuxSensor,
+    AverageHumidityAreaSensor,
+    AverageLuxAreaSensor,
     AverageTemperatureAreaSensor
 };

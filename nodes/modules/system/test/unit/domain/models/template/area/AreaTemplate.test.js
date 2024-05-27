@@ -31,7 +31,7 @@ describe('AreaTemplate', () => {
       expect(template.base_path).toBe(`/config/.storage/templates/area/${area_id}`);
       expect(template.file_name).toBe(`${area_id}_template.yaml`);
       expect(template.path).toBe(pathUtil.join(`/config/.storage/templates/area/${area_id}`, `${area_id}_template.yaml`));
-      expect(template.iterable).toEqual(areas.map(area => ({ area_id: area.id, area_name: area.name })));
+      expect(template.iterable).toEqual(areas.map(area => ([ area.id, { area_name: area.name } ])));
     });
 
     it('should override default values correctly', () => {

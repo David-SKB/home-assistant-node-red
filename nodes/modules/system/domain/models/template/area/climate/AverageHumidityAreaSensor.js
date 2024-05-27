@@ -11,7 +11,9 @@ class AverageHumidityAreaSensor extends AverageMetricSensor {
 
   } = {}) {
 
-    super('humidity', {
+    const metric = 'humidity';
+
+    super(metric, {
 
       // Required
       area_id,
@@ -23,10 +25,9 @@ class AverageHumidityAreaSensor extends AverageMetricSensor {
       exclusions: ['average', 'battery'],
       base_path: `/config/.storage/templates/area/climate/${area_id}/`,
       file_name: `average_humidity_${area_id}_sensor.yaml`,
-      iterable: Areas.getAreaRegistry().map(area => ({ 
-        area_id: area.id, 
-        area_name: area.name 
-      })),
+      iterable: Areas.getAreaRegistry().map(area => (
+        [ metric, { area_id: area.id, area_name: area.name } ]
+      )),
 
       // Optional
       area_name,
@@ -34,7 +35,9 @@ class AverageHumidityAreaSensor extends AverageMetricSensor {
       ...options
 
     });
+
   }
+  
 }
 
 module.exports = AverageHumidityAreaSensor;

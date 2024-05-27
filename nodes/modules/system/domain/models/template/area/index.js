@@ -1,9 +1,9 @@
 const lighting = require("./lighting");
 const climate = require("./climate");
-const AreaTemplate = require("./AreaTemplate");
+//const AreaTemplate = require("./AreaTemplate");
 
 module.exports = {
     climate,
     lighting,
-    AreaTemplate
+    //AreaTemplate
 };

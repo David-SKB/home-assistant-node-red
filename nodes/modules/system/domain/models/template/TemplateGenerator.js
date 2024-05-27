@@ -1,61 +1,69 @@
-const fs = require('fs');
 const pathUtil = require('path');
-const Template = require('./Template');
+const Template = require("./Template");
+const AreaTemplate = require("./area/AreaTemplate");
+const AverageMetricSensor = require("./dynamic/AverageMetricSensor");
 
 class TemplateGenerator {
 
-  getTemplateClasses(dir) {
+  templateClasses = [
+    Template, 
+    AreaTemplate, 
+    AverageMetricSensor
+  ];
 
-    let templateClasses = [];
-
-    fs.readdirSync(dir).forEach(file => {
-
-      const fullPath = pathUtil.join(dir, file);
-      const stat = fs.statSync(fullPath);
-
-      if (stat.isDirectory()) {
-
-        // Recurse into sub-directories
-        templateClasses = templateClasses.concat(this.getTemplateClasses(fullPath));
-
-      } else if (file.endsWith('.js')) {
-
-        // Load the template class from the template file.
-        const templateClass = require(fullPath);
-
-        // Check if the template class is a subclass of the Template class.
-        if (typeof templateClass === 'function' && templateClass.prototype instanceof Template) {
-          
-          // Add the template class to the list of template classes.
-          templateClasses.push(templateClass);
-
+  getTemplateClasses(module) {
+    const templateClasses = [];
+    
+    // Recursively traverse the module
+    const traverse = (obj) => {
+      for (const key of Object.keys(obj)) {
+        const value = obj[key];
+        if (typeof value === 'object' && value !== null) {
+          traverse(value); // Recursively traverse nested objects
+        } else if (this.isTemplateClass(value)) {
+          //console.log(`item found: ${key} | ${value}`);
+          templateClasses.push(value);
         }
-
       }
-      
-    });
+    };
 
+    traverse(module);
+    
     return templateClasses;
-
+  }
+  
+  isTemplateClass(cls) {
+    // Check if cls is a function (class) and if it extends any of the specified classes
+    return (
+      typeof cls === 'function' &&
+      this.templateClasses.some(Class => cls.prototype instanceof Class)
+    );
   }
 
-  generate(path, { write = false } = {}) {
+  generate(target, { write = false } = {}) {
+    let moduleObj;
+    if (typeof target === 'string') {
+      // If the target is a string, resolve it to an imported module object
+      moduleObj = require(pathUtil.resolve(target));
+    } else {
+      // If the target is already an imported module object, use it directly
+      moduleObj = target;
+    }
 
-    const templates_directory = pathUtil.resolve(path);
-    const templateClasses = this.getTemplateClasses(templates_directory);
+    const templateClasses = this.getTemplateClasses(moduleObj);
+    const generatedTemplates = [];
 
     templateClasses.forEach(TemplateClass => {
-
       const templateInstance = new TemplateClass({});
-
-      const generatedTemplates = templateInstance.generateAll();
-      
-
+      const templates = templateInstance.generateAll();
+      generatedTemplates.push(...templates);
       if (write) templateInstance.writeAllToFileSync();
-      console.log(`Generated Templates for ${TemplateClass.name}:`, generatedTemplates);
+      console.log(`Generated Templates for ${TemplateClass.name}:`, templates);
     });
 
+    return generatedTemplates;
   }
+
 }
 
 module.exports = TemplateGenerator;

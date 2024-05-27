@@ -1,5 +1,5 @@
-const AverageMetricSensor = require("./AverageMetricSensor");
+//const AverageMetricSensor = require("./AverageMetricSensor");
 
 module.exports = {
-    AverageMetricSensor,
+    //AverageMetricSensor,
 };

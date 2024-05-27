@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { mockAreas, mockEntities, normalizeMultilineString } = require('../../../../../../../util/test');
 const AverageTemperatureAreaSensor = require('../../../../../../../domain/models/template/area/climate/AverageTemperatureAreaSensor');
+const { Areas } = require('../../../../../../../domain/models');
 
 describe('TemperatureSensor', () => {
   const areas = [
@@ -21,6 +22,13 @@ describe('TemperatureSensor', () => {
   });
 
   it('should generate the expected temperature sensor template with area_id', () => {
+
+    const iterable = Areas.getAreaRegistry().map(area => (
+      [ area.id, { area_name: area.name } ]
+    ));
+
+    console.log(`iterable: ${iterable}`, iterable);
+
     const area_id = areas[0].id;
     const area_name = areas[0].name;
     const expected = fs.readFileSync(path.join(__dirname, `../../../../templates/mocks/average_temperature_${area_id}_sensor.yaml`), 'utf8');

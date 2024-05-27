@@ -11,7 +11,9 @@ class AverageTemperatureAreaSensor extends AverageMetricSensor {
 
   } = {}) {
 
-    super('temperature', {
+    const metric = 'temperature';
+
+    super(metric, {
 
       // Required
       area_id,
@@ -23,10 +25,9 @@ class AverageTemperatureAreaSensor extends AverageMetricSensor {
       exclusions: ['average', 'battery'],
       base_path: `/config/.storage/templates/area/climate/${area_id}/`,
       file_name: `average_temperature_${area_id}_sensor.yaml`,
-      iterable: Areas.getAreaRegistry().map(area => ({ 
-        area_id: area.id, 
-        area_name: area.name 
-      })),
+      iterable: Areas.getAreaRegistry().map(area => (
+        [ metric, { area_id: area.id, area_name: area.name } ]
+      )),
 
       // Optional
       area_name,

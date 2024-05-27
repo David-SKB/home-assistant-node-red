@@ -23,10 +23,9 @@ class AverageMetricSensor extends Template {
       domains: ['sensor'],
       inclusions: [metric],
       exclusions: ['average'],
-      iterable: Areas.getAreaRegistry().map(area => ({ 
-        area_id: area.id, 
-        area_name: area.name 
-      })),
+      iterable: Areas.getAreaRegistry().map(area => (
+        [ metric, { area_id: area.id, area_name: area.name } ]
+      )),
 
       // Optional Overrides
       unit_of_measurement,
@@ -80,12 +79,12 @@ ${this.inclusionsFilter(inclusions)}
 
   inclusionsFilter = (inclusions) => inclusions.map(inclusion => 
 `
-{% set ${inclusion}_states = all_states
-  | selectattr('entity_id', 'contains', '${inclusion}')
-  | map(attribute='state')
-  | map('float')
-  | list %}
-{% set combined_states = combined_states + ${inclusion}_states %}`).join('\n');
+        {% set ${inclusion}_states = all_states
+          | selectattr('entity_id', 'contains', '${inclusion}')
+          | map(attribute='state')
+          | map('float')
+          | list %}
+        {% set combined_states = combined_states + ${inclusion}_states %}`).join('\n');
 
   exclusionsFilter = (exclusions) => exclusions.map(exclusion => 
 `          | rejectattr('entity_id', 'contains', '${exclusion}')`).join('\n');
