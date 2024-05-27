@@ -75,7 +75,16 @@ ${this.inclusionsFilter(inclusions)}
         {% endif %}`;
 
 // Utility Functions
+
   metricTitleCase = (metric) => metric.charAt(0).toUpperCase() + metric.slice(1)
+
+  areaName = (area_name) => area_name ? area_name : "";
+
+  areaFilter = (area_id) => area_id ? 
+`          | selectattr('entity_id', 'in', area_entities('${area_id}'))` : "";
+
+  exclusionsFilter = (exclusions) => exclusions.map(exclusion => 
+`          | rejectattr('entity_id', 'contains', '${exclusion}')`).join('\n');
 
   inclusionsFilter = (inclusions) => inclusions.map(inclusion => 
 `
@@ -85,14 +94,6 @@ ${this.inclusionsFilter(inclusions)}
           | map('float')
           | list %}
         {% set combined_states = combined_states + ${inclusion}_states %}`).join('\n');
-
-  exclusionsFilter = (exclusions) => exclusions.map(exclusion => 
-`          | rejectattr('entity_id', 'contains', '${exclusion}')`).join('\n');
-
-  areaFilter = (area_id) => area_id ? 
-`          | selectattr('entity_id', 'in', area_entities('${area_id}'))` : "";
-
-  areaName = (area_name) => area_name ? area_name : "";
 
 }
 
