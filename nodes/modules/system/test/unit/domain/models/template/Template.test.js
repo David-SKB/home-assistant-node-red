@@ -56,8 +56,8 @@ describe('Template', () => {
 
     it('should call createFileSync for each item in iterable', () => {
       const iterable = [
-        { area_id: 'area1', area_name: 'Area 1' },
-        { area_id: 'area2', area_name: 'Area 2' }
+        ['area1', { area_name: 'Area 1' }],
+        ['area2', { area_name: 'Area 2' }]
       ];
 
       const MockTemplateClass = class extends Template {
@@ -70,9 +70,10 @@ describe('Template', () => {
 
       template.writeAllToFileSync();
 
-      iterable.forEach((item, index) => {
+      iterable.forEach((item) => {
+        const [area_id, options] = item;
         const expectedPath = pathUtil.join(template.base_path, template.file_name);
-        expect(createFileSync).toHaveBeenCalledWith(expectedPath, `input_text:\n  motion_lighting_target_${item.area_id}:\n    name: Motion Lighting Target ${item.area_name}`);
+        expect(createFileSync).toHaveBeenCalledWith(expectedPath, `input_text:\n  motion_lighting_target_${area_id}:\n    name: Motion Lighting Target ${options.area_name}`);
       });
     });
 

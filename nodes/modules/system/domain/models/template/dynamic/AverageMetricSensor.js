@@ -41,13 +41,16 @@ class AverageMetricSensor extends Template {
   }
 
   build = (
+    
     metric = this.metric, {
+
       area_id = this.area_id, 
       area_name = this.area_name, 
       unit_of_measurement = this.unit_of_measurement, 
       domains = this.domains, 
       inclusions = this.inclusions, 
       exclusions = this.exclusions
+
     } = {}) => 
 
 `template:

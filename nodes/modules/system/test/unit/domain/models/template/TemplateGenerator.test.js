@@ -2,17 +2,9 @@ const fs = require('fs');
 const TemplateGenerator = require("../../../../../domain/models/template/TemplateGenerator");
 const template = require("../../../../../domain/models/template");
 const { mockAreas, mockEntities } = require('../../../../../util/test');
-// const Template = require('../../../../../domain/models/template/Template');
-// const AreaTemplate = require('../../../../../domain/models/template/area/AreaTemplate');
-// const AverageMetricSensor = require('../../../../../domain/models/template/dynamic/AverageMetricSensor');
 
 // Mock the file system
 jest.mock('fs');
-
-// Mock Template and AreaTemplate classes
-// jest.mock("../../../../../domain/models/template/Template");
-// jest.mock("../../../../../domain/models/template/area/AreaTemplate");
-// jest.mock("../../../../../domain/models/template/dynamic/AverageMetricSensor");
 
 describe('TemplateGenerator', () => {
   let templateGenerator;
@@ -30,7 +22,7 @@ describe('TemplateGenerator', () => {
     { entity_id: 'binary_sensor.area4_motion', area_id: 'area4' },
     { entity_id: 'binary_sensor.area5_motion', area_id: 'area5' }
   ]
-
+  
   const available_templates = [
 
     // Climate
@@ -79,13 +71,10 @@ describe('TemplateGenerator', () => {
     it('should return an array of template classes', () => {
       // Mock the file system to simulate template files
       fs.readdirSync.mockReturnValue(['Template1.js', 'Template2.js']);
-
-      console.log(`template module: `, template);
       
       // Call the method and check the result
       const templateClasses = templateGenerator.getTemplateClasses(template);
 
-      
       // Assert that the result is an array of template classes
       expect(templateClasses).toHaveLength(available_templates_count);
       expect(templateClasses.every(cls => typeof cls === 'function')).toBe(true);
@@ -98,7 +87,13 @@ describe('TemplateGenerator', () => {
     it('should generate templates and return an array of correct length', () => {
       let generatedTemplates;
 
-      // Call the generate function with a path (TODO: and write option - seperate test) (./nodes/modules/system/domain/models/template)
+      // Call the generate function with a path
+      generatedTemplates = templateGenerator.generate('./nodes/modules/system/domain/models/template/area/climate');
+
+      // Verify that the result is an array of correct length
+      expect(generatedTemplates).toHaveLength(climate_templates_count);
+
+      // Call the generate function with a path
       generatedTemplates = templateGenerator.generate('./nodes/modules/system/domain/models/template/area/lighting/motion');
       
       // Verify that the result is an array of correct length
@@ -107,8 +102,36 @@ describe('TemplateGenerator', () => {
       // Call the generate function with a module object
       generatedTemplates = templateGenerator.generate(template);
 
-      // Verify that the result is an array of correct length
+      // Verify that all the expected templates have been generated
       expect(generatedTemplates).toHaveLength(generated_templates_count);
+    });
+
+  });
+
+  describe('generate with write option', () => {
+
+    it('should write templates to files', () => {
+      // Mock the writeFileSync method to avoid actual file system operations
+      fs.writeFileSync = jest.fn();
+
+      // Call the generate function with a module object and write option
+      templateGenerator.generate(template, { write: true });
+
+      // Verify that writeFileSync has been called the correct number of times
+      expect(fs.writeFileSync).toHaveBeenCalledTimes(generated_templates_count);
+
+      // Verify that the file paths and content are correct
+      const templateClasses = templateGenerator.getTemplateClasses(template);
+      
+      templateClasses.forEach((TemplateClass) => {
+
+        const templateInstance = new TemplateClass({});
+        const templates = templateInstance.generateAll();
+        templates.forEach((generatedTemplate) => {
+          expect(fs.writeFileSync).toHaveBeenCalledWith(generatedTemplate.path, generatedTemplate.payload, "utf8");
+        });
+
+      });
     });
 
   });
