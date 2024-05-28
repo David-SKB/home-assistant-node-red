@@ -38,7 +38,7 @@ describe('TemperatureSensor', () => {
       'utf8'
     );
 
-    const generated_template = new AverageTemperatureAreaSensor(area_id, { area_name }).generate();
+    const generated_template = new AverageTemperatureAreaSensor({ area_id, area_name }).generate();
 
     // Check the generated path is correct
     expect(generated_template.path).toBe(path.join(default_base_path(area_id), default_file_name(area_id)));

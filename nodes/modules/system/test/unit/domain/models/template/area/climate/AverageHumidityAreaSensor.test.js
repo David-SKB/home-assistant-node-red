@@ -29,7 +29,7 @@ describe('HumiditySensor', () => {
       'utf8'
     );
 
-    const generated_template = new AverageHumidityAreaSensor(area_id, { area_name }).generate().payload;
+    const generated_template = new AverageHumidityAreaSensor({ area_id, area_name }).generate().payload;
 
     expect(normalizeMultilineString(generated_template)).toBe(normalizeMultilineString(expected));
   });

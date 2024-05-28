@@ -2,7 +2,9 @@ const Areas = require('../../Areas');
 const Template = require('../Template');
 
 class AverageMetricSensor extends Template {
-  constructor(metric, {
+  constructor({
+
+    metric,
     
     unit_of_measurement = '%',
     area_id,
@@ -39,10 +41,10 @@ class AverageMetricSensor extends Template {
     this.template = this.build();
 
   }
-
-  build = (
+// this is the issue, the template is coming from here but the iterator is for the parent class as well, see Template.js
+  build = ({
     
-    metric = this.metric, {
+      metric = this.metric,
 
       area_id = this.area_id, 
       area_name = this.area_name, 

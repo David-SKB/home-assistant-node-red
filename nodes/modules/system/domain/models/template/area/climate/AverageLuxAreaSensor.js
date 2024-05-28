@@ -3,7 +3,9 @@ const AverageMetricSensor = require("../../dynamic/AverageMetricSensor");
 
 class AverageLuxAreaSensor extends AverageMetricSensor {
 
-  constructor(area_id, {
+  constructor({
+
+    area_id,
 
     area_name = area_id,
     path,
@@ -13,20 +15,21 @@ class AverageLuxAreaSensor extends AverageMetricSensor {
 
     const metric = 'lux';
 
-    super(metric, {
+    super({
 
       // Required
       area_id,
 
       // Defaults
+      metric,
       unit_of_measurement: 'lx',
       domains: ['sensor'],
       inclusions: ['illuminance', 'lux'],
       exclusions: ['average', 'battery'],
       base_path: `/config/.storage/templates/area/climate/${area_id}/`,
-      file_name: `average_lux_${area_id}_sensor.yaml`,
+      file_name: `average_${metric}_${area_id}_sensor.yaml`,
       iterable: Areas.getAreaRegistry().map(area => (
-        [ area.id, { area_name: area.name } ]
+        [ { metric, area_id: area.id, area_name: area.name } ]
       )),
 
       // Optional
@@ -35,6 +38,8 @@ class AverageLuxAreaSensor extends AverageMetricSensor {
       ...options
 
     });
+
+    this.template = this.build();
 
   }
 

@@ -30,7 +30,7 @@ describe('AverageSensor', () => {
     const metric = 'temperature';
     const area_id = areas[0].id;
 
-    const template = new AverageMetricSensor(metric, { area_id });
+    const template = new AverageMetricSensor({ metric, area_id });
 
     expect(template.area_name).toBe(area_id);
     expect(template.base_path).toBe(base_path(area_id));
@@ -41,7 +41,7 @@ describe('AverageSensor', () => {
   it('should set default values correctly without area_id', () => {
     const metric = 'temperature';
 
-    const template = new AverageMetricSensor(metric);
+    const template = new AverageMetricSensor({metric});
 
     expect(template.area_name).toBeUndefined();
     expect(template.base_path).toBe('/config/.storage/templates/');
@@ -60,7 +60,8 @@ describe('AverageSensor', () => {
     const custom_exclusions = ['average', 'median'];
     const custom_unit_of_measurement = 'g/m³';
 
-    const template = new AverageMetricSensor(metric, {
+    const template = new AverageMetricSensor({
+      metric,
       base_path: custom_base_path,
       file_name: custom_file_name,
       path: custom_path,
@@ -87,7 +88,8 @@ describe('AverageSensor', () => {
     const area_name = areas[0].name;
     const expected = fs.readFileSync(path.join(__dirname, `../../../../templates/mocks/average_${metric}_${area_id}_sensor.yaml`), 'utf8');
 
-    const generated_template = new AverageMetricSensor(metric, {
+    const generated_template = new AverageMetricSensor({
+      metric,
       area_id,
       area_name,
       domains: ['sensor', 'climate'],
@@ -103,7 +105,7 @@ describe('AverageSensor', () => {
     const metric = 'temperature';
     const expected = fs.readFileSync(path.join(__dirname, `../../../../templates/mocks/average_${metric}_sensor.yaml`), 'utf8');
 
-    const generated_template = new AverageMetricSensor(metric).generate().payload;
+    const generated_template = new AverageMetricSensor({metric}).generate().payload;
 
     expect(normalizeMultilineString(generated_template)).toBe(normalizeMultilineString(expected));
   });
@@ -114,7 +116,8 @@ describe('AverageSensor', () => {
     const area_name = areas[0].name;
     const expected = fs.readFileSync(path.join(__dirname, `../../../../templates/mocks/average_${metric}_${area_id}_sensor.yaml`), 'utf8');
 
-    const generated_template = new AverageMetricSensor(metric, {
+    const generated_template = new AverageMetricSensor({
+      metric,
       area_id,
       area_name,
       domains: ['sensor'],

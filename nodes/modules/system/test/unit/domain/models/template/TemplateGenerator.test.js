@@ -140,7 +140,7 @@ describe('TemplateGenerator', () => {
       fs.writeFileSync = jest.fn();
 
       // Call the generate function with a module object and write option
-      templateGenerator.generate(template, { write: true });
+      templateGenerator.generate(template, { write: true, visible: true });
 
       // Verify that writeFileSync has been called the correct number of times
       expect(fs.writeFileSync).toHaveBeenCalledTimes(generated_templates_count);

@@ -29,7 +29,7 @@ describe('LuxSensor', () => {
       'utf8'
     );
 
-    const generated_template = new AverageLuxAreaSensor(area_id, { area_name }).generate().payload;
+    const generated_template = new AverageLuxAreaSensor({ area_id, area_name }).generate().payload;
 
     expect(normalizeMultilineString(generated_template)).toBe(normalizeMultilineString(expected));
   });
