@@ -1,6 +1,6 @@
 const AreaTemplate = require("../../AreaTemplate");
 
-class MotionlightingHybridTargetAreaTemplateSelect extends AreaTemplate {
+class MotionLightingHybridTargetAreaTemplateSelect extends AreaTemplate {
   constructor(area_id, {
 
     area_name = area_id,
@@ -46,4 +46,4 @@ class MotionlightingHybridTargetAreaTemplateSelect extends AreaTemplate {
 
 }
 
-module.exports = MotionlightingHybridTargetAreaTemplateSelect;
+module.exports = MotionLightingHybridTargetAreaTemplateSelect;

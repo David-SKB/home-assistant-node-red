@@ -26,7 +26,7 @@ class AverageTemperatureAreaSensor extends AverageMetricSensor {
       base_path: `/config/.storage/templates/area/climate/${area_id}/`,
       file_name: `average_temperature_${area_id}_sensor.yaml`,
       iterable: Areas.getAreaRegistry().map(area => (
-        [ metric, { area_id: area.id, area_name: area.name } ]
+        [ area.id, { area_name: area.name } ]
       )),
 
       // Optional

@@ -137,8 +137,6 @@ class OccupancyService {
             // Set up a new timer
             WaitTimerManager.createWaitTimer(timer_id, () => {
                 // Timeout reached
-                console.log("setOccupancy function");
-                console.log(this._setOccupancy);
                 this._setOccupancy(area_id, false);
             }, TimeoutConverter.convertTimeoutString(timeout));
         } else {

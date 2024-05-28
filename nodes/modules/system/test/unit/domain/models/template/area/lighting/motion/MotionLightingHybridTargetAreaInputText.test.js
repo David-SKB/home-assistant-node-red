@@ -58,7 +58,11 @@ describe('MotionLightingHybridTargetAreaInputText', () => {
   it('should generate the expected input_text template', () => {
     const area_id = areas[0].id;
     const area_name = areas[0].name;
-    const expected = fs.readFileSync(path.join(__dirname, `../../../../../templates/mocks/motion_lighting_hybrid_target_${area_id}_input_text.yaml`), 'utf8');
+
+    const expected = fs.readFileSync(path.join(__dirname, 
+      `../../../../../templates/mocks/motion_lighting_hybrid_target_${area_id}_input_text.yaml`), 
+      'utf8'
+    );
 
     const generated_template = new MotionLightingHybridTargetAreaInputText(area_id, { area_name }).generate().payload;
 

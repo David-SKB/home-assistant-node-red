@@ -71,9 +71,14 @@ describe('Template', () => {
       template.writeAllToFileSync();
 
       iterable.forEach((item) => {
+
         const [area_id, options] = item;
         const expectedPath = pathUtil.join(template.base_path, template.file_name);
-        expect(createFileSync).toHaveBeenCalledWith(expectedPath, `input_text:\n  motion_lighting_target_${area_id}:\n    name: Motion Lighting Target ${options.area_name}`);
+        
+        expect(createFileSync).toHaveBeenCalledWith(expectedPath, 
+          `input_text:\n  motion_lighting_target_${area_id}:\n    name: Motion Lighting Target ${options.area_name}`
+        );
+
       });
     });
 

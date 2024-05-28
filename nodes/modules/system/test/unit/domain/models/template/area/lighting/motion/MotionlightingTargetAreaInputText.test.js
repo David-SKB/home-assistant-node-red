@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const { mockAreas, mockEntities, normalizeMultilineString } = require('../../../../../../../../util/test');
 
-const MotionlightingTargetAreaInputText = require('../../../../../../../../domain/models/template/area/lighting/motion/MotionlightingTargetAreaInputText');
+const MotionLightingTargetAreaInputText = require('../../../../../../../../domain/models/template/area/lighting/motion/MotionLightingTargetAreaInputText');
 
-describe('MotionlightingTargetAreaInputText', () => {
+describe('MotionLightingTargetAreaInputText', () => {
 
   const areas = [
     { aliases: [], name: "Area 1", id: "area1", picture: null },
@@ -28,7 +28,7 @@ describe('MotionlightingTargetAreaInputText', () => {
   it('should set default values correctly', () => {
     const area_id = areas[0].id;
 
-    const template = new MotionlightingTargetAreaInputText(area_id);
+    const template = new MotionLightingTargetAreaInputText(area_id);
 
     expect(template.area_name).toBe(area_id);
     expect(template.base_path).toBe(base_path(area_id));
@@ -43,7 +43,7 @@ describe('MotionlightingTargetAreaInputText', () => {
     const custom_file_name = 'custom.yaml';
     const custom_path = '/custom/full/path/custom.yaml';
 
-    const template = new MotionlightingTargetAreaInputText(area_id, {
+    const template = new MotionLightingTargetAreaInputText(area_id, {
       base_path: custom_base_path,
       file_name: custom_file_name,
       path: custom_path,
@@ -59,9 +59,13 @@ describe('MotionlightingTargetAreaInputText', () => {
   it('should generate the expected input_text template', () => {
     const area_id = areas[0].id;
     const area_name = areas[0].name;
-    const expected = fs.readFileSync(path.join(__dirname, `../../../../../templates/mocks/motion_lighting_target_${area_id}_input_text.yaml`), 'utf8');
 
-    const generated_template = new MotionlightingTargetAreaInputText(area_id, {area_name}).generate().payload;
+    const expected = fs.readFileSync(path.join(__dirname, 
+      `../../../../../templates/mocks/motion_lighting_target_${area_id}_input_text.yaml`), 
+      'utf8'
+    );
+
+    const generated_template = new MotionLightingTargetAreaInputText(area_id, {area_name}).generate().payload;
 
     expect(normalizeMultilineString(generated_template)).toBe(normalizeMultilineString(expected));
   });

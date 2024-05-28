@@ -23,7 +23,11 @@ describe('LuxSensor', () => {
   it('should generate the expected lux sensor template with area_id', () => {
     const area_id = areas[0].id;
     const area_name = areas[0].name;
-    const expected = fs.readFileSync(path.join(__dirname, `../../../../templates/mocks/average_lux_${area_id}_sensor.yaml`), 'utf8');
+    
+    const expected = fs.readFileSync(path.join(__dirname, 
+      `../../../../templates/mocks/average_lux_${area_id}_sensor.yaml`), 
+      'utf8'
+    );
 
     const generated_template = new AverageLuxAreaSensor(area_id, { area_name }).generate().payload;
 

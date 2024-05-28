@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const { mockAreas, mockEntities, normalizeMultilineString } = require('../../../../../../../../util/test');
 
-const MotionlightingHybridTargetAreaTemplateSelect = require('../../../../../../../../domain/models/template/area/lighting/motion/MotionlightingHybridTargetAreaTemplateSelect');
+const MotionLightingHybridTargetAreaTemplateSelect = require('../../../../../../../../domain/models/template/area/lighting/motion/MotionLightingHybridTargetAreaTemplateSelect');
 
-describe('MotionlightingHybridTargetAreaTemplateSelect', () => {
+describe('MotionLightingHybridTargetAreaTemplateSelect', () => {
 
   const areas = [
     { aliases: [], name: "Area 1", id: "area1", picture: null },
@@ -28,7 +28,7 @@ describe('MotionlightingHybridTargetAreaTemplateSelect', () => {
   it('should set default values correctly', () => {
     const area_id = areas[0].id;
 
-    const template = new MotionlightingHybridTargetAreaTemplateSelect(area_id);
+    const template = new MotionLightingHybridTargetAreaTemplateSelect(area_id);
 
     expect(template.area_name).toBe(area_id);
     expect(template.base_path).toBe(base_path(area_id));
@@ -42,7 +42,7 @@ describe('MotionlightingHybridTargetAreaTemplateSelect', () => {
     const custom_file_name = 'custom.yaml';
     const custom_path = '/custom/full/path/custom.yaml';
 
-    const template = new MotionlightingHybridTargetAreaTemplateSelect(area_id, {
+    const template = new MotionLightingHybridTargetAreaTemplateSelect(area_id, {
       base_path: custom_base_path,
       file_name: custom_file_name,
       path: custom_path,
@@ -58,9 +58,13 @@ describe('MotionlightingHybridTargetAreaTemplateSelect', () => {
   it('should generate the expected template', () => {
     const area_id = areas[0].id;
     const area_name = areas[0].name;
-    const expected = fs.readFileSync(path.join(__dirname, `../../../../../templates/mocks/motion_lighting_hybrid_target_${area_id}_template_select.yaml`), 'utf8');
 
-    const generated_template = new MotionlightingHybridTargetAreaTemplateSelect(area_id, { area_name }).generate().payload;
+    const expected = fs.readFileSync(path.join(__dirname, 
+      `../../../../../templates/mocks/motion_lighting_hybrid_target_${area_id}_template_select.yaml`), 
+      'utf8'
+    );
+
+    const generated_template = new MotionLightingHybridTargetAreaTemplateSelect(area_id, { area_name }).generate().payload;
 
     expect(normalizeMultilineString(generated_template)).toBe(normalizeMultilineString(expected));
   });

@@ -40,7 +40,7 @@ class TemplateGenerator {
     );
   }
 
-  generate(target, { write = false } = {}) {
+  generate(target, { write = false, visible = false } = {}) {
     let moduleObj;
     if (typeof target === 'string') {
       // If the target is a string, resolve it to an imported module object
@@ -54,11 +54,11 @@ class TemplateGenerator {
     const generatedTemplates = [];
 
     templateClasses.forEach(TemplateClass => {
-      const templateInstance = new TemplateClass({});
+      const templateInstance = new TemplateClass();
       const templates = templateInstance.generateAll();
       generatedTemplates.push(...templates);
       if (write) templateInstance.writeAllToFileSync();
-      console.log(`Generated Templates for ${TemplateClass.name}:`, templates);
+      if (visible) console.log(`Generated Templates for ${TemplateClass.name}:`, templates);
     });
 
     return generatedTemplates;

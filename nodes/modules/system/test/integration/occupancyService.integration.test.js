@@ -98,7 +98,6 @@ describe('OccupancyService', () => {
 
       // Check if the area is unoccupied after timeout
       expect(OccupancyService.areas[area_id].state).toBe(false);
-      console.log(`occupied_timestamp: ${occupied_timestamp}, unoccupied_timestamp: ${unoccupied_timestamp}}`);
       
       // Check if the last_occupied timestamp has been updated
       const last_updated_timestamp = unoccupied_timestamp + timeoutInMilliseconds;

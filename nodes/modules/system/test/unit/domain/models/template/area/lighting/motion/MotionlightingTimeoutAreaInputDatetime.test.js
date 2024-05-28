@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const { mockAreas, mockEntities, normalizeMultilineString } = require('../../../../../../../../util/test');
 
-const MotionlightingTimeoutAreaInputDatetime = require('../../../../../../../../domain/models/template/area/lighting/motion/MotionlightingTimeoutAreaInputDatetime');
+const MotionLightingTimeoutAreaInputDatetime = require('../../../../../../../../domain/models/template/area/lighting/motion/MotionLightingTimeoutAreaInputDatetime');
 
-describe('MotionlightingTimeoutAreaInputDatetime', () => {
+describe('MotionLightingTimeoutAreaInputDatetime', () => {
 
   const areas = [
     { aliases: [], name: "Area 1", id: "area1", picture: null },
@@ -28,7 +28,7 @@ describe('MotionlightingTimeoutAreaInputDatetime', () => {
   it('should set default values correctly', () => {
     const area_id = areas[0].id;
 
-    const template = new MotionlightingTimeoutAreaInputDatetime(area_id);
+    const template = new MotionLightingTimeoutAreaInputDatetime(area_id);
 
     expect(template.area_name).toBe(area_id);
     expect(template.base_path).toBe(base_path(area_id));
@@ -42,7 +42,7 @@ describe('MotionlightingTimeoutAreaInputDatetime', () => {
     const custom_file_name = 'custom.yaml';
     const custom_path = '/custom/full/path/custom.yaml';
 
-    const template = new MotionlightingTimeoutAreaInputDatetime(area_id, {
+    const template = new MotionLightingTimeoutAreaInputDatetime(area_id, {
       base_path: custom_base_path,
       file_name: custom_file_name,
       path: custom_path,
@@ -58,9 +58,13 @@ describe('MotionlightingTimeoutAreaInputDatetime', () => {
   it('should generate the expected input_datetime template', () => {
     const area_id = areas[0].id;
     const area_name = areas[0].name;
-    const expected = fs.readFileSync(path.join(__dirname, `../../../../../templates/mocks/motion_lighting_timeout_${area_id}_input_datetime.yaml`), 'utf8');
 
-    const generated_template = new MotionlightingTimeoutAreaInputDatetime(area_id, { area_name }).generate().payload;
+    const expected = fs.readFileSync(path.join(__dirname, 
+      `../../../../../templates/mocks/motion_lighting_timeout_${area_id}_input_datetime.yaml`), 
+      'utf8'
+    );
+
+    const generated_template = new MotionLightingTimeoutAreaInputDatetime(area_id, { area_name }).generate().payload;
 
     expect(normalizeMultilineString(generated_template)).toBe(normalizeMultilineString(expected));
   });

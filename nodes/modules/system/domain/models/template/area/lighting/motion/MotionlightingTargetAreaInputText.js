@@ -1,6 +1,6 @@
 const AreaTemplate = require("../../AreaTemplate");
 
-class MotionlightingTargetAreaInputText extends AreaTemplate {
+class MotionLightingTargetAreaInputText extends AreaTemplate {
   constructor(area_id, {
 
     area_name = area_id,
@@ -34,4 +34,4 @@ class MotionlightingTargetAreaInputText extends AreaTemplate {
 
 }
 
-module.exports = MotionlightingTargetAreaInputText;
+module.exports = MotionLightingTargetAreaInputText;

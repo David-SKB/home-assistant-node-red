@@ -9,7 +9,7 @@ class AreaTemplate extends Template {
     path,
     ...options
 
-  }) {
+  } = {}) {
 
     super({
 

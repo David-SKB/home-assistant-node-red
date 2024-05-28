@@ -1,6 +1,6 @@
 const AreaTemplate = require("../../AreaTemplate");
 
-class MotionlightingTimeoutAreaInputDatetime extends AreaTemplate {
+class MotionLightingTimeoutAreaInputDatetime extends AreaTemplate {
   constructor(area_id, {
 
     area_name = area_id,
@@ -36,4 +36,4 @@ class MotionlightingTimeoutAreaInputDatetime extends AreaTemplate {
 
 }
 
-module.exports = MotionlightingTimeoutAreaInputDatetime;
+module.exports = MotionLightingTimeoutAreaInputDatetime;
