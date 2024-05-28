@@ -1,6 +1,6 @@
 template:
   - sensor:
-      - name: Average Illuminance
+      - name: Average Lux
         unit_of_measurement: lx
         state: >-
           {% set domains = ["sensor"] %}
