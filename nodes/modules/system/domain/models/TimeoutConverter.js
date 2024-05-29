@@ -48,8 +48,6 @@ class TimeoutConverter {
         // Ensure timeout_string is treated as a string
         timeout_string = String(timeout_string);
         
-        console.log(`Timeout string: ${timeout_string}`);
-        
         // Check if the first character is a number
         if (!isNaN(parseInt(timeout_string.charAt(0)))) {
             try {

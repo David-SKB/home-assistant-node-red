@@ -25,6 +25,11 @@ class Areas {
         }
     }
 
+    getAreaRegistry() {
+        // Get the loaded area registry
+        return this.area_registry;
+    }
+
     getArea(id) {
         // Look up the area in the loaded area registry
         return this.areas[id];

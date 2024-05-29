@@ -1,7 +1,7 @@
 template:
   - sensor:
       - name: Average Temperature Area 1
-        unit_of_measurement: °C
+        unit_of_measurement: '°C'
         state: >-
           {% set domains = ["sensor","climate"] %}
           {% set combined_states = [] %}

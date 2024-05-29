@@ -1,26 +1,25 @@
+//const remote_interface = require("./remote_interface");
+const template = require("./template");
 const Areas = require("./Areas");
+//const ContextMonitor = require("./ContextMonitor");
 //const Devices = require("./Devices");
 const Entities = require("./Entities");
-//const Button = require("./Button");
-//const Command = require("./Command");
-//const Remote = require("./Remote");
+const Entity = require("./Entity");
 const OccupancyEvent = require("./OccupancyEvent");
+const PresenceEvent = require("./PresenceEvent");
 const TimeoutConverter = require("./TimeoutConverter");
 const WaitTimerManager = require("./WaitTimerManager");
-const Entity = require("./Entity");
-const PresenceEvent = require("./PresenceEvent");
-const ContextMonitor = require("./ContextMonitor");
+
 module.exports = {
-    Entities,
+    //remote_interface,
+    template,
     Areas,
+    //ContextMonitor,
     //Devices,
-    //Button,
-    //Command,
-    //Remote,
+    Entities,
+    Entity,
     OccupancyEvent,
+    PresenceEvent,
     TimeoutConverter,
     WaitTimerManager,
-    Entity,
-    PresenceEvent,
-    ContextMonitor
 };

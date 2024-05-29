@@ -1,33 +1,24 @@
 template:
   - sensor:
-      - name: Average Illuminance Area 1
-        unit_of_measurement: lx
+      - name: Average Temperature
+        unit_of_measurement: '%'
         state: >-
           {% set domains = ["sensor"] %}
           {% set combined_states = [] %}
           {% set all_states = states
             | selectattr('domain', 'in', domains)
-            | selectattr('entity_id', 'in', area_entities('area1'))
             | rejectattr('state', 'eq', 'unavailable')
 
             | rejectattr('entity_id', 'contains', 'average')
 
-            | rejectattr('entity_id', 'contains', 'battery')
             | list %}
 
-          {% set illuminance_states = all_states
-            | selectattr('entity_id', 'contains', 'illuminance')
+          {% set temperature_states = all_states
+            | selectattr('entity_id', 'contains', 'temperature')
             | map(attribute='state')
             | map('float')
             | list %}
-          {% set combined_states = combined_states + illuminance_states %}
-
-          {% set lux_states = all_states
-            | selectattr('entity_id', 'contains', 'lux')
-            | map(attribute='state')
-            | map('float')
-            | list %}
-          {% set combined_states = combined_states + lux_states %}
+          {% set combined_states = combined_states + temperature_states %}
 
           {% set unique_states = combined_states | unique | list %}
 

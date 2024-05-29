@@ -1,0 +1,15 @@
+template:
+  - select:
+      - name: "Motion Lighting Hybrid Target Area 1"
+        state: "{{ states('input_text.motion_lighting_hybrid_target_area1') }}"
+        options: >
+          {{ expand(area_entities("area1"))
+          | selectattr('domain', 'eq', 'light')
+          | map(attribute='name') | list }}
+        select_option:
+          - service: input_text.set_value
+            target:
+              entity_id: input_text.motion_lighting_hybrid_target_area1
+            data:
+              value: "{{ option }}"
+        availability: "{{ states('input_text.motion_lighting_hybrid_target_area1') is defined }}"
