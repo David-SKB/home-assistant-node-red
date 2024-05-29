@@ -1,15 +1,8 @@
 const pathUtil = require('path');
 const Template = require("./Template");
-const AreaTemplate = require("./area/AreaTemplate");
-const AverageMetricSensor = require("./dynamic/AverageMetricSensor");
 
 class TemplateGenerator {
 
-  templateClasses = [
-    Template, 
-    AreaTemplate, 
-    AverageMetricSensor
-  ];
 
   getTemplateClasses(module) {
     const templateClasses = [];
@@ -36,7 +29,7 @@ class TemplateGenerator {
     // Check if cls is a function (class) and if it extends any of the specified classes
     return (
       typeof cls === 'function' &&
-      this.templateClasses.some(Class => cls.prototype instanceof Class)
+      cls.prototype instanceof Template
     );
   }
 
