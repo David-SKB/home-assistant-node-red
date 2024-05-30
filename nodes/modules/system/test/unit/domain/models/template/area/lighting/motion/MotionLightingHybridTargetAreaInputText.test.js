@@ -60,7 +60,7 @@ describe('MotionLightingHybridTargetAreaInputText', () => {
     const area_name = areas[0].name;
 
     const expected = fs.readFileSync(path.join(__dirname, 
-      `../../../../../templates/mocks/motion_lighting_hybrid_target_${area_id}_input_text.yaml`), 
+      `../../../../../templates/mocks/${file_name(area_id)}`), 
       'utf8'
     );
 

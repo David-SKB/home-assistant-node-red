@@ -41,9 +41,11 @@ describe('TemplateGenerator', () => {
     // Motion Lighting
     `${motion_lighting_area_templates_directory}MotionLightingHybridTargetAreaInputText.js`,
     `${motion_lighting_area_templates_directory}MotionLightingHybridTargetAreaTemplateSelect.js`,
+    `${motion_lighting_area_templates_directory}MotionLightingHybridTargetStateAreaInputText`,
     `${motion_lighting_area_templates_directory}MotionLightingModeAreaInputSelect.js`,
     `${motion_lighting_area_templates_directory}MotionLightingTargetAreaInputText.js`,
     `${motion_lighting_area_templates_directory}MotionLightingTargetAreaTemplateSelect.js`,
+    `${motion_lighting_area_templates_directory}MotionLightingTargetStateAreaInputText.js`,
     `${motion_lighting_area_templates_directory}MotionLightingTimeoutAreaInputDatetime.js`
   
   ];

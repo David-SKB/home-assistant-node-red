@@ -32,7 +32,7 @@ class MotionLightingTargetAreaTemplateSelect extends AreaTemplate {
 `template:
   - select:
       - name: "Motion Lighting Target ${area_name}"
-        state: "{{ states('input_text.motion_lighting_target_${area_id}') }}"
+        state: "{{ states('input_text.motion_lighting_target_state_${area_id}') }}"
         options: >
           {{ expand(area_entities("${area_id}"))
           | selectattr('domain', 'eq', 'light')
@@ -40,10 +40,28 @@ class MotionLightingTargetAreaTemplateSelect extends AreaTemplate {
         select_option:
           - service: input_text.set_value
             target:
-              entity_id: input_text.motion_lighting_target_${area_id}
+              entity_id: input_text.motion_lighting_target_state_${area_id}
             data:
               value: "{{ option }}"
-        availability: "{{ states('input_text.motion_lighting_target_${area_id}') is defined }}"`;
+          - service: input_text.set_value
+            target:
+              entity_id: input_text.motion_lighting_target_${area_id}
+            data:
+              value: >
+                {% set ns = namespace(entities=[]) %}
+      
+                {% set entities_list = states
+                  | selectattr('domain', 'eq', 'light')
+                  | selectattr('entity_id', 'in', area_entities('${area_id}'))
+                  | list %}
+      
+                {% for entity in entities_list %}
+                  {% set ns.entities = ns.entities + [ ( entity.name, entity.entity_id ) ] %}
+                {%- endfor -%}
+      
+                {% set mapper = dict.from_keys(ns.entities) %}
+                "{{ mapper.get(option) }}"
+        availability: "{{ states('input_text.motion_lighting_target_state_${area_id}') is defined }}"`;
 
 }
 
