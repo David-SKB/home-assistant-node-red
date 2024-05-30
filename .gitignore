@@ -17,3 +17,4 @@ secrets.yaml
 .config.users.json.backup
 node-red-contrib-home-assistant-websocket.json
 coverage
+core
