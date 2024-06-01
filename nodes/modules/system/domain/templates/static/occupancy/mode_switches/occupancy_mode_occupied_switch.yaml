@@ -1,14 +1,19 @@
-    occupancy_mode_occupied:
-      value_template: "{{ is_state('input_select.occupancy_mode', 'OCCUPIED') }}"
-      turn_on:
-        - service: input_select.select_option
-          entity_id: input_select.occupancy_mode
-          data:
-            option: OCCUPIED
-        - service: script.turn_on
-          entity_id: script.occupancy_mode_occupied
-      turn_off:
-        - service: input_select.select_option
-          entity_id: input_select.occupancy_mode
-          data:
-            option: UNKNOWN
+switch:
+  - platform: template
+    switches:
+      occupancy_mode_occupied:
+        unique_id: "occupancy_mode_occupied"
+        friendly_name: "Occupancy Mode Occupied"
+        value_template: "{{ is_state('input_select.occupancy_mode', 'OCCUPIED') }}"
+        turn_on:
+          - service: input_select.select_option
+            entity_id: input_select.occupancy_mode
+            data:
+              option: OCCUPIED
+          - service: script.turn_on
+            entity_id: script.occupancy_mode_occupied
+        turn_off:
+          - service: input_select.select_option
+            entity_id: input_select.occupancy_mode
+            data:
+              option: UNKNOWN
