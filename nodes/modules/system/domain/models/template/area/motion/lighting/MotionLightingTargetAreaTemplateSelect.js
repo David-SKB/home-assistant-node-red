@@ -1,22 +1,22 @@
 const AreaTemplate = require("../../AreaTemplate");
 
-class MotionLightingHybridTargetAreaTemplateSelect extends AreaTemplate {
+class MotionLightingTargetAreaTemplateSelect extends AreaTemplate {
   
   constructor(area_id, {
 
     area_name = area_id,
     path,
     ...options
-
+    
   } = {}) {
 
     super(area_id, { 
 
       // Defaults
-      base_path: `/config/.storage/templates/area/lighting/motion/${area_id}/`,
-      file_name: `motion_lighting_hybrid_target_${area_id}_template_select.yaml`,
+      base_path: `/config/.storage/templates/area/motion/lighting/${area_id}/`,
+      file_name: `motion_lighting_target_${area_id}_template_select.yaml`,
 
-      // Optional Overrides
+      // Optional
       area_name,
       path,
       ...options 
@@ -31,8 +31,8 @@ class MotionLightingHybridTargetAreaTemplateSelect extends AreaTemplate {
 
 `template:
   - select:
-      - name: "Motion Lighting Hybrid Target ${area_name}"
-        state: "{{ states('input_text.motion_lighting_hybrid_target_state_${area_id}') }}"
+      - name: "Motion Lighting Target ${area_name}"
+        state: "{{ states('input_text.motion_lighting_target_state_${area_id}') }}"
         options: >
           {{ expand(area_entities("${area_id}"))
           | selectattr('domain', 'eq', 'light')
@@ -40,12 +40,12 @@ class MotionLightingHybridTargetAreaTemplateSelect extends AreaTemplate {
         select_option:
           - service: input_text.set_value
             target:
-              entity_id: input_text.motion_lighting_hybrid_target_state_${area_id}
+              entity_id: input_text.motion_lighting_target_state_${area_id}
             data:
               value: "{{ option }}"
           - service: input_text.set_value
             target:
-              entity_id: input_text.motion_lighting_hybrid_target_${area_id}
+              entity_id: input_text.motion_lighting_target_${area_id}
             data:
               value: >
                 {% set ns = namespace(entities=[]) %}
@@ -61,8 +61,8 @@ class MotionLightingHybridTargetAreaTemplateSelect extends AreaTemplate {
       
                 {% set mapper = dict.from_keys(ns.entities) %}
                 "{{ mapper.get(option) }}"
-        availability: "{{ states('input_text.motion_lighting_hybrid_target_state_${area_id}') is defined }}"`;
+        availability: "{{ states('input_text.motion_lighting_target_state_${area_id}') is defined }}"`;
 
 }
 
-module.exports = MotionLightingHybridTargetAreaTemplateSelect;
+module.exports = MotionLightingTargetAreaTemplateSelect;

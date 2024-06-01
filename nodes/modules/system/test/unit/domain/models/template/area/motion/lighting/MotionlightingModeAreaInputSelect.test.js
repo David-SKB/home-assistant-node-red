@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const { mockAreas, mockEntities, normalizeMultilineString } = require('../../../../../../../../util/test');
 
-const MotionLightingTargetAreaInputText = require('../../../../../../../../domain/models/template/area/lighting/motion/MotionLightingTargetAreaInputText');
+const MotionLightingModeAreaInputSelect = require('../../../../../../../../domain/models/template/area/motion/lighting/MotionLightingModeAreaInputSelect');
 
-describe('MotionLightingTargetAreaInputText', () => {
+describe('MotionLightingModeAreaInputSelect', () => {
 
   const areas = [
     { aliases: [], name: "Area 1", id: "area1", picture: null },
@@ -12,8 +12,8 @@ describe('MotionLightingTargetAreaInputText', () => {
     { aliases: [], name: "Area 3", id: "area3", picture: null }
   ];
 
-  const base_path = (area_id) => `/config/.storage/templates/area/lighting/motion/${area_id}/`;
-  const file_name = (area_id) => `motion_lighting_target_${area_id}_input_text.yaml`;
+  const base_path = (area_id) => `/config/.storage/templates/area/motion/lighting/${area_id}/`;
+  const file_name = (area_id) => `motion_lighting_mode_${area_id}_input_select.yaml`;
 
   beforeEach(() => {
     mockAreas.setup(areas);
@@ -28,13 +28,12 @@ describe('MotionLightingTargetAreaInputText', () => {
   it('should set default values correctly', () => {
     const area_id = areas[0].id;
 
-    const template = new MotionLightingTargetAreaInputText(area_id);
+    const template = new MotionLightingModeAreaInputSelect(area_id);
 
     expect(template.area_name).toBe(area_id);
     expect(template.base_path).toBe(base_path(area_id));
     expect(template.file_name).toBe(file_name(area_id));
     expect(template.path).toBe(path.join(base_path(area_id), file_name(area_id)));
-
   });
 
   it('should override default values correctly', () => {
@@ -43,7 +42,7 @@ describe('MotionLightingTargetAreaInputText', () => {
     const custom_file_name = 'custom.yaml';
     const custom_path = '/custom/full/path/custom.yaml';
 
-    const template = new MotionLightingTargetAreaInputText(area_id, {
+    const template = new MotionLightingModeAreaInputSelect(area_id, {
       base_path: custom_base_path,
       file_name: custom_file_name,
       path: custom_path,
@@ -56,7 +55,7 @@ describe('MotionLightingTargetAreaInputText', () => {
     expect(template.area_name).toBe('Custom Area');
   });
 
-  it('should generate the expected input_text template', () => {
+  it('should generate the expected input_select template', () => {
     const area_id = areas[0].id;
     const area_name = areas[0].name;
 
@@ -65,7 +64,7 @@ describe('MotionLightingTargetAreaInputText', () => {
       'utf8'
     );
 
-    const generated_template = new MotionLightingTargetAreaInputText(area_id, {area_name}).generate().payload;
+    const generated_template = new MotionLightingModeAreaInputSelect(area_id, { area_name }).generate().payload;
 
     expect(normalizeMultilineString(generated_template)).toBe(normalizeMultilineString(expected));
   });

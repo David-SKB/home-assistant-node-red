@@ -1,10 +1,10 @@
 const fs = require('fs');
 const path = require('path');
-const { mockAreas, mockEntities, normalizeMultilineString } = require('../../../../../../../../util/test');
+const { mockAreas, normalizeMultilineString } = require('../../../../../../../../util/test');
 
-const MotionLightingTargetStateAreaInputText = require('../../../../../../../../domain/models/template/area/lighting/motion/MotionLightingTargetStateAreaInputText');
+const MotionDetectionToggleAreaSwitch = require('../../../../../../../../domain/models/template/area/motion/detection/MotionDetectionToggleAreaSwitch');
 
-describe('MotionLightingTargetStateAreaInputText', () => {
+describe('MotionDetectionToggleAreaSwitch', () => {
 
   const areas = [
     { aliases: [], name: "Area 1", id: "area1", picture: null },
@@ -12,29 +12,26 @@ describe('MotionLightingTargetStateAreaInputText', () => {
     { aliases: [], name: "Area 3", id: "area3", picture: null }
   ];
 
-  const base_path = (area_id) => `/config/.storage/templates/area/lighting/motion/${area_id}/`;
-  const file_name = (area_id) => `motion_lighting_target_state_${area_id}_input_text.yaml`;
+  const base_path = (area_id) => `/config/.storage/templates/area/motion/detection/${area_id}/`;
+  const file_name = (area_id) => `motion_detection_toggle_${area_id}_switch.yaml`;
 
   beforeEach(() => {
     mockAreas.setup(areas);
-    mockEntities.setup([]);
   });
 
   afterEach(() => {
     mockAreas.resetMocks();
-    mockEntities.resetMocks();
   });
 
   it('should set default values correctly', () => {
     const area_id = areas[0].id;
 
-    const template = new MotionLightingTargetStateAreaInputText(area_id);
+    const template = new MotionDetectionToggleAreaSwitch(area_id);
 
     expect(template.area_name).toBe(area_id);
     expect(template.base_path).toBe(base_path(area_id));
     expect(template.file_name).toBe(file_name(area_id));
     expect(template.path).toBe(path.join(base_path(area_id), file_name(area_id)));
-
   });
 
   it('should override default values correctly', () => {
@@ -43,7 +40,7 @@ describe('MotionLightingTargetStateAreaInputText', () => {
     const custom_file_name = 'custom.yaml';
     const custom_path = '/custom/full/path/custom.yaml';
 
-    const template = new MotionLightingTargetStateAreaInputText(area_id, {
+    const template = new MotionDetectionToggleAreaSwitch(area_id, {
       base_path: custom_base_path,
       file_name: custom_file_name,
       path: custom_path,
@@ -56,7 +53,7 @@ describe('MotionLightingTargetStateAreaInputText', () => {
     expect(template.area_name).toBe('Custom Area');
   });
 
-  it('should generate the expected input_text template', () => {
+  it('should generate the expected switch template', () => {
     const area_id = areas[0].id;
     const area_name = areas[0].name;
 
@@ -65,7 +62,7 @@ describe('MotionLightingTargetStateAreaInputText', () => {
       'utf8'
     );
 
-    const generated_template = new MotionLightingTargetStateAreaInputText(area_id, {area_name}).generate().payload;
+    const generated_template = new MotionDetectionToggleAreaSwitch(area_id, { area_name }).template;
 
     expect(normalizeMultilineString(generated_template)).toBe(normalizeMultilineString(expected));
   });

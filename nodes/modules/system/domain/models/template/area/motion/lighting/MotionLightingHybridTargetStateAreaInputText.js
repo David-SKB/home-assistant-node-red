@@ -13,7 +13,7 @@ class MotionLightingHybridTargetStateAreaInputText extends AreaTemplate {
     super(area_id, { 
 
       // Defaults
-      base_path: `/config/.storage/templates/area/lighting/motion/${area_id}/`, 
+      base_path: `/config/.storage/templates/area/motion/lighting/${area_id}/`, 
       file_name: `motion_lighting_hybrid_target_state_${area_id}_input_text.yaml`, 
 
       // Optional

@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { mockAreas, mockEntities, normalizeMultilineString } = require('../../../../../../../../util/test');
 
-const MotionLightingTimeoutAreaInputDatetime = require('../../../../../../../../domain/models/template/area/lighting/motion/MotionLightingTimeoutAreaInputDatetime');
+const MotionLightingTimeoutAreaInputDatetime = require('../../../../../../../../domain/models/template/area/motion/lighting/MotionLightingTimeoutAreaInputDatetime');
 
 describe('MotionLightingTimeoutAreaInputDatetime', () => {
 
@@ -12,7 +12,7 @@ describe('MotionLightingTimeoutAreaInputDatetime', () => {
     { aliases: [], name: "Area 3", id: "area3", picture: null }
   ];
 
-  const base_path = (area_id) => `/config/.storage/templates/area/lighting/motion/${area_id}/`;
+  const base_path = (area_id) => `/config/.storage/templates/area/motion/lighting/${area_id}/`;
   const file_name = (area_id) => `motion_lighting_timeout_${area_id}_input_datetime.yaml`;
 
   beforeEach(() => {

@@ -13,7 +13,7 @@ class MotionLightingTimeoutAreaInputDatetime extends AreaTemplate {
     super(area_id, { 
 
       // Defaults
-      base_path: `/config/.storage/templates/area/lighting/motion/${area_id}/`,
+      base_path: `/config/.storage/templates/area/motion/lighting/${area_id}/`,
       file_name: `motion_lighting_timeout_${area_id}_input_datetime.yaml`,
 
       // Optional

@@ -1,0 +1,32 @@
+template:
+  - select:
+      - name: "Occupancy Inactivity Area"
+        state: "{{ states('input_text.occupancy_inactivity_area_state') }}"
+        options: >
+          {% set ns = namespace(area_list=[]) %}
+          
+          {% for area in areas() %}
+            {% set ns.area_list = ns.area_list + [area_name(area)] %}
+          {% endfor %}
+          
+          {{ ns.area_list }}
+        select_option:
+          - service: input_text.set_value
+            target:
+              entity_id: input_text.occupancy_inactivity_area_state
+            data:
+              value: "{{ option }}"
+          - service: input_text.set_value
+            target:
+              entity_id: input_text.occupancy_inactivity_area
+            data:
+              value: >
+                {% set ns = namespace(areas=[]) %}
+      
+                {% for area in areas() %}
+                  {% set ns.areas = ns.areas + [ ( area_name(area), area ) ] %}
+                {%- endfor -%}
+      
+                {% set mapper = dict.from_keys(ns.areas) %}
+                "{{ mapper.get(option) }}"
+        availability: "{{ states('input_text.occupancy_inactivity_area_state') is defined }}"

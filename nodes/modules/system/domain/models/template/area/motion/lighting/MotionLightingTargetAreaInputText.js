@@ -1,6 +1,6 @@
 const AreaTemplate = require("../../AreaTemplate");
 
-class MotionLightingTargetStateAreaInputText extends AreaTemplate {
+class MotionLightingTargetAreaInputText extends AreaTemplate {
   
   constructor(area_id, {
 
@@ -13,8 +13,8 @@ class MotionLightingTargetStateAreaInputText extends AreaTemplate {
     super(area_id, { 
 
       // Defaults
-      base_path: `/config/.storage/templates/area/lighting/motion/${area_id}/`, 
-      file_name: `motion_lighting_target_state_${area_id}_input_text.yaml`, 
+      base_path: `/config/.storage/templates/area/motion/lighting/${area_id}/`, 
+      file_name: `motion_lighting_target_${area_id}_input_text.yaml`, 
 
       // Optional
       area_name,
@@ -30,9 +30,9 @@ class MotionLightingTargetStateAreaInputText extends AreaTemplate {
   build = (area_id = this.area_id, { area_name = this.area_name  }) =>
 
 `input_text:
-  motion_lighting_target_state_${area_id}:
-    name: Motion Lighting Target State ${area_name}`;
+  motion_lighting_target_${area_id}:
+    name: Motion Lighting Target ${area_name}`;
 
 }
 
-module.exports = MotionLightingTargetStateAreaInputText;
+module.exports = MotionLightingTargetAreaInputText;

@@ -26,65 +26,60 @@ describe('TemplateGenerator', () => {
     { entity_id: 'binary_sensor.area5_motion', area_id: 'area5' }
   ];
 
+  // Area
   const area_templates_directory = "/template/area/";
-  const climate_area_templates_directory = `${area_templates_directory}climate/`;
-  const lighting_area_templates_directory = `${area_templates_directory}lighting/`;
-  const motion_lighting_area_templates_directory = `${lighting_area_templates_directory}motion/`;
+
+  // Climate
+  const area_climate_templates_directory = `${area_templates_directory}climate/`;
+
+  // Motion
+  const area_motion_templates_directory = `${area_templates_directory}motion/`;
+  const area_motion_detection_templates_directory = `${area_motion_templates_directory}detection/`;
+  const area_motion_lighting_templates_directory = `${area_motion_templates_directory}lighting/`;
+
+  // To be (re)moved
+  // const lighting_area_templates_directory = `${area_templates_directory}lighting/`;
+  // const area_motion_lighting_templates_directory = `${lighting_area_templates_directory}motion/`;
 
   const available_templates = [
 
-    // Climate
-    `${climate_area_templates_directory}AverageHumidityAreaSensor.js`,
-    `${climate_area_templates_directory}AverageLuxAreaSensor.js`, 
-    `${climate_area_templates_directory}AverageTemperatureAreaSensor.js`, 
-
-    // Motion Lighting
-    `${motion_lighting_area_templates_directory}MotionLightingHybridTargetAreaInputText.js`,
-    `${motion_lighting_area_templates_directory}MotionLightingHybridTargetAreaTemplateSelect.js`,
-    `${motion_lighting_area_templates_directory}MotionLightingHybridTargetStateAreaInputText`,
-    `${motion_lighting_area_templates_directory}MotionLightingModeAreaInputSelect.js`,
-    `${motion_lighting_area_templates_directory}MotionLightingTargetAreaInputText.js`,
-    `${motion_lighting_area_templates_directory}MotionLightingTargetAreaTemplateSelect.js`,
-    `${motion_lighting_area_templates_directory}MotionLightingTargetStateAreaInputText.js`,
-    `${motion_lighting_area_templates_directory}MotionLightingTimeoutAreaInputDatetime.js`
+    // Area - Climate
+    `${area_climate_templates_directory}AverageHumidityAreaSensor.js`,
+    `${area_climate_templates_directory}AverageLuxAreaSensor.js`, 
+    `${area_climate_templates_directory}AverageTemperatureAreaSensor.js`, 
+    // Area - Motion - Detection
+    `${area_motion_detection_templates_directory}MotionDetectionToggleAreaSwitch.js`,
+    `${area_motion_detection_templates_directory}MotionDetectorsAreaBinarySensor.js`,
+    // Area - Motion - Lighting
+    `${area_motion_lighting_templates_directory}MotionLightingHybridTargetAreaInputText.js`,
+    `${area_motion_lighting_templates_directory}MotionLightingHybridTargetAreaTemplateSelect.js`,
+    `${area_motion_lighting_templates_directory}MotionLightingHybridTargetStateAreaInputText`,
+    `${area_motion_lighting_templates_directory}MotionLightingModeAreaInputSelect.js`,
+    `${area_motion_lighting_templates_directory}MotionLightingTargetAreaInputText.js`,
+    `${area_motion_lighting_templates_directory}MotionLightingTargetAreaTemplateSelect.js`,
+    `${area_motion_lighting_templates_directory}MotionLightingTargetStateAreaInputText.js`,
+    `${area_motion_lighting_templates_directory}MotionLightingTimeoutAreaInputDatetime.js`
   
   ];
 
-  const climate_templates_count = available_templates.reduce((count, item) => {
-    return item.includes(climate_area_templates_directory) ? count + 1 : count;
-  }, 0);
+  const generatedTemplatesCount = (base_path = "/") => {
 
-  const generated_climate_templates_count = available_templates.reduce((count, item) => {
-    return item.includes(climate_area_templates_directory) ? count + areas.length : count;
-  }, 0);
+    return available_templates.reduce((count, item) => {
+      return item.includes(base_path) ? count + areas.length : count;
+    }, 0);
 
-  const lighting_templates_count = available_templates.reduce((count, item) => {
-    return item.includes(lighting_area_templates_directory)? count + 1 : count;
-  }, 0);
+  }
 
-  const generated_lighting_templates_count = available_templates.reduce((count, item) => {
-    return item.includes(lighting_area_templates_directory) ? count + areas.length : count;
-  }, 0);
+  const templatesCount = (base_path = "/") => {
 
-  const motion_lighting_templates_count = available_templates.reduce((count, item) => {
-    return item.includes(motion_lighting_area_templates_directory)? count + 1 : count;
-  }, 0);
-  
-  const generated_motion_lighting_templates_count = available_templates.reduce((count, item) => {
-    return item.includes(motion_lighting_area_templates_directory) ? count + areas.length : count;
-  }, 0);
+    return available_templates.reduce((count, item) => {
+      return item.includes(base_path) ? count + 1 : count;
+    }, 0);
 
-  const area_templates_count = available_templates.reduce((count, item) => {
-    return item.includes(area_templates_directory) ? count + 1 : count;
-  }, 0);
+  }
 
-  const templates_count = available_templates.length;
-
-  const generated_area_templates_count = available_templates.reduce((count, item) => {
-    return item.includes(area_templates_directory)? count + areas.length : count + 1;
-  }, 0);
-
-  const generated_templates_count = area_templates_count * areas.length;
+  const templates_count = templatesCount();
+  const generated_templates_count = generatedTemplatesCount();
 
   beforeEach(() => {
     mockAreas.setup(areas);
@@ -117,16 +112,22 @@ describe('TemplateGenerator', () => {
       let generatedTemplates;
 
       // Call the generate function with a path
-      generatedTemplates = templateGenerator.generate('./nodes/modules/system/domain/models/template/area/climate');
+      generatedTemplates = templateGenerator.generate('./nodes/modules/system/domain/models/template/area/');
+
+      const generated_area_templates_count = generatedTemplatesCount(area_templates_directory)
 
       // Verify that the result is an array of correct length
-      expect(generatedTemplates).toHaveLength(generated_climate_templates_count);
+      expect(generatedTemplates).toHaveLength(generated_area_templates_count);
 
-      // Call the generate function with a path
-      generatedTemplates = templateGenerator.generate('./nodes/modules/system/domain/models/template/area/lighting/motion');
+      // Call the generate function with a sub path
+      generatedTemplates = templateGenerator.generate('./nodes/modules/system/domain/models/template/area/climate/');
       
+      const generated_area_climate_templates_count = generatedTemplatesCount(area_climate_templates_directory);
+
       // Verify that the result is an array of correct length
-      expect(generatedTemplates).toHaveLength(generated_motion_lighting_templates_count);
+      expect(generatedTemplates).toHaveLength(generated_area_climate_templates_count);
+
+
 
       // Call the generate function with a module object
       generatedTemplates = templateGenerator.generate(template);

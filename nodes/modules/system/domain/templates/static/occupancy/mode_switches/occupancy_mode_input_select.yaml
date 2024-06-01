@@ -1,0 +1,11 @@
+input_select:
+  occupancy_mode:
+    name: Occupancy Mode
+    options:
+      - OCCUPIED
+      - UNOCCUPIED
+      - INACTIVITY
+      - BYPASS
+      - UNKNOWN
+    initial: UNKNOWN
+    icon: mdi:motion-sensor

@@ -1,0 +1,10 @@
+input_number:
+  updater_frequency:
+    name: Updater Frequency
+    initial: 60
+    min: 30
+    max: 3600
+    step: 1
+    mode: box
+    unit_of_measurement: Seconds
+    icon: mdi:update

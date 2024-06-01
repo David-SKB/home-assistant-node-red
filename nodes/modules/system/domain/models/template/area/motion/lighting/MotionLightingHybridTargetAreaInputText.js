@@ -1,20 +1,20 @@
 const AreaTemplate = require("../../AreaTemplate");
 
-class MotionLightingTargetAreaInputText extends AreaTemplate {
+class MotionLightingHybridTargetAreaInputText extends AreaTemplate {
   
   constructor(area_id, {
 
     area_name = area_id,
     path,
     ...options
-
+    
   } = {}) {
 
     super(area_id, { 
 
       // Defaults
-      base_path: `/config/.storage/templates/area/lighting/motion/${area_id}/`, 
-      file_name: `motion_lighting_target_${area_id}_input_text.yaml`, 
+      base_path: `/config/.storage/templates/area/motion/lighting/${area_id}/`, 
+      file_name: `motion_lighting_hybrid_target_${area_id}_input_text.yaml`, 
 
       // Optional
       area_name,
@@ -24,15 +24,15 @@ class MotionLightingTargetAreaInputText extends AreaTemplate {
     });
 
     this.template = this.build(area_id, { area_name });
-
+    
   }
 
   build = (area_id = this.area_id, { area_name = this.area_name  }) =>
 
 `input_text:
-  motion_lighting_target_${area_id}:
-    name: Motion Lighting Target ${area_name}`;
+  motion_lighting_hybrid_target_${area_id}:
+    name: Motion Lighting Hybrid Target ${area_name}`;
 
 }
 
-module.exports = MotionLightingTargetAreaInputText;
+module.exports = MotionLightingHybridTargetAreaInputText;

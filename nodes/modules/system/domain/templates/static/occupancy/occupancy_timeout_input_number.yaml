@@ -1,0 +1,10 @@
+input_number:
+  occupancy_timeout:
+    name: Occupancy Timeout
+    initial: 10
+    min: 1
+    max: 1440
+    step: 1
+    mode: box
+    unit_of_measurement: Minutes
+    icon: mdi:update
