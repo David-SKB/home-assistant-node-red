@@ -1,0 +1,5 @@
+input_boolean:
+  motion_lighting_settings_toggle_ui:
+    name: Motion Lighting Settings Toggle UI
+    initial: false
+    icon: mdi:wrench-cog

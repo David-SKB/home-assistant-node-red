@@ -1,0 +1,32 @@
+template:
+  - select:
+      - name: "Motion Lighting Settings Area UI"
+        state: "{{ states('input_text.motion_lighting_settings_area_ui_state') }}"
+        options: >
+          {% set ns = namespace(area_list=[]) %}
+
+          {% for area in areas() %}
+            {% set ns.area_list = ns.area_list + [area_name(area)] %}
+          {% endfor %}
+
+          {{ ns.area_list }}
+        select_option:
+          - service: input_text.set_value
+            target:
+              entity_id: input_text.motion_lighting_settings_area_ui_state
+            data:
+              value: "{{ option }}"
+          - service: input_text.set_value
+            target:
+              entity_id: input_text.motion_lighting_settings_area_ui
+            data:
+              value: >
+                {% set ns = namespace(areas=[]) %}
+
+                {% for area in areas() %}
+                  {% set ns.areas = ns.areas + [ ( area_name(area), area ) ] %}
+                {%- endfor -%}
+
+                {% set mapper = dict.from_keys(ns.areas) %}
+                "{{ mapper.get(option) }}"
+        availability: "{{ states('input_text.motion_lighting_settings_area_ui_state') is defined }}"
