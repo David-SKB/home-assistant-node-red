@@ -43,5 +43,13 @@ describe('stripCharacter', () => {
         expect(stripCharacter('((hello))', '(')).toBe('hello))');
         expect(stripCharacter('[[world]]', ']')).toBe('[[world');
     });
-    
+
+    it('should remove double quotes by default', () => {
+      expect(stripCharacter('""example""')).toBe('example');
+    });
+
+    it('should remove default character from the beginning and end of the string', () => {
+      expect(stripCharacter('""example""')).toBe('example');
+    });
+
 });
