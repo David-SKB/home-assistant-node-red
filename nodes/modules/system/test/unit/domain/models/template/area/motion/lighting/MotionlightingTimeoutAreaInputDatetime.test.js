@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const { mockAreas, mockEntities, normalizeMultilineString } = require('../../../../../../../../util/test');
 
-const MotionLightingTimeoutAreaInputDatetime = require('../../../../../../../../domain/models/template/area/motion/lighting/MotionLightingTimeoutAreaInputDatetime');
+const MotionLightingTimeoutAreaInputNumber = require('../../../../../../../../domain/models/template/area/motion/lighting/MotionLightingTimeoutAreaInputNumber');
 
-describe('MotionLightingTimeoutAreaInputDatetime', () => {
+describe('MotionLightingTimeoutAreaInputNumber', () => {
 
   const areas = [
     { aliases: [], name: "Area 1", id: "area1", picture: null },
@@ -13,7 +13,7 @@ describe('MotionLightingTimeoutAreaInputDatetime', () => {
   ];
 
   const base_path = (area_id) => `/config/.storage/templates/area/motion/lighting/${area_id}/`;
-  const file_name = (area_id) => `motion_lighting_timeout_${area_id}_input_datetime.yaml`;
+  const file_name = (area_id) => `motion_lighting_timeout_${area_id}_input_number.yaml`;
 
   beforeEach(() => {
     mockAreas.setup(areas);
@@ -28,7 +28,7 @@ describe('MotionLightingTimeoutAreaInputDatetime', () => {
   it('should set default values correctly', () => {
     const area_id = areas[0].id;
 
-    const template = new MotionLightingTimeoutAreaInputDatetime(area_id);
+    const template = new MotionLightingTimeoutAreaInputNumber(area_id);
 
     expect(template.area_name).toBe(area_id);
     expect(template.base_path).toBe(base_path(area_id));
@@ -42,7 +42,7 @@ describe('MotionLightingTimeoutAreaInputDatetime', () => {
     const custom_file_name = 'custom.yaml';
     const custom_path = '/custom/full/path/custom.yaml';
 
-    const template = new MotionLightingTimeoutAreaInputDatetime(area_id, {
+    const template = new MotionLightingTimeoutAreaInputNumber(area_id, {
       base_path: custom_base_path,
       file_name: custom_file_name,
       path: custom_path,
@@ -55,7 +55,7 @@ describe('MotionLightingTimeoutAreaInputDatetime', () => {
     expect(template.area_name).toBe('Custom Area');
   });
 
-  it('should generate the expected input_datetime template', () => {
+  it('should generate the expected input_number template', () => {
     const area_id = areas[0].id;
     const area_name = areas[0].name;
 
@@ -64,7 +64,7 @@ describe('MotionLightingTimeoutAreaInputDatetime', () => {
       'utf8'
     );
 
-    const generated_template = new MotionLightingTimeoutAreaInputDatetime(area_id, { area_name }).generate().payload;
+    const generated_template = new MotionLightingTimeoutAreaInputNumber(area_id, { area_name }).generate().payload;
 
     expect(normalizeMultilineString(generated_template)).toBe(normalizeMultilineString(expected));
   });

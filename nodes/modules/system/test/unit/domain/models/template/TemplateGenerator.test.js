@@ -58,7 +58,7 @@ describe('TemplateGenerator', () => {
     `${area_motion_lighting_templates_directory}MotionLightingTargetAreaInputText.js`,
     `${area_motion_lighting_templates_directory}MotionLightingTargetAreaTemplateSelect.js`,
     `${area_motion_lighting_templates_directory}MotionLightingTargetStateAreaInputText.js`,
-    `${area_motion_lighting_templates_directory}MotionLightingTimeoutAreaInputDatetime.js`
+    `${area_motion_lighting_templates_directory}MotionLightingTimeoutAreaInputNumber.js`
   
   ];
 

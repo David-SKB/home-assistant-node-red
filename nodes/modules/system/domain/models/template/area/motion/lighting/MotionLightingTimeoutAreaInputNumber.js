@@ -1,6 +1,6 @@
 const AreaTemplate = require("../../AreaTemplate");
 
-class MotionLightingTimeoutAreaInputDatetime extends AreaTemplate {
+class MotionLightingTimeoutAreaInputNumber extends AreaTemplate {
   
   constructor(area_id, {
 
@@ -14,7 +14,7 @@ class MotionLightingTimeoutAreaInputDatetime extends AreaTemplate {
 
       // Defaults
       base_path: `/config/.storage/templates/area/motion/lighting/${area_id}/`,
-      file_name: `motion_lighting_timeout_${area_id}_input_datetime.yaml`,
+      file_name: `motion_lighting_timeout_${area_id}_input_number.yaml`,
 
       // Optional
       area_name,
@@ -29,12 +29,17 @@ class MotionLightingTimeoutAreaInputDatetime extends AreaTemplate {
 
   build = (area_id = this.area_id, { area_name = this.area_name  }) =>
 
-`input_datetime:
+`input_number:
   motion_lighting_timeout_${area_id}:
     name: Motion Lighting Timeout ${area_name}
-    has_date: false
-    has_time: true`;
+    initial: 5
+    min: 0.25
+    max: 60
+    step: 0.01
+    mode: box
+    unit_of_measurement: Minutes
+    icon: mdi:timer-settings-outline`;
 
 }
 
-module.exports = MotionLightingTimeoutAreaInputDatetime;
+module.exports = MotionLightingTimeoutAreaInputNumber;

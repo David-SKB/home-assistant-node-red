@@ -5,7 +5,7 @@ const MotionLightingModeAreaInputSelect = require("./MotionLightingModeAreaInput
 const MotionLightingTargetAreaInputText = require("./MotionLightingTargetAreaInputText");
 const MotionLightingTargetAreaTemplateSelect = require("./MotionLightingTargetAreaTemplateSelect");
 const MotionLightingTargetStateAreaInputText = require("./MotionLightingTargetStateAreaInputText");
-const MotionLightingTimeoutAreaInputDatetime = require("./MotionLightingTimeoutAreaInputDatetime");
+const MotionLightingTimeoutAreaInputNumber = require("./MotionLightingTimeoutAreaInputNumber");
 
 module.exports = {
     MotionLightingHybridTargetAreaInputText,
@@ -15,5 +15,5 @@ module.exports = {
     MotionLightingTargetAreaInputText,
     MotionLightingTargetAreaTemplateSelect,
     MotionLightingTargetStateAreaInputText,
-    MotionLightingTimeoutAreaInputDatetime
+    MotionLightingTimeoutAreaInputNumber
 };
