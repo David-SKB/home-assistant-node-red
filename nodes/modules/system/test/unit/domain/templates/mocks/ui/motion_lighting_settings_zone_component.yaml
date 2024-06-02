@@ -1,0 +1,65 @@
+square: true
+type: grid
+cards:
+  - type: conditional
+    conditions:
+      - condition: state
+        entity: input_boolean.motion_lighting_settings_toggle_ui
+        state: 'on'
+    card:
+      square: true
+      type: grid
+      cards:
+        - type: conditional
+          conditions:
+            - condition: state
+              entity: select.motion_lighting_settings_area_ui
+              state: Area 1
+          card:
+            type: entities
+            entities:
+              - entity: input_select.motion_settings_zone
+              - entity: input_select.motion_lighting_mode_area1
+              - entity: select.motion_lighting_target_area1
+              - entity: select.motion_lighting_hybrid_target_area1
+              - entity: input_number.motion_lighting_timeout_area1
+                secondary_info: none
+                name: Timeout
+            title: Motion Lighting - Area 1
+            show_header_toggle: true
+        - type: conditional
+          conditions:
+            - condition: state
+              entity: select.motion_lighting_settings_area_ui
+              state: Area 2
+          card:
+            type: entities
+            entities:
+              - entity: input_select.motion_settings_zone
+              - entity: input_select.motion_lighting_mode_area2
+              - entity: select.motion_lighting_target_area2
+              - entity: select.motion_lighting_hybrid_target_area2
+              - entity: input_number.motion_lighting_timeout_area2
+                secondary_info: none
+                name: Timeout
+            title: Motion Lighting - Area 2
+            show_header_toggle: true
+        - type: conditional
+          conditions:
+            - condition: state
+              entity: select.motion_lighting_settings_area_ui
+              state: Area 3
+          card:
+            type: entities
+            entities:
+              - entity: input_select.motion_settings_zone
+              - entity: input_select.motion_lighting_mode_area3
+              - entity: select.motion_lighting_target_area3
+              - entity: select.motion_lighting_hybrid_target_area3
+              - entity: input_number.motion_lighting_timeout_area3
+                secondary_info: none
+                name: Timeout
+            title: Motion Lighting - Area 3
+            show_header_toggle: true
+      columns: 1
+columns: 1

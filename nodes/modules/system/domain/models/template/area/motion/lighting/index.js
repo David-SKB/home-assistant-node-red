@@ -1,3 +1,4 @@
+const ui = require('./ui');
 const MotionLightingHybridTargetAreaInputText = require("./MotionLightingHybridTargetAreaInputText");
 const MotionLightingHybridTargetAreaTemplateSelect = require("./MotionLightingHybridTargetAreaTemplateSelect");
 const MotionLightingHybridTargetStateAreaInputText = require("./MotionLightingHybridTargetStateAreaInputText");
@@ -8,6 +9,7 @@ const MotionLightingTargetStateAreaInputText = require("./MotionLightingTargetSt
 const MotionLightingTimeoutAreaInputNumber = require("./MotionLightingTimeoutAreaInputNumber");
 
 module.exports = {
+    ui,
     MotionLightingHybridTargetAreaInputText,
     MotionLightingHybridTargetAreaTemplateSelect,
     MotionLightingHybridTargetStateAreaInputText,

@@ -9,7 +9,6 @@ const convertClassNameToFileName = require('../../../../../util/test/convertClas
 jest.mock('fs');
 
 describe('TemplateGenerator', () => {
-
   let templateGenerator;
 
   const areas = [
@@ -26,57 +25,72 @@ describe('TemplateGenerator', () => {
     { entity_id: 'binary_sensor.area5_motion', area_id: 'area5' }
   ];
 
-  // Area
+  // Directory paths
   const area_templates_directory = "/template/area/";
-
-  // Climate
   const area_climate_templates_directory = `${area_templates_directory}climate/`;
-
-  // Motion
   const area_motion_templates_directory = `${area_templates_directory}motion/`;
   const area_motion_detection_templates_directory = `${area_motion_templates_directory}detection/`;
   const area_motion_lighting_templates_directory = `${area_motion_templates_directory}lighting/`;
-
-  // To be (re)moved
-  // const lighting_area_templates_directory = `${area_templates_directory}lighting/`;
-  // const area_motion_lighting_templates_directory = `${lighting_area_templates_directory}motion/`;
+  const area_motion_lighting_ui_templates_directory = `${area_motion_lighting_templates_directory}ui/`;
 
   const available_templates = [
-
     // Area - Climate
-    `${area_climate_templates_directory}AverageHumidityAreaSensor.js`,
-    `${area_climate_templates_directory}AverageLuxAreaSensor.js`, 
-    `${area_climate_templates_directory}AverageTemperatureAreaSensor.js`, 
+    { template: `${area_climate_templates_directory}AverageHumidityAreaSensor.js`, squash: false },
+    { template: `${area_climate_templates_directory}AverageLuxAreaSensor.js`, squash: false },
+    { template: `${area_climate_templates_directory}AverageTemperatureAreaSensor.js`, squash: false },
     // Area - Motion - Detection
-    `${area_motion_detection_templates_directory}MotionDetectionToggleAreaSwitch.js`,
-    `${area_motion_detection_templates_directory}MotionDetectorsAreaBinarySensor.js`,
+    { template: `${area_motion_detection_templates_directory}MotionDetectionToggleAreaSwitch.js`, squash: false },
+    { template: `${area_motion_detection_templates_directory}MotionDetectorsAreaBinarySensor.js`, squash: false },
     // Area - Motion - Lighting
-    `${area_motion_lighting_templates_directory}MotionLightingHybridTargetAreaInputText.js`,
-    `${area_motion_lighting_templates_directory}MotionLightingHybridTargetAreaTemplateSelect.js`,
-    `${area_motion_lighting_templates_directory}MotionLightingHybridTargetStateAreaInputText`,
-    `${area_motion_lighting_templates_directory}MotionLightingModeAreaInputSelect.js`,
-    `${area_motion_lighting_templates_directory}MotionLightingTargetAreaInputText.js`,
-    `${area_motion_lighting_templates_directory}MotionLightingTargetAreaTemplateSelect.js`,
-    `${area_motion_lighting_templates_directory}MotionLightingTargetStateAreaInputText.js`,
-    `${area_motion_lighting_templates_directory}MotionLightingTimeoutAreaInputNumber.js`
-  
+    { template: `${area_motion_lighting_templates_directory}MotionLightingHybridTargetAreaInputText.js`, squash: false },
+    { template: `${area_motion_lighting_templates_directory}MotionLightingHybridTargetAreaTemplateSelect.js`, squash: false },
+    { template: `${area_motion_lighting_templates_directory}MotionLightingHybridTargetStateAreaInputText`, squash: false },
+    { template: `${area_motion_lighting_templates_directory}MotionLightingModeAreaInputSelect.js`, squash: false },
+    { template: `${area_motion_lighting_templates_directory}MotionLightingTargetAreaInputText.js`, squash: false },
+    { template: `${area_motion_lighting_templates_directory}MotionLightingTargetAreaTemplateSelect.js`, squash: false },
+    { template: `${area_motion_lighting_templates_directory}MotionLightingTargetStateAreaInputText.js`, squash: false },
+    { template: `${area_motion_lighting_templates_directory}MotionLightingTimeoutAreaInputNumber.js`, squash: false },
+    // Area - Motion - Lighting - UI
+    { template: `${area_motion_lighting_ui_templates_directory}MotionLightingSettingsZoneComponent.js`, squash: true }
   ];
 
+  const longestMatchingBasePath = (templatePath) => {
+    const paths = [
+      area_motion_lighting_ui_templates_directory,
+      area_motion_lighting_templates_directory,
+      area_motion_detection_templates_directory,
+      area_motion_templates_directory,
+      area_climate_templates_directory,
+      area_templates_directory
+    ];
+
+    return paths.reduce((longest, current) => {
+      return templatePath.includes(current) && current.length > longest.length ? current : longest;
+    }, "");
+  };
+
   const generatedTemplatesCount = (base_path = "/") => {
+    const multiplierMapping = {
+      [area_templates_directory]: areas.length,
+      [area_climate_templates_directory]: areas.length,
+      [area_motion_templates_directory]: areas.length,
+      [area_motion_detection_templates_directory]: areas.length,
+      [area_motion_lighting_templates_directory]: areas.length,
+      [area_motion_lighting_ui_templates_directory]: 1
+    };
 
     return available_templates.reduce((count, item) => {
-      return item.includes(base_path) ? count + areas.length : count;
+      const longestBasePath = longestMatchingBasePath(item.template);
+      const multiplier = item.squash ? 1 : multiplierMapping[longestBasePath] || 0;
+      return item.template.includes(base_path) ? count + multiplier : count;
     }, 0);
-
-  }
+  };
 
   const templatesCount = (base_path = "/") => {
-
     return available_templates.reduce((count, item) => {
-      return item.includes(base_path) ? count + 1 : count;
+      return item.template.includes(base_path) ? count + 1 : count;
     }, 0);
-
-  }
+  };
 
   const templates_count = templatesCount();
   const generated_templates_count = generatedTemplatesCount();
@@ -114,7 +128,7 @@ describe('TemplateGenerator', () => {
       // Call the generate function with a path
       generatedTemplates = templateGenerator.generate('./nodes/modules/system/domain/models/template/area/');
 
-      const generated_area_templates_count = generatedTemplatesCount(area_templates_directory)
+      const generated_area_templates_count = generatedTemplatesCount(area_templates_directory);
 
       // Verify that the result is an array of correct length
       expect(generatedTemplates).toHaveLength(generated_area_templates_count);
@@ -126,8 +140,6 @@ describe('TemplateGenerator', () => {
 
       // Verify that the result is an array of correct length
       expect(generatedTemplates).toHaveLength(generated_area_climate_templates_count);
-
-
 
       // Call the generate function with a module object
       generatedTemplates = templateGenerator.generate(template);
@@ -165,14 +177,18 @@ describe('TemplateGenerator', () => {
   describe('verify file paths', () => {
     it('should generate correct file paths for templates', () => {
       const expectedPaths = areas.flatMap(area => 
-        available_templates.map(templatePath => convertClassNameToFileName(templatePath, { area_id: area.id }))
+        available_templates.map(templatePath => convertClassNameToFileName(templatePath.template, { area_id: area.id }))
       );
+
+      console.log('expected paths:');
+      console.log(expectedPaths);
 
       const generatedTemplates = templateGenerator.generate(template);
       const generatedPaths = generatedTemplates.map(t => pathUtil.normalize(t.path));
 
       // Verify that generated paths match the expected paths
       expectedPaths.forEach(expectedPath => {
+        //const template_name = pathUtil.basename(template_path, pathUtil.extname(template_path));
         expect(generatedPaths).toContain(expectedPath);
       });
     });
