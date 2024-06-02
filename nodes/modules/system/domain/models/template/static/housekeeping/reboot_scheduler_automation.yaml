@@ -1,0 +1,17 @@
+automation:
+  - alias: Reboot Scheduler
+    trigger:
+      - platform: time
+        at: "10:00:00"
+    condition:
+      - condition: time
+        weekday:
+          - wed
+    action:
+      - service: notify.mobile_app_sk
+        data:
+          message: "Rebooting..."
+          data:
+            push:
+              badge: 5
+      - service: hassio.host_reboot

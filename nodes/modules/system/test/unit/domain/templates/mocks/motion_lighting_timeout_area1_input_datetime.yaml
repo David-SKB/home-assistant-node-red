@@ -1,5 +1,0 @@
-input_datetime:
-  motion_lighting_timeout_area1:
-    name:  Motion Lighting Timeout Area 1
-    has_date: false
-    has_time: true

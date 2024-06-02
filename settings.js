@@ -40,12 +40,13 @@
  * If you like to change those settings, some are available via the add-on
  * settings/option in the Supervisor panel in Home Assistant.
  */
-const REPO_CONTEXT_ID = "system";
-const REPO_PATH = `./nodes/modules/${REPO_CONTEXT_ID}`;
+//const REPO_CONTEXT_ID = "system"; // To be removed...
+//const REPO_PATH = `./nodes/modules/${REPO_CONTEXT_ID}`; // To be removed...
 
 //process.env.TZ = "Europe/London";
-process.env.REPO_CONTEXT_ID = REPO_CONTEXT_ID; // To be removed...
-process.env.MODULE_ID = REPO_CONTEXT_ID;
+//process.env.REPO_CONTEXT_ID = REPO_CONTEXT_ID; // To be removed...
+process.env.MODULE_ID = "system";
+process.env.MODULE_PATH = `./nodes/modules/${process.env.MODULE_ID}`;
 module.exports = {
   // Retry time in milliseconds for MQTT connections
   mqttReconnectTime: 15000,
@@ -159,7 +160,7 @@ module.exports = {
     // os:require('os'),
     // jfive:require("johnny-five"),
     // j5board:require("johnny-five").Board({repl:false})
-    [REPO_CONTEXT_ID]: require(REPO_PATH),
+    [process.env.MODULE_ID]: require(process.env.MODULE_PATH),
   },
 
   // Added for persistant storage

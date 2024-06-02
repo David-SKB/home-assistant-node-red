@@ -47,7 +47,12 @@ class TimeoutConverter {
     convertTimeoutString(timeout_string) {
         // Ensure timeout_string is treated as a string
         timeout_string = String(timeout_string);
-        
+
+        // Check if the timeout_string is in HH:MM:SS format
+        if (this.isTimeFormat(timeout_string)) {
+            return this.convertTimeFormatToMilliseconds(timeout_string);
+        }
+
         // Check if the first character is a number
         if (!isNaN(parseInt(timeout_string.charAt(0)))) {
             try {
@@ -73,7 +78,19 @@ class TimeoutConverter {
             return this.convertToMilliseconds(value, unit);
         }
     }
-    
+
+    isTimeFormat(timeString) {
+        // Regular expression to check for HH:MM:SS format
+        return /^\d{2}:\d{2}:\d{2}$/.test(timeString);
+    }
+
+    convertTimeFormatToMilliseconds(timeString) {
+        const [hours, minutes, seconds] = timeString.split(':').map(Number);
+        return (hours * this.CONVERSION_FACTORS[UNIT.HOUR]) +
+               (minutes * this.CONVERSION_FACTORS[UNIT.MINUTE]) +
+               (seconds * this.CONVERSION_FACTORS[UNIT.SECOND]);
+    }
+
     getValue(value) {
         return parseInt(value) || parseInt(this.values[value.toLowerCase()]) || 0;
     }

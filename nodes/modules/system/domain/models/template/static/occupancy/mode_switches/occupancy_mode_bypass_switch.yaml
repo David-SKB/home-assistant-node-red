@@ -1,0 +1,19 @@
+switch:
+  - platform: template
+    switches:
+      occupancy_mode_bypass:
+        unique_id: "occupancy_mode_bypass"
+        friendly_name: "Occupancy Mode Bypass"
+        value_template: "{{ is_state('input_select.occupancy_mode', 'BYPASS') }}"
+        turn_on:
+          - service: input_select.select_option
+            entity_id: input_select.occupancy_mode
+            data:
+              option: BYPASS
+          - service: script.turn_on
+            entity_id: script.occupancy_mode_bypass
+        turn_off:
+          - service: input_select.select_option
+            entity_id: input_select.occupancy_mode
+            data:
+              option: UNKNOWN

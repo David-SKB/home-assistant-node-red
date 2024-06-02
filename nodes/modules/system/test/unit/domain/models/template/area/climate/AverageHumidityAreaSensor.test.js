@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { mockAreas, mockEntities, normalizeMultilineString } = require('../../../../../../../util/test');
-const AverageHumidityAreaSensor = require('../../../../../../../domain/models/template/area/climate/AverageHumidityAreaSensor');
+const AverageHumidityAreaSensor = require('../../../../../../../domain/models/template/dynamic/area/climate/AverageHumidityAreaSensor');
 
 describe('HumiditySensor', () => {
   const areas = [

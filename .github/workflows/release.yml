@@ -1,0 +1,33 @@
+name: Create Release Branch
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-release-branch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Create Release Branch
+        run: |
+          git checkout -b release-branch
+
+      - name: Remove Unwanted Files
+        run: |
+          find . -maxdepth 1 ! -name 'nodes' ! -name 'lib' ! -name 'package.json' ! -name 'settings.js' ! -name '.git' -exec git rm -r --cached {} +
+
+      - name: Commit Changes
+        run: |
+          git add .
+          git commit -m "Prepare release branch with specific folders and files"
+
+      - name: Push Release Branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git push -u origin release-branch

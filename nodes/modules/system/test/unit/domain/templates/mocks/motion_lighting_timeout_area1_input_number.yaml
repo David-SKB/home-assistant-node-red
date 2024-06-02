@@ -1,0 +1,10 @@
+input_number:
+  motion_lighting_timeout_area1:
+    name: Motion Lighting Timeout Area 1
+    initial: 5
+    min: 0.25
+    max: 60
+    step: 0.01
+    mode: box
+    unit_of_measurement: Minutes
+    icon: mdi:timer-settings-outline

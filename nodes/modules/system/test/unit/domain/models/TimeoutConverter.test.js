@@ -73,4 +73,29 @@ describe('TimeoutConverter', () => {
       expect(TimeoutConverter.convertToMilliseconds(5, '')).toBe(300000);
     });
   });
+
+  describe('isTimeFormat', () => {
+    it('should return true for valid HH:MM:SS format', () => {
+      expect(TimeoutConverter.isTimeFormat('01:30:15')).toBe(true);
+      expect(TimeoutConverter.isTimeFormat('00:00:10')).toBe(true);
+    });
+
+    it('should return false for invalid HH:MM:SS format', () => {
+      expect(TimeoutConverter.isTimeFormat('1:30:15')).toBe(false);
+      expect(TimeoutConverter.isTimeFormat('01:30')).toBe(false);
+      expect(TimeoutConverter.isTimeFormat('invalid')).toBe(false);
+    });
+  });
+
+  describe('convertTimeFormatToMilliseconds', () => {
+    it('should convert HH:MM:SS format to milliseconds', () => {
+      expect(TimeoutConverter.convertTimeFormatToMilliseconds('01:30:15')).toBe(5415000);
+      expect(TimeoutConverter.convertTimeFormatToMilliseconds('00:00:10')).toBe(10000);
+    });
+
+    it('should handle edge cases for HH:MM:SS format', () => {
+      expect(TimeoutConverter.convertTimeFormatToMilliseconds('00:00:00')).toBe(0);
+      expect(TimeoutConverter.convertTimeFormatToMilliseconds('24:00:00')).toBe(86400000);
+    });
+  });
 });

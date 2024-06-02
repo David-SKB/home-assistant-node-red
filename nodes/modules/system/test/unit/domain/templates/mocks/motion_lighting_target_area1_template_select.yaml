@@ -1,7 +1,7 @@
 template:
   - select:
       - name: "Motion Lighting Target Area 1"
-        state: "{{ states('input_text.motion_lighting_target_area1') }}"
+        state: "{{ states('input_text.motion_lighting_target_state_area1') }}"
         options: >
           {{ expand(area_entities("area1"))
           | selectattr('domain', 'eq', 'light')
@@ -9,7 +9,25 @@ template:
         select_option:
           - service: input_text.set_value
             target:
-              entity_id: input_text.motion_lighting_target_area1
+              entity_id: input_text.motion_lighting_target_state_area1
             data:
               value: "{{ option }}"
-        availability: "{{ states('input_text.motion_lighting_target_area1') is defined }}"
+          - service: input_text.set_value
+            target:
+              entity_id: input_text.motion_lighting_target_area1
+            data:
+              value: >
+                {% set ns = namespace(entities=[]) %}
+      
+                {% set entities_list = states
+                  | selectattr('domain', 'eq', 'light')
+                  | selectattr('entity_id', 'in', area_entities('area1'))
+                  | list %}
+      
+                {% for entity in entities_list %}
+                  {% set ns.entities = ns.entities + [ ( entity.name, entity.entity_id ) ] %}
+                {%- endfor -%}
+      
+                {% set mapper = dict.from_keys(ns.entities) %}
+                "{{ mapper.get(option) }}"
+        availability: "{{ states('input_text.motion_lighting_target_state_area1') is defined }}"
