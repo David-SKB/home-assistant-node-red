@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { mockAreas, mockEntities, normalizeMultilineString } = require('../../../../../../../../util/test');
 
-const MotionDetectorsAreaBinarySensor = require('../../../../../../../../domain/models/template/area/motion/detection/MotionDetectorsAreaBinarySensor');
+const MotionDetectorsAreaBinarySensor = require('../../../../../../../../domain/models/template/dynamic/area/motion/detection/MotionDetectorsAreaBinarySensor');
 
 describe('MotionDetectorsAreaBinarySensor', () => {
 

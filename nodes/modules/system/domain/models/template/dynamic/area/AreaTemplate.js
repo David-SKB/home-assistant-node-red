@@ -1,5 +1,5 @@
-const Template = require('../Template');
-const Areas = require('../../Areas');
+const Template = require('../../Template');
+const Areas = require('../../../Areas');
 
 class AreaTemplate extends Template {
 

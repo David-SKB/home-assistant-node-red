@@ -126,7 +126,7 @@ describe('TemplateGenerator', () => {
       let generatedTemplates;
 
       // Call the generate function with a path
-      generatedTemplates = templateGenerator.generate('./nodes/modules/system/domain/models/template/area/');
+      generatedTemplates = templateGenerator.generate('./nodes/modules/system/domain/models/template/');
 
       const generated_area_templates_count = generatedTemplatesCount(area_templates_directory);
 
@@ -134,7 +134,7 @@ describe('TemplateGenerator', () => {
       expect(generatedTemplates).toHaveLength(generated_area_templates_count);
 
       // Call the generate function with a sub path
-      generatedTemplates = templateGenerator.generate('./nodes/modules/system/domain/models/template/area/climate/');
+      generatedTemplates = templateGenerator.generate('./nodes/modules/system/domain/models/template/dynamic/area/climate/');
       
       const generated_area_climate_templates_count = generatedTemplatesCount(area_climate_templates_directory);
 

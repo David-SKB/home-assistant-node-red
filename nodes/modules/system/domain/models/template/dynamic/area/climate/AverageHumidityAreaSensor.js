@@ -1,7 +1,7 @@
-const Areas = require("../../../Areas");
-const AverageMetricSensor = require("../../dynamic/AverageMetricSensor");
+const Areas = require("../../../../Areas");
+const AverageMetricSensor = require("../../../dynamic/AverageMetricSensor");
 
-class AverageLuxAreaSensor extends AverageMetricSensor {
+class AverageHumidityAreaSensor extends AverageMetricSensor {
 
   constructor({
 
@@ -13,7 +13,7 @@ class AverageLuxAreaSensor extends AverageMetricSensor {
 
   } = {}) {
 
-    const metric = 'lux';
+    const metric = 'humidity';
 
     super({
 
@@ -22,9 +22,9 @@ class AverageLuxAreaSensor extends AverageMetricSensor {
 
       // Defaults
       metric,
-      unit_of_measurement: 'lx',
-      domains: ['sensor'],
-      inclusions: ['illuminance', 'lux'],
+      unit_of_measurement: '%',
+      domains: ['sensor', 'climate'],
+      inclusions: ['humidity'],
       exclusions: ['average', 'battery'],
       base_path: `/config/.storage/templates/area/climate/${area_id}/`,
       file_name: `average_${metric}_${area_id}_sensor.yaml`,
@@ -42,7 +42,7 @@ class AverageLuxAreaSensor extends AverageMetricSensor {
     this.template = this.build();
 
   }
-
+  
 }
 
-module.exports = AverageLuxAreaSensor;
+module.exports = AverageHumidityAreaSensor;

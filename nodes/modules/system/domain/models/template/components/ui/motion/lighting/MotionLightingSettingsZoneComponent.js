@@ -1,5 +1,5 @@
 const Areas = require("../../../../../Areas");
-const AreaTemplate = require("../../../AreaTemplate");
+const AreaTemplate = require("../../../../dynamic/area/AreaTemplate");
 
 
 class MotionLightingSettingsZoneComponent extends AreaTemplate {

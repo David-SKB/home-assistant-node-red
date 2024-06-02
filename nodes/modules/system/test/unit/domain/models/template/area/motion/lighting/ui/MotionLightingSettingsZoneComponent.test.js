@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { mockAreas, mockEntities, normalizeMultilineString } = require('../../../../../../../../../util/test');
 
-const MotionLightingSettingsZoneComponent = require('../../../../../../../../../domain/models/template/area/motion/lighting/ui/MotionLightingSettingsZoneComponent');
+const MotionLightingSettingsZoneComponent = require('../../../../../../../../../domain/models/template/components/ui/motion/lighting/MotionLightingSettingsZoneComponent');
 
 describe('MotionLightingSettingsZoneComponent', () => {
 

@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { mockAreas, normalizeMultilineString } = require('../../../../../../../../util/test');
 
-const MotionDetectionToggleAreaSwitch = require('../../../../../../../../domain/models/template/area/motion/detection/MotionDetectionToggleAreaSwitch');
+const MotionDetectionToggleAreaSwitch = require('../../../../../../../../domain/models/template/dynamic/area/motion/detection/MotionDetectionToggleAreaSwitch');
 
 describe('MotionDetectionToggleAreaSwitch', () => {
 

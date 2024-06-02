@@ -3,7 +3,7 @@ const { mockAreas } = require('../../../../../../util/test');
 const createFileSync = require('../../../../../../util/file/createFileSync');
 jest.mock('../../../../../../util/file/createFileSync');
 
-const AreaTemplate = require('../../../../../../domain/models/template/area/AreaTemplate');
+const AreaTemplate = require('../../../../../../domain/models/template/dynamic/area/AreaTemplate');
 
 describe('AreaTemplate', () => {
 

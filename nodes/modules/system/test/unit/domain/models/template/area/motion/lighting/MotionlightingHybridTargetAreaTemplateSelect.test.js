@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { mockAreas, mockEntities, normalizeMultilineString } = require('../../../../../../../../util/test');
 
-const MotionLightingHybridTargetAreaTemplateSelect = require('../../../../../../../../domain/models/template/area/motion/lighting/MotionLightingHybridTargetAreaTemplateSelect');
+const MotionLightingHybridTargetAreaTemplateSelect = require('../../../../../../../../domain/models/template/dynamic/area/motion/lighting/MotionLightingHybridTargetAreaTemplateSelect');
 
 describe('MotionLightingHybridTargetAreaTemplateSelect', () => {
 

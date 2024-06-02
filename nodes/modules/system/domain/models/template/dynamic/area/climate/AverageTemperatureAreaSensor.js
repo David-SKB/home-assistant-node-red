@@ -1,5 +1,5 @@
-const Areas = require("../../../Areas");
-const AverageMetricSensor = require("../../dynamic/AverageMetricSensor");
+const Areas = require("../../../../Areas");
+const AverageMetricSensor = require("../../../dynamic/AverageMetricSensor");
 
 class AverageTemperatureAreaSensor extends AverageMetricSensor {
 
