@@ -18,7 +18,7 @@ cards:
           card:
             type: entities
             entities:
-              - entity: input_select.motion_settings_zone
+              - entity: select.motion_lighting_settings_area_ui
               - entity: input_select.motion_lighting_mode_area1
               - entity: select.motion_lighting_target_area1
               - entity: select.motion_lighting_hybrid_target_area1
@@ -35,7 +35,7 @@ cards:
           card:
             type: entities
             entities:
-              - entity: input_select.motion_settings_zone
+              - entity: select.motion_lighting_settings_area_ui
               - entity: input_select.motion_lighting_mode_area2
               - entity: select.motion_lighting_target_area2
               - entity: select.motion_lighting_hybrid_target_area2
@@ -52,7 +52,7 @@ cards:
           card:
             type: entities
             entities:
-              - entity: input_select.motion_settings_zone
+              - entity: select.motion_lighting_settings_area_ui
               - entity: input_select.motion_lighting_mode_area3
               - entity: select.motion_lighting_target_area3
               - entity: select.motion_lighting_hybrid_target_area3

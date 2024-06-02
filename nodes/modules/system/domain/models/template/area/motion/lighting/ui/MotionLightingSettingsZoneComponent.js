@@ -62,7 +62,7 @@ columns: 1`;
           card:
             type: entities
             entities:
-              - entity: input_select.motion_settings_zone
+              - entity: select.motion_lighting_settings_area_ui
               - entity: input_select.motion_lighting_mode_${area.id}
               - entity: select.motion_lighting_target_${area.id}
               - entity: select.motion_lighting_hybrid_target_${area.id}
