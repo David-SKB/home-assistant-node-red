@@ -13,7 +13,7 @@ cards:
         - type: conditional
           conditions:
             - condition: state
-              entity: select.motion_lighting_settings_area_ui
+              entity: input_text.motion_lighting_settings_area_ui_state
               state: Area 1
           card:
             type: entities
@@ -30,7 +30,7 @@ cards:
         - type: conditional
           conditions:
             - condition: state
-              entity: select.motion_lighting_settings_area_ui
+              entity: input_text.motion_lighting_settings_area_ui_state
               state: Area 2
           card:
             type: entities
@@ -47,7 +47,7 @@ cards:
         - type: conditional
           conditions:
             - condition: state
-              entity: select.motion_lighting_settings_area_ui
+              entity: input_text.motion_lighting_settings_area_ui_state
               state: Area 3
           card:
             type: entities

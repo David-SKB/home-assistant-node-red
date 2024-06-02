@@ -57,7 +57,7 @@ columns: 1`;
 `        - type: conditional
           conditions:
             - condition: state
-              entity: select.motion_lighting_settings_area_ui
+              entity: input_text.motion_lighting_settings_area_ui_state
               state: ${area.name}
           card:
             type: entities
