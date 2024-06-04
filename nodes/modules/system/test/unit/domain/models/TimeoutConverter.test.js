@@ -61,6 +61,8 @@ describe('TimeoutConverter', () => {
   describe('convertToMilliseconds', () => {
     it('should convert value to milliseconds using recognized unit', () => {
       expect(TimeoutConverter.convertToMilliseconds(5, 'M')).toBe(300000);
+      expect(TimeoutConverter.convertToMilliseconds(5, 'Minutes')).toBe(300000);
+      expect(TimeoutConverter.convertToMilliseconds('5.0', 'Minutes')).toBe(300000);
     });
 
     it('should default to minutes if unit is not recognized', () => {

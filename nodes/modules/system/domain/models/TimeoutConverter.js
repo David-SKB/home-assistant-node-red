@@ -11,21 +11,45 @@ class TimeoutConverter {
     constructor() {
         this.DEFAULT_UNIT = UNIT.SECOND;
         this.units = {
+
             's': UNIT.SECOND,
             'second': UNIT.SECOND,
             'seconds': UNIT.SECOND,
+            'S': UNIT.SECOND,
+            'Second': UNIT.SECOND,
+            'Seconds': UNIT.SECOND,
+
             'm': UNIT.MINUTE,
             'minute': UNIT.MINUTE,
             'minutes': UNIT.MINUTE,
+            'M': UNIT.MINUTE,
+            'Minute': UNIT.MINUTE,
+            'Minutes': UNIT.MINUTE,
+
             'h': UNIT.HOUR,
             'hour': UNIT.HOUR,
             'hours': UNIT.HOUR,
+            'H': UNIT.HOUR,
+            'Hour': UNIT.HOUR,
+            'Hours': UNIT.HOUR,
+
             'd': UNIT.DAY,
             'day': UNIT.DAY,
             'days': UNIT.DAY,
+            'D': UNIT.DAY,
+            'Day': UNIT.DAY,
+            'Days': UNIT.DAY,
+
             'ms': UNIT.MILLISECOND,
             'millisecond': UNIT.MILLISECOND,
-            'milliseconds': UNIT.MILLISECOND
+            'milliseconds': UNIT.MILLISECOND,
+            'MS': UNIT.MILLISECOND,
+            'MilliSecond': UNIT.MILLISECOND,
+            'MilliSeconds': UNIT.MILLISECOND,
+            'Ms': UNIT.MILLISECOND,
+            'Millisecond': UNIT.MILLISECOND,
+            'Milliseconds': UNIT.MILLISECOND,
+            
         };
 
         this.values = {
@@ -101,7 +125,7 @@ class TimeoutConverter {
 
     convertToMilliseconds(value, unit) {
         // Use DEFAULT_UNIT if unit is not recognized
-        const conversionFactor = this.CONVERSION_FACTORS[unit] || this.CONVERSION_FACTORS[this.DEFAULT_UNIT];
+        const conversionFactor = this.CONVERSION_FACTORS[this.getUnit(unit)] || this.CONVERSION_FACTORS[this.DEFAULT_UNIT];
         return parseInt(value) * conversionFactor;
     }
 }
