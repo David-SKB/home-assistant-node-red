@@ -26,12 +26,19 @@ describe('TemplateGenerator', () => {
   ];
 
   // Directory paths
-  const area_templates_directory = "/template/area/";
+  const templates_directory = "/template/";
+
+  const area_templates_directory = `${templates_directory}area/`;
   const area_climate_templates_directory = `${area_templates_directory}climate/`;
   const area_motion_templates_directory = `${area_templates_directory}motion/`;
   const area_motion_detection_templates_directory = `${area_motion_templates_directory}detection/`;
   const area_motion_lighting_templates_directory = `${area_motion_templates_directory}lighting/`;
-  const area_motion_lighting_ui_templates_directory = `${area_motion_lighting_templates_directory}ui/`;
+
+  const components_templates_directory = `${templates_directory}components/`;
+  const ui_components_templates_directory = `${components_templates_directory}ui/`;
+  const ui_motion_components_templates_directory = `${ui_components_templates_directory}motion/`;
+  const ui_motion_lighting_components_templates_directory = `${ui_motion_components_templates_directory}lighting/`;
+
 
   const available_templates = [
     // Area - Climate
@@ -50,13 +57,13 @@ describe('TemplateGenerator', () => {
     { template: `${area_motion_lighting_templates_directory}MotionLightingTargetAreaTemplateSelect.js`, squash: false },
     { template: `${area_motion_lighting_templates_directory}MotionLightingTargetStateAreaInputText.js`, squash: false },
     { template: `${area_motion_lighting_templates_directory}MotionLightingTimeoutAreaInputNumber.js`, squash: false },
-    // Area - Motion - Lighting - UI
-    { template: `${area_motion_lighting_ui_templates_directory}MotionLightingSettingsZoneComponent.js`, squash: true }
+    // Components - UI - Motion - Lighting
+    { template: `${ui_motion_lighting_components_templates_directory}MotionLightingSettingsZoneComponent.js`, squash: true }
   ];
 
   const longestMatchingBasePath = (templatePath) => {
     const paths = [
-      area_motion_lighting_ui_templates_directory,
+      ui_motion_lighting_components_templates_directory,
       area_motion_lighting_templates_directory,
       area_motion_detection_templates_directory,
       area_motion_templates_directory,
@@ -76,7 +83,7 @@ describe('TemplateGenerator', () => {
       [area_motion_templates_directory]: areas.length,
       [area_motion_detection_templates_directory]: areas.length,
       [area_motion_lighting_templates_directory]: areas.length,
-      [area_motion_lighting_ui_templates_directory]: 1
+      [components_templates_directory]: 1
     };
 
     return available_templates.reduce((count, item) => {
@@ -128,7 +135,7 @@ describe('TemplateGenerator', () => {
       // Call the generate function with a path
       generatedTemplates = templateGenerator.generate('./nodes/modules/system/domain/models/template/');
 
-      const generated_area_templates_count = generatedTemplatesCount(area_templates_directory);
+      const generated_area_templates_count = generatedTemplatesCount(templates_directory);
 
       // Verify that the result is an array of correct length
       expect(generatedTemplates).toHaveLength(generated_area_templates_count);
@@ -155,7 +162,7 @@ describe('TemplateGenerator', () => {
       fs.writeFileSync = jest.fn();
 
       // Call the generate function with a module object and write option
-      templateGenerator.generate(template, { write: true, visible: true });
+      templateGenerator.generate(template, { write: true, visible: false });
 
       // Verify that writeFileSync has been called the correct number of times
       expect(fs.writeFileSync).toHaveBeenCalledTimes(generated_templates_count);
@@ -177,7 +184,7 @@ describe('TemplateGenerator', () => {
   describe('verify file paths', () => {
     it('should generate correct file paths for templates', () => {
       const expectedPaths = areas.flatMap(area => 
-        available_templates.map(templatePath => convertClassNameToFileName(templatePath.template, { area_id: area.id }))
+        available_templates.map(templatePath => convertClassNameToFileName(templatePath.template, { area_id: area.id, visible: false }))
       );
 
       console.log('expected paths:');

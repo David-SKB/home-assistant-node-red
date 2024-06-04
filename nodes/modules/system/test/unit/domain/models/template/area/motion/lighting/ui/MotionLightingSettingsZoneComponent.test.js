@@ -12,7 +12,7 @@ describe('MotionLightingSettingsZoneComponent', () => {
     { aliases: [], name: "Area 3", id: "area3", picture: null }
   ];
 
-  const base_path = "/config/.storage/templates/area/motion/lighting/ui/";
+  const base_path = "/config/.storage/templates/components/ui/motion/lighting/";
   const file_name = "motion_lighting_settings_zone_component.yaml";
 
   beforeEach(() => {

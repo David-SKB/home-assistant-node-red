@@ -8,6 +8,7 @@ template:
           {% set triggered_sensors = expand(area_entities("area1"))
           | selectattr('domain', 'eq', 'binary_sensor')
           | selectattr('state', 'eq', 'on')
+          | rejectattr('entity_id','contains','motion_detectors_area1')
           | list %}
           {{ 'on' if motion_detection_enabled and (triggered_sensors | length > 0) else 'off' }}
         icon: >

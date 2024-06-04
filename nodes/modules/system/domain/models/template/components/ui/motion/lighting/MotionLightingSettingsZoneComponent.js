@@ -18,7 +18,7 @@ class MotionLightingSettingsZoneComponent extends AreaTemplate {
       area_name,
 
       // Defaults
-      base_path: "/config/.storage/templates/area/motion/lighting/ui/",
+      base_path: "/config/.storage/templates/components/ui/motion/lighting/",
       file_name: `motion_lighting_settings_zone_component.yaml`,
 
       // Optional Overrides

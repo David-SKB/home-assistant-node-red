@@ -39,6 +39,7 @@ class MotionDetectorsAreaBinarySensor extends AreaTemplate {
           {% set triggered_sensors = expand(area_entities("${area_id}"))
           | selectattr('domain', 'eq', 'binary_sensor')
           | selectattr('state', 'eq', 'on')
+          | rejectattr('entity_id','contains','motion_detectors_${area_id}')
           | list %}
           {{ 'on' if motion_detection_enabled and (triggered_sensors | length > 0) else 'off' }}
         icon: >
