@@ -102,7 +102,7 @@ class TimeoutConverter {
     convertToMilliseconds(value, unit) {
         // Use DEFAULT_UNIT if unit is not recognized
         const conversionFactor = this.CONVERSION_FACTORS[unit] || this.CONVERSION_FACTORS[this.DEFAULT_UNIT];
-        return value * conversionFactor;
+        return parseInt(value) * conversionFactor;
     }
 }
 
