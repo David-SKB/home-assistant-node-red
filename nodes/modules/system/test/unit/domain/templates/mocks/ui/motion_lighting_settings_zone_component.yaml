@@ -6,6 +6,9 @@ cards:
       - condition: state
         entity: input_boolean.motion_lighting_settings_toggle_ui
         state: 'on'
+      - condition: state
+        entity: switch.motion_detection_toggle
+        state: 'on'
     card:
       square: true
       type: grid

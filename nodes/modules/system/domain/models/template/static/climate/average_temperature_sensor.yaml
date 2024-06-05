@@ -2,6 +2,7 @@ template:
   - sensor:
       - name: "Average Temperature"
         unit_of_measurement: "°C"
+        device_class: "temperature"
         state: >-
           {% set domains = ['sensor', 'climate'] %}
           {% set temps = states

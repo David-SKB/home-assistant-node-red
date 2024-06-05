@@ -2,6 +2,7 @@ template:
   - sensor:
       - name: Average Humidity Area 1
         unit_of_measurement: '%'
+        device_class: "humidity"
         state: >-
           {% set domains = ["sensor","climate"] %}
           {% set combined_states = [] %}

@@ -1,0 +1,13 @@
+type: conditional
+conditions:
+  - condition: state
+    entity: input_boolean.settings_toggle_ui
+    state: 'on'
+card:
+  type: entities
+  entities:
+    - entity: input_number.occupancy_timeout
+    - entity: switch.motion_detection_toggle
+      icon: mdi:motion-pause-outline
+    - entity: input_boolean.motion_lighting_settings_toggle_ui
+    - entity: input_number.updater_frequency

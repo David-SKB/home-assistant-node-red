@@ -18,7 +18,7 @@ class MotionLightingSettingsZoneComponent extends AreaTemplate {
       area_name,
 
       // Defaults
-      base_path: "/config/.storage/templates/area/motion/lighting/ui/",
+      base_path: "/config/.storage/templates/components/ui/motion/lighting/",
       file_name: `motion_lighting_settings_zone_component.yaml`,
 
       // Optional Overrides
@@ -43,6 +43,9 @@ cards:
     conditions:
       - condition: state
         entity: input_boolean.motion_lighting_settings_toggle_ui
+        state: 'on'
+      - condition: state
+        entity: switch.motion_detection_toggle
         state: 'on'
     card:
       square: true

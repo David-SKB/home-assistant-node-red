@@ -1,0 +1,9 @@
+switch:
+  - platform: group
+    name: "Motion Detection Toggle"
+    unique_id: "motion_detection_toggle"
+    all: true
+    entities:
+      - switch.motion_detection_toggle_area1
+      - switch.motion_detection_toggle_area2
+      - switch.motion_detection_toggle_area3

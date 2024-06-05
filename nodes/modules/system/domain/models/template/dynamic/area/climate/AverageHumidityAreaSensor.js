@@ -22,6 +22,7 @@ class AverageHumidityAreaSensor extends AverageMetricSensor {
 
       // Defaults
       metric,
+      device_class: 'humidity',
       unit_of_measurement: '%',
       domains: ['sensor', 'climate'],
       inclusions: ['humidity'],

@@ -1,0 +1,64 @@
+square: false
+type: grid
+cards:
+  - show_name: false
+    show_icon: true
+    type: button
+    tap_action:
+      action: more-info
+    icon: mdi:sleep
+    entity: switch.occupancy_mode_inactivity
+    show_state: false
+    hold_action:
+      action: call-service
+      service: switch.turn_on
+      target:
+        entity_id:
+          - switch.occupancy_mode_inactivity
+      data: {}
+  - show_name: false
+    show_icon: true
+    type: button
+    tap_action:
+      action: more-info
+    entity: switch.occupancy_mode_occupied
+    icon: mdi:home-sound-out
+    hold_action:
+      action: call-service
+      service: switch.turn_on
+      target:
+        entity_id:
+          - switch.occupancy_mode_occupied
+      data: {}
+    show_state: false
+  - show_name: false
+    show_icon: true
+    type: button
+    tap_action:
+      action: more-info
+    entity: switch.occupancy_mode_unoccupied
+    icon: mdi:home-export-outline
+    show_state: false
+    hold_action:
+      action: call-service
+      service: switch.turn_on
+      target:
+        entity_id:
+          - switch.occupancy_mode_unoccupied
+      data: {}
+  - show_name: false
+    show_icon: true
+    type: button
+    tap_action:
+      action: more-info
+    entity: switch.occupancy_mode_bypass
+    icon: mdi:motion-pause-outline
+    hold_action:
+      action: call-service
+      service: switch.turn_on
+      target:
+        entity_id:
+          - switch.occupancy_mode_bypass
+      data: {}
+    show_state: false
+columns: 4

@@ -40,7 +40,7 @@ function convertClassNameToFileName(template_path, {
   if (visible) console.log(`iterator_context: ${iterator_context}`);
 
   // Determine the appropriate context ID based on iterator context
-  let context_id = template_iterators[titleCase(iterator_context)];
+  let context_id = iterator_context ? template_iterators[titleCase(iterator_context)] : "";
   if (visible) console.log(`context_id: ${context_id}`);
   
   // Split based on uppercase letters
