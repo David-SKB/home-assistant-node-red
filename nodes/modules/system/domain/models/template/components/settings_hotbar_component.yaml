@@ -10,7 +10,7 @@ cards:
       service: input_boolean.toggle
       target:
         entity_id: input_boolean.motion_lighting_settings_toggle_ui
-    entity: binary_sensor.motion_detectorstemplate_test
+    entity: binary_sensor.motion_detectors
     hold_action:
       action: call-service
       service: switch.toggle
