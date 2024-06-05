@@ -5,7 +5,8 @@ describe('PresenceEvent', () => {
 
   const mock_entities = [
     { entity_id: 'person.john', state: 'home' },
-    { entity_id: 'person.mary', state: 'not_home' }
+    { entity_id: 'person.mary', state: 'not_home' },
+    { entity_id: 'person.wick', state: 'unknown' }
   ];
 
   beforeAll(() => {
@@ -131,6 +132,15 @@ describe('PresenceEvent', () => {
     expect(presenceEvent.timestamp).toBeGreaterThanOrEqual(event_data.last_updated - 10); // 10ms before
     expect(presenceEvent.timestamp).toBeLessThanOrEqual(event_data.last_updated + 10); // 10ms after
     expect(presenceEvent.state).toBe(event_data.state);
+  });
+
+  it('should create a presence event with state defaulted to false if the state is not recognised', () => {
+    const user_id = 'person.wick';
+    const timestamp = Date.now();
+    const event = new PresenceEvent(user_id, 'unknown', timestamp);
+    expect(event.user_id).toBe(user_id);
+    expect(event.state).toBe(false);
+    expect(event.timestamp).toBe(timestamp);
   });
 
 });

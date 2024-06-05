@@ -10,7 +10,7 @@ const STATES = {
 const STATE = (state) => {
     if (typeof state === "boolean") return state;
     if (!exists(state) || typeof state !== "string") return true;
-    return STATES[state.toLowerCase()] !== undefined ? STATES[state.toLowerCase()] : true;
+    return STATES[state.toLowerCase()] !== undefined ? STATES[state.toLowerCase()] : false;
 };
 
 class PresenceEvent {
