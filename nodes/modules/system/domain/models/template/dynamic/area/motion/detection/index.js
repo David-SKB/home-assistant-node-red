@@ -1,9 +1,9 @@
 const MotionDetectionToggleAreaSwitch = require("./MotionDetectionToggleAreaSwitch");
-const MotionDetectionToggleSwitch = require("./MotionDetectionToggleSwitchGroup");
+const MotionDetectionToggleSwitchGroup = require("./MotionDetectionToggleSwitchGroup");
 const MotionDetectorsAreaBinarySensor = require("./MotionDetectorsAreaBinarySensor");
 
 module.exports = {
     MotionDetectionToggleAreaSwitch,
-    MotionDetectionToggleSwitch,
+    MotionDetectionToggleSwitchGroup,
     MotionDetectorsAreaBinarySensor
 };

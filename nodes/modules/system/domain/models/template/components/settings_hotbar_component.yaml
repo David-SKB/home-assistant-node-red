@@ -1,0 +1,35 @@
+square: false
+columns: 4
+type: grid
+cards:
+  - show_name: false
+    show_icon: true
+    type: button
+    tap_action:
+      action: call-service
+      service: input_boolean.toggle
+      target:
+        entity_id: input_boolean.motion_lighting_settings_toggle_ui
+    entity: binary_sensor.motion_detectorstemplate_test
+    hold_action:
+      action: call-service
+      service: switch.toggle
+      target:
+        entity_id: switch.motion_detection_toggle
+  - show_name: true
+    show_icon: true
+    type: button
+    tap_action:
+      action: toggle
+  - show_name: true
+    show_icon: true
+    type: button
+    tap_action:
+      action: toggle
+    show_state: false
+  - show_name: false
+    show_icon: true
+    type: button
+    tap_action:
+      action: toggle
+    entity: input_boolean.settings_toggle_ui
