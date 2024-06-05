@@ -1,0 +1,13 @@
+show_name: false
+show_icon: true
+show_state: true
+type: glance
+entities:
+  - entity: sensor.average_temperature
+    name: Temperature
+  - entity: sensor.average_lux
+    name: Humidity
+  - entity: weather.home
+  - entity: sensor.integrity_level
+    name: System Integrity
+state_color: true

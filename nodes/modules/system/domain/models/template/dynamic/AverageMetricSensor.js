@@ -7,6 +7,7 @@ class AverageMetricSensor extends Template {
     metric,
     
     unit_of_measurement = '%',
+    device_class,
     area_id,
     area_name = area_id,
     path,
@@ -31,6 +32,7 @@ class AverageMetricSensor extends Template {
 
       // Optional Overrides
       unit_of_measurement,
+      device_class,
       area_id,
       area_name,
       path,
@@ -46,6 +48,7 @@ class AverageMetricSensor extends Template {
     
       metric = this.metric,
 
+      device_class = this.device_class,
       area_id = this.area_id, 
       area_name = this.area_name, 
       unit_of_measurement = this.unit_of_measurement, 
@@ -59,6 +62,7 @@ class AverageMetricSensor extends Template {
 - sensor:
     - name: Average ${this.metricTitleCase(metric)} ${this.areaName(area_name)}
       unit_of_measurement: '${unit_of_measurement}'
+${this.deviceClassFilter(device_class)}
       state: >-
         {% set domains = ${JSON.stringify(domains)} %}
         {% set combined_states = [] %}
@@ -87,6 +91,9 @@ ${this.inclusionsFilter(inclusions)}
 
   areaFilter = (area_id) => area_id ? 
 `          | selectattr('entity_id', 'in', area_entities('${area_id}'))` : "";
+
+deviceClassFilter = (device_class) => device_class ?
+`      device_class: "${device_class}"` : "";
 
   exclusionsFilter = (exclusions) => exclusions.map(exclusion => 
 `          | rejectattr('entity_id', 'contains', '${exclusion}')`).join('\n');

@@ -22,6 +22,7 @@ class AverageTemperatureAreaSensor extends AverageMetricSensor {
 
       // Defaults
       metric,
+      device_class: "temperature",
       unit_of_measurement: '°C',
       domains: ['sensor', 'climate'],
       inclusions: ['temp'],

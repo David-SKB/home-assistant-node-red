@@ -95,7 +95,8 @@ describe('AverageSensor', () => {
       domains: ['sensor', 'climate'],
       inclusions: ['temp'],
       exclusions: ['average', 'battery'],
-      unit_of_measurement: '°C'
+      unit_of_measurement: '°C',
+      device_class:"temperature"
     }).generate().payload;
 
     expect(normalizeMultilineString(generated_template)).toBe(normalizeMultilineString(expected));
