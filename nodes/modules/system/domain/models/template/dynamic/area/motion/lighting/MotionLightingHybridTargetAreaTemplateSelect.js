@@ -34,9 +34,10 @@ class MotionLightingHybridTargetAreaTemplateSelect extends AreaTemplate {
       - name: "Motion Lighting Hybrid Target ${area_name}"
         state: "{{ states('input_text.motion_lighting_hybrid_target_state_${area_id}') }}"
         options: >
-          {{ expand(area_entities("${area_id}"))
+          {{ states
           | selectattr('domain', 'eq', 'light')
-          | map(attribute='name') | list }}
+          | selectattr('entity_id', 'in', area_entities('${area_id}'))
+          | map(attribute='name')| list }}
         select_option:
           - service: input_text.set_value
             target:
