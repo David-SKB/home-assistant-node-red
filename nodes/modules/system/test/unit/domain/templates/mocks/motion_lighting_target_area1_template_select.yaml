@@ -3,9 +3,10 @@ template:
       - name: "Motion Lighting Target Area 1"
         state: "{{ states('input_text.motion_lighting_target_state_area1') }}"
         options: >
-          {{ expand(area_entities("area1"))
+          {{ states
           | selectattr('domain', 'eq', 'light')
-          | map(attribute='name') | list }}
+          | selectattr('entity_id', 'in', area_entities('area1'))
+          | map(attribute='name')| list }}
         select_option:
           - service: input_text.set_value
             target:
