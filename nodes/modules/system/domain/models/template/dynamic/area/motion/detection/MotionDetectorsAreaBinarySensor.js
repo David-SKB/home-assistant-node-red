@@ -42,7 +42,7 @@ class MotionDetectorsAreaBinarySensor extends AreaTemplate {
           | selectattr('domain', 'eq', 'binary_sensor')
           | selectattr('state', 'eq', 'on')
           | rejectattr('entity_id','contains','motion_detectors_${area_id}')
-          ${this.deviceClassFilter(device_class)}
+${this.deviceClassFilter(device_class)}
           | list %}
           {{ 'on' if motion_detection_enabled and (triggered_sensors | length > 0) else 'off' }}
         icon: >
