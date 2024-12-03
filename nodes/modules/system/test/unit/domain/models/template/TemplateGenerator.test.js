@@ -46,6 +46,8 @@ describe('TemplateGenerator', () => {
     { template: `${area_climate_templates_directory}AverageLuxAreaSensor.js`, squash: false },
     { template: `${area_climate_templates_directory}AverageTemperatureAreaSensor.js`, squash: false },
     // Area - Motion - Detection
+    { template: `${area_motion_detection_templates_directory}CalculateAverageMotionIntervalAreaAutomation.js`, squash: false },
+    { template: `${area_motion_detection_templates_directory}CalculateAverageMotionIntervalAreaToggleAutomation.js`, squash: false },
     { template: `${area_motion_detection_templates_directory}MotionDetectionToggleAreaSwitch.js`, squash: false },
     { template: `${area_motion_detection_templates_directory}MotionDetectionToggleSwitchGroup.js`, squash: true },
     { template: `${area_motion_detection_templates_directory}MotionDetectorsAreaBinarySensor.js`, squash: false },
