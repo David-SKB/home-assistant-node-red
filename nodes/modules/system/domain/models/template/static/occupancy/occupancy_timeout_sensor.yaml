@@ -1,0 +1,36 @@
+template:
+  - sensor:
+      - name: "Occupancy Timeout"
+        unique_id: "occupancy_timeout"
+        unit_of_measurement: "Minutes"
+        state: >
+          {{ state_attr('sensor.occupancy_timeout', 'minutes') }}
+        attributes:
+          ms: >
+            {% set uom = state_attr('input_number.occupancy_timeout', 'unit_of_measurement') | lower %}
+            {% set value = states('input_number.occupancy_timeout') | float %}
+            {% if uom == 'minutes' %}
+              {{ value * 60000 }}
+            {% elif uom == 'seconds' %}
+              {{ value * 1000 }}
+            {% elif uom == 'ms' %}
+              {{ value }}
+            {% else %}
+              0
+            {% endif %}
+
+          seconds: >
+            {% set ms = state_attr('sensor.occupancy_timeout', 'ms') | float %}
+            {{ ms / 1000 }}
+
+          minutes: >
+            {% set ms = state_attr('sensor.occupancy_timeout', 'ms') | float %}
+            {{ ms / 60000 }}
+
+          hours: >
+            {% set ms = state_attr('sensor.occupancy_timeout', 'ms') | float %}
+            {{ ms / 3600000 }}
+
+          days: >
+            {% set ms = state_attr('sensor.occupancy_timeout', 'ms') | float %}
+            {{ ms / 86400000 }}

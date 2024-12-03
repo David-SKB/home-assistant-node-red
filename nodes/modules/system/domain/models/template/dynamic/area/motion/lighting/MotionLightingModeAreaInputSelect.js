@@ -33,6 +33,7 @@ class MotionLightingModeAreaInputSelect extends AreaTemplate {
   motion_lighting_mode_${area_id}:
     name: Motion Lighting Mode ${area_name}
     options:
+      - AUTO
       - TOGGLE
       - DIM
       - HYBRID

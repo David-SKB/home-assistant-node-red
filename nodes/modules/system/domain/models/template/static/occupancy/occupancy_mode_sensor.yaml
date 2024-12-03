@@ -1,0 +1,17 @@
+template:
+  - sensor:
+      - name: "Occupancy Mode"
+        unique_id: occupancy_mode
+        state: "{{ states('input_select.occupancy_mode') }}"
+        icon: >
+          {% if is_state('input_select.occupancy_mode', 'OCCUPIED') %}
+            mdi:home-sound-out
+          {% elif is_state('input_select.occupancy_mode', 'UNOCCUPIED') %}
+            mdi:home-export-outline
+          {% elif is_state('input_select.occupancy_mode', 'INACTIVITY') %}
+            mdi:sleep
+          {% elif is_state('input_select.occupancy_mode', 'BYPASS') %}
+            mdi:motion-pause-outline
+          {% else %}
+            mdi:alert-octagon
+          {% endif %}
