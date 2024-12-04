@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const { mockAreas, normalizeMultilineString } = require('../../../../../../../../util/test');
 
-const CalculateAverageMotionIntervalAreaToggleAutomation = require('../../../../../../../../domain/models/template/dynamic/area/motion/detection/CalculateAverageMotionIntervalAreaToggleAutomation');
+const AverageMotionDetectionIntervalAreaSensor = require('../../../../../../../../domain/models/template/dynamic/area/motion/detection/AverageMotionDetectionIntervalAreaSensor');
 
-describe('CalculateAverageMotionIntervalAreaToggleAutomation', () => {
+describe('AverageMotionDetectionIntervalAreaSensor', () => {
 
   const areas = [
     { aliases: [], name: "Area 1", id: "area1", picture: null },
@@ -13,7 +13,7 @@ describe('CalculateAverageMotionIntervalAreaToggleAutomation', () => {
   ];
 
   const base_path = (area_id) => `/config/.storage/templates/area/motion/detection/${area_id}/`;
-  const file_name = (area_id) => `calculate_average_motion_interval_${area_id}_toggle_automation.yaml`;
+  const file_name = (area_id) => `average_motion_detection_interval_${area_id}_sensor.yaml`;
 
   beforeEach(() => {
     mockAreas.setup(areas);
@@ -26,7 +26,7 @@ describe('CalculateAverageMotionIntervalAreaToggleAutomation', () => {
   it('should set default values correctly', () => {
     const area_id = areas[0].id;
 
-    const template = new CalculateAverageMotionIntervalAreaToggleAutomation(area_id);
+    const template = new AverageMotionDetectionIntervalAreaSensor(area_id);
 
     expect(template.area_name).toBe(area_id);
     expect(template.base_path).toBe(base_path(area_id));
@@ -40,7 +40,7 @@ describe('CalculateAverageMotionIntervalAreaToggleAutomation', () => {
     const custom_file_name = 'custom.yaml';
     const custom_path = '/custom/full/path/custom.yaml';
 
-    const template = new CalculateAverageMotionIntervalAreaToggleAutomation(area_id, {
+    const template = new AverageMotionDetectionIntervalAreaSensor(area_id, {
       base_path: custom_base_path,
       file_name: custom_file_name,
       path: custom_path,
@@ -62,7 +62,7 @@ describe('CalculateAverageMotionIntervalAreaToggleAutomation', () => {
       'utf8'
     );
 
-    const generated_template = new CalculateAverageMotionIntervalAreaToggleAutomation(area_id, { area_name }).template;
+    const generated_template = new AverageMotionDetectionIntervalAreaSensor(area_id, { area_name }).template;
 
     expect(normalizeMultilineString(generated_template)).toBe(normalizeMultilineString(expected));
   });

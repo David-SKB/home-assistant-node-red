@@ -1,6 +1,6 @@
 const AreaTemplate = require("../../AreaTemplate");
 
-class CalculateAverageMotionIntervalAreaAutomation extends AreaTemplate {
+class CalculateAverageMotionDetectionIntervalAreaAutomation extends AreaTemplate {
 
   constructor(area_id, {
 
@@ -14,7 +14,7 @@ class CalculateAverageMotionIntervalAreaAutomation extends AreaTemplate {
 
       // Defaults
       base_path: `/config/.storage/templates/area/motion/detection/${area_id}/`,
-      file_name: `calculate_average_motion_interval_${area_id}_automation.yaml`,
+      file_name: `calculate_average_motion_detection_interval_${area_id}_automation.yaml`,
 
       // Optional
       area_name,
@@ -30,8 +30,8 @@ class CalculateAverageMotionIntervalAreaAutomation extends AreaTemplate {
   build = (area_id = this.area_id, { area_name = this.area_name }) => 
 
 `automation:
-  - id: calculate_average_motion_interval_${area_id}
-    alias: "Calculate Average Motion Interval ${area_name}"
+  - id: calculate_average_motion_detection_interval_${area_id}
+    alias: "Calculate Average Motion Detection Interval ${area_name}"
     trigger:
       - platform: state
         entity_id: binary_sensor.motion_detectors_${area_id}
@@ -42,7 +42,7 @@ class CalculateAverageMotionIntervalAreaAutomation extends AreaTemplate {
     action:
       - service: rest_command.fetch_motion_history
         data:
-          timestamp: "{{ (now() - timedelta(minutes=state_attr('sensor.motion_lighting_context_window_${area_id}', 'minutes'))).isoformat() }}"
+          timestamp: "{{ (now() - timedelta(minutes=state_attr('sensor.motion_lighting_auto_context_window_${area_id}', 'minutes'))).isoformat() }}"
           entity_id: "binary_sensor.motion_detectors_${area_id}"
         response_variable: motion_history
       - variables:
@@ -81,7 +81,7 @@ class CalculateAverageMotionIntervalAreaAutomation extends AreaTemplate {
           avg_interval: >
             {{ (intervals | sum / intervals | length) | round(2) if intervals | length > 0 else 0 }}
           min_timeout: >
-            {% set min_timeout_helper = state_attr('sensor.motion_lighting_minimum_timeout_${area_id}', 'seconds') | float | default(0) %}
+            {% set min_timeout_helper = state_attr('sensor.motion_lighting_auto_minimum_timeout_${area_id}', 'seconds') | float | default(0) %}
             {% set min_timeout_value = min_timeout_helper if min_timeout_helper > 0 else state_attr('sensor.occupancy_timeout', 'seconds') | float | default(300) %}
             {% if intervals | length > 0 %}
               {% set current_min = intervals | min | float %}
@@ -98,8 +98,8 @@ class CalculateAverageMotionIntervalAreaAutomation extends AreaTemplate {
               0
             {% endif %}
           context_window: >
-            {% set avg_duration = state_attr('sensor.motion_lighting_average_timeout_duration_${area_id}', 'seconds') | float(0) %}
-            {% set avg_interval = state_attr('sensor.motion_lighting_average_interval_${area_id}', 'seconds') | float(0) %}
+            {% set avg_duration = state_attr('sensor.average_motion_detection_duration_${area_id}', 'seconds') | float(0) %}
+            {% set avg_interval = state_attr('sensor.average_motion_detection_interval_${area_id}', 'seconds') | float(0) %}
             {% set min_window = 300 %}
             {% set max_window = 3600 %}
             {% set window_range = (max_window - min_window) %}
@@ -110,25 +110,25 @@ class CalculateAverageMotionIntervalAreaAutomation extends AreaTemplate {
             {{ final_window if final_window < max_window else max_window }}
       - service: input_number.set_value
         data:
-          entity_id: input_number.motion_lighting_average_interval_${area_id}
+          entity_id: input_number.average_motion_detection_interval_${area_id}
           value: "{{ avg_interval }}"
       - service: input_number.set_value
         data:
-          entity_id: input_number.motion_lighting_minimum_timeout_${area_id}
+          entity_id: input_number.motion_lighting_auto_minimum_timeout_${area_id}
           value: "{{ min_timeout }}"
       - service: input_number.set_value
         data:
-          entity_id: input_number.motion_lighting_maximum_timeout_${area_id}
+          entity_id: input_number.motion_lighting_auto_maximum_timeout_${area_id}
           value: "{{ max_timeout }}"
       - service: input_number.set_value
         data:
-          entity_id: input_number.motion_lighting_average_timeout_duration_${area_id}
+          entity_id: input_number.average_motion_detection_duration_${area_id}
           value: "{{ avg_duration }}"
       - service: input_number.set_value
         data:
-          entity_id: input_number.motion_lighting_context_window_${area_id}
+          entity_id: input_number.motion_lighting_auto_context_window_${area_id}
           value: "{{ context_window }}"`;
 
 }
 
-module.exports = CalculateAverageMotionIntervalAreaAutomation;
+module.exports = CalculateAverageMotionDetectionIntervalAreaAutomation;

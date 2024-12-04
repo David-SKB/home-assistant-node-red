@@ -1,6 +1,6 @@
 automation:
-  - id: calculate_average_motion_interval_area1
-    alias: "Calculate Average Motion Interval Area 1"
+  - id: calculate_average_motion_detection_interval_area1
+    alias: "Calculate Average Motion Detection Interval Area 1"
     trigger:
       - platform: state
         entity_id: binary_sensor.motion_detectors_area1
@@ -11,7 +11,7 @@ automation:
     action:
       - service: rest_command.fetch_motion_history
         data:
-          timestamp: "{{ (now() - timedelta(minutes=state_attr('sensor.motion_lighting_context_window_area1', 'minutes'))).isoformat() }}"
+          timestamp: "{{ (now() - timedelta(minutes=state_attr('sensor.motion_lighting_auto_context_window_area1', 'minutes'))).isoformat() }}"
           entity_id: "binary_sensor.motion_detectors_area1"
         response_variable: motion_history
       - variables:
@@ -50,7 +50,7 @@ automation:
           avg_interval: >
             {{ (intervals | sum / intervals | length) | round(2) if intervals | length > 0 else 0 }}
           min_timeout: >
-            {% set min_timeout_helper = state_attr('sensor.motion_lighting_minimum_timeout_area1', 'seconds') | float | default(0) %}
+            {% set min_timeout_helper = state_attr('sensor.motion_lighting_auto_minimum_timeout_area1', 'seconds') | float | default(0) %}
             {% set min_timeout_value = min_timeout_helper if min_timeout_helper > 0 else state_attr('sensor.occupancy_timeout', 'seconds') | float | default(300) %}
             {% if intervals | length > 0 %}
               {% set current_min = intervals | min | float %}
@@ -67,8 +67,8 @@ automation:
               0
             {% endif %}
           context_window: >
-            {% set avg_duration = state_attr('sensor.motion_lighting_average_timeout_duration_area1', 'seconds') | float(0) %}
-            {% set avg_interval = state_attr('sensor.motion_lighting_average_interval_area1', 'seconds') | float(0) %}
+            {% set avg_duration = state_attr('sensor.average_motion_detection_duration_area1', 'seconds') | float(0) %}
+            {% set avg_interval = state_attr('sensor.average_motion_detection_interval_area1', 'seconds') | float(0) %}
             {% set min_window = 300 %}
             {% set max_window = 3600 %}
             {% set window_range = (max_window - min_window) %}
@@ -79,21 +79,21 @@ automation:
             {{ final_window if final_window < max_window else max_window }}
       - service: input_number.set_value
         data:
-          entity_id: input_number.motion_lighting_average_interval_area1
+          entity_id: input_number.average_motion_detection_interval_area1
           value: "{{ avg_interval }}"
       - service: input_number.set_value
         data:
-          entity_id: input_number.motion_lighting_minimum_timeout_area1
+          entity_id: input_number.motion_lighting_auto_minimum_timeout_area1
           value: "{{ min_timeout }}"
       - service: input_number.set_value
         data:
-          entity_id: input_number.motion_lighting_maximum_timeout_area1
+          entity_id: input_number.motion_lighting_auto_maximum_timeout_area1
           value: "{{ max_timeout }}"
       - service: input_number.set_value
         data:
-          entity_id: input_number.motion_lighting_average_timeout_duration_area1
+          entity_id: input_number.average_motion_detection_duration_area1
           value: "{{ avg_duration }}"
       - service: input_number.set_value
         data:
-          entity_id: input_number.motion_lighting_context_window_area1
+          entity_id: input_number.motion_lighting_auto_context_window_area1
           value: "{{ context_window }}"

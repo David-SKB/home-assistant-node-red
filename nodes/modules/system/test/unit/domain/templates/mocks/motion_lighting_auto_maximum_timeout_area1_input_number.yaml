@@ -1,0 +1,10 @@
+input_number:
+  motion_lighting_auto_maximum_timeout_area1:
+    name: Motion Lighting Auto Maximum Timeout Area 1
+    initial: 0
+    min: 0
+    max: 86400
+    step: 1
+    mode: box
+    unit_of_measurement: Seconds
+    icon: mdi:timer-settings-outline

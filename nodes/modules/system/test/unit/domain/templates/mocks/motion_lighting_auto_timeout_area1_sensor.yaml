@@ -1,0 +1,24 @@
+template:
+  - sensor:
+      - name: "Motion Lighting Auto Timeout Area 1"
+        unique_id: "motion_lighting_auto_timeout_area1"
+        unit_of_measurement: "Seconds"
+        state: >
+          {% set sensitivity = state_attr('sensor.motion_lighting_auto_timeout_area1', 'sensitivity') | float(0) %}
+          {% set avg_interval = state_attr('sensor.motion_lighting_auto_timeout_area1', 'avg_interval') | float(0) %}
+          {% set min_timeout = state_attr('sensor.motion_lighting_auto_timeout_area1', 'min_timeout') | float(0) %}
+          {% set max_timeout = state_attr('sensor.motion_lighting_auto_timeout_area1', 'max_timeout') | float(0) %}
+
+          {% set timeout_value = avg_interval * (sensitivity | float / 100) %}
+
+          {% set final_timeout = timeout_value if timeout_value > min_timeout else min_timeout %}
+          {% set final_timeout = final_timeout if final_timeout < max_timeout else max_timeout %}
+
+          {{ final_timeout | round(0) }}
+
+        attributes:
+          sensitivity: "{{ states('input_number.motion_lighting_auto_sensetivity_area1') | float(0) }}"
+          avg_interval: "{{ state_attr('sensor.average_motion_detection_interval_area1', 'seconds') | float(0) }}"
+          avg_duration: "{{ state_attr('sensor.average_motion_detection_duration_area1', 'seconds') | float }}"
+          min_timeout: "{{ state_attr('sensor.motion_lighting_auto_minimum_timeout_area1', 'seconds') | float(0) }}"
+          max_timeout: "{{ state_attr('sensor.motion_lighting_auto_maximum_timeout_area1', 'seconds') | float(0) }}"

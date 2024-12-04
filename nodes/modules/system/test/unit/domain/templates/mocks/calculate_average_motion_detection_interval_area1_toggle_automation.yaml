@@ -1,6 +1,6 @@
 automation:
-  - id: calculate_average_motion_interval_area1_toggle
-    alias: "Calculate Average Motion Interval Area 1 Toggle"
+  - id: calculate_average_motion_detection_interval_area1_toggle
+    alias: "Calculate Average Motion Detection Interval Area 1 Toggle"
     trigger:
       - platform: state
         entity_id: input_select.motion_lighting_mode_area1
@@ -17,7 +17,7 @@ automation:
             sequence:
               - service: automation.turn_on
                 target:
-                  entity_id: automation.calculate_average_motion_interval
+                  entity_id: automation.calculate_average_motion_detection_interval_area1
           - conditions:
               - condition: state
                 entity_id: input_select.motion_lighting_mode_area1
@@ -25,7 +25,7 @@ automation:
             sequence:
               - service: automation.turn_off
                 target:
-                  entity_id: automation.calculate_average_motion_interval_area1
+                  entity_id: automation.calculate_average_motion_detection_interval_area1
           - conditions:
               - condition: state
                 entity_id: input_select.motion_lighting_mode_area1
@@ -33,7 +33,7 @@ automation:
             sequence:
               - service: automation.turn_off
                 target:
-                  entity_id: automation.calculate_average_motion_interval_area1
+                  entity_id: automation.calculate_average_motion_detection_interval_area1
           - conditions:
               - condition: state
                 entity_id: input_select.motion_lighting_mode_area1
@@ -41,4 +41,4 @@ automation:
             sequence:
               - service: automation.turn_off
                 target:
-                  entity_id: automation.calculate_average_motion_interval_area1
+                  entity_id: automation.calculate_average_motion_detection_interval_area1

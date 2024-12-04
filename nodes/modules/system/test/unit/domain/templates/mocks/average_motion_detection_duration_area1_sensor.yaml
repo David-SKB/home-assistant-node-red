@@ -1,0 +1,36 @@
+template:
+  - sensor:
+      - name: "Average Motion Detection Duration Area 1"
+        unique_id: "average_motion_detection_duration_area1"
+        unit_of_measurement: "Seconds"
+        state: >
+          {{ states('input_number.average_motion_detection_duration_area1') }}
+        attributes:
+          ms: >
+            {% set uom = state_attr('input_number.average_motion_detection_duration_area1', 'unit_of_measurement') | lower %}
+            {% set value = states('input_number.average_motion_detection_duration_area1') | float %}
+            {% if uom == 'minutes' %}
+              {{ value * 60000 }}
+            {% elif uom == 'seconds' %}
+              {{ value * 1000 }}
+            {% elif uom == 'ms' %}
+              {{ value }}
+            {% else %}
+              0
+            {% endif %}
+
+          seconds: >
+            {% set ms = state_attr('sensor.average_motion_detection_duration_area1', 'ms') | float %}
+            {{ ms / 1000 }}
+
+          minutes: >
+            {% set ms = state_attr('sensor.average_motion_detection_duration_area1', 'ms') | float %}
+            {{ ms / 60000 }}
+
+          hours: >
+            {% set ms = state_attr('sensor.average_motion_detection_duration_area1', 'ms') | float %}
+            {{ ms / 3600000 }}
+
+          days: >
+            {% set ms = state_attr('sensor.average_motion_detection_duration_area1', 'ms') | float %}
+            {{ ms / 86400000 }}

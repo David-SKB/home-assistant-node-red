@@ -1,6 +1,6 @@
 const AreaTemplate = require("../../AreaTemplate");
 
-class CalculateAverageMotionIntervalAreaToggleAutomation extends AreaTemplate {
+class CalculateAverageMotionDetectionIntervalAreaToggleAutomation extends AreaTemplate {
 
   constructor(area_id, {
 
@@ -14,7 +14,7 @@ class CalculateAverageMotionIntervalAreaToggleAutomation extends AreaTemplate {
 
       // Defaults
       base_path: `/config/.storage/templates/area/motion/detection/${area_id}/`,
-      file_name: `calculate_average_motion_interval_${area_id}_toggle_automation.yaml`,
+      file_name: `calculate_average_motion_detection_interval_${area_id}_toggle_automation.yaml`,
 
       // Optional
       area_name,
@@ -30,8 +30,8 @@ class CalculateAverageMotionIntervalAreaToggleAutomation extends AreaTemplate {
   build = (area_id = this.area_id, { area_name = this.area_name }) => 
 
 `automation:
-  - id: calculate_average_motion_interval_${area_id}_toggle
-    alias: "Calculate Average Motion Interval ${area_name} Toggle"
+  - id: calculate_average_motion_detection_interval_${area_id}_toggle
+    alias: "Calculate Average Motion Detection Interval ${area_name} Toggle"
     trigger:
       - platform: state
         entity_id: input_select.motion_lighting_mode_${area_id}
@@ -48,7 +48,7 @@ class CalculateAverageMotionIntervalAreaToggleAutomation extends AreaTemplate {
             sequence:
               - service: automation.turn_on
                 target:
-                  entity_id: automation.calculate_average_motion_interval
+                  entity_id: automation.calculate_average_motion_detection_interval_${area_id}
           - conditions:
               - condition: state
                 entity_id: input_select.motion_lighting_mode_${area_id}
@@ -56,7 +56,7 @@ class CalculateAverageMotionIntervalAreaToggleAutomation extends AreaTemplate {
             sequence:
               - service: automation.turn_off
                 target:
-                  entity_id: automation.calculate_average_motion_interval_${area_id}
+                  entity_id: automation.calculate_average_motion_detection_interval_${area_id}
           - conditions:
               - condition: state
                 entity_id: input_select.motion_lighting_mode_${area_id}
@@ -64,7 +64,7 @@ class CalculateAverageMotionIntervalAreaToggleAutomation extends AreaTemplate {
             sequence:
               - service: automation.turn_off
                 target:
-                  entity_id: automation.calculate_average_motion_interval_${area_id}
+                  entity_id: automation.calculate_average_motion_detection_interval_${area_id}
           - conditions:
               - condition: state
                 entity_id: input_select.motion_lighting_mode_${area_id}
@@ -72,8 +72,8 @@ class CalculateAverageMotionIntervalAreaToggleAutomation extends AreaTemplate {
             sequence:
               - service: automation.turn_off
                 target:
-                  entity_id: automation.calculate_average_motion_interval_${area_id}`;
+                  entity_id: automation.calculate_average_motion_detection_interval_${area_id}`;
 
 }
 
-module.exports = CalculateAverageMotionIntervalAreaToggleAutomation;
+module.exports = CalculateAverageMotionDetectionIntervalAreaToggleAutomation;
