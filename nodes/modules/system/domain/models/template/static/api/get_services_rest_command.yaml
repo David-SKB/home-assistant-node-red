@@ -1,6 +1,6 @@
 rest_command:
-  fetch_motion_history:
-    url: "http://127.0.0.1:8123/api/history/period/{{ timestamp }}?filter_entity_id={{ entity_id }}&minimal_response"
+  get_servives:
+    url: "http://127.0.0.1:8123/api/services"
     method: GET
     headers:
       Authorization: !secret rest_headers_secret

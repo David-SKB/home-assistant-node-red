@@ -1,0 +1,23 @@
+automation:
+  - id: update_user_notify_service_exclusions
+    alias: "Update User Notify Service Exclusions"
+    trigger:
+      - platform: state
+        entity_id: input_button.add_user_notify_service_exclusion
+        id: "ADD"
+      - platform: state
+        entity_id: input_button.remove_user_notify_service_exclusion
+        id: "REMOVE"
+    action:
+      - choose:
+          - conditions:
+              - condition: trigger
+                id: "ADD"
+            sequence:
+              - service: script.add_user_notify_service_exclusion
+          - conditions:
+              - condition: trigger
+                id: "REMOVE"
+            sequence:
+              - service: script.remove_user_notify_service_exclusion
+    mode: single

@@ -1,0 +1,23 @@
+script:
+  send_low_battery_mobile_app_warning_notifications:
+    alias: Send Low Battery Mobile App Warning Notifications
+    sequence:
+      - variables:
+          notify_services: >
+            {{ state_attr('input_select.mobile_app_notify_service_inclusions', 'options') | default([]) }}
+      - repeat:
+          for_each: "{{ notify_services }}"
+          sequence:
+            - data:
+                message: >
+                  {{ device_name }} battery at {{ battery_level }}%. Please recharge
+                  soon.
+                title: Low Battery Warning - {{ device_name }}
+              action: notify.{{ repeat.item }}
+    fields:
+      device_name:
+        description: The name of the device with low battery.
+        example: FIRE-8-HD
+      battery_level:
+        description: The current battery level of the device.
+        example: 20

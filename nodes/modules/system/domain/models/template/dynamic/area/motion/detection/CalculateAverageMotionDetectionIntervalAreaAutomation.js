@@ -40,13 +40,18 @@ class CalculateAverageMotionDetectionIntervalAreaAutomation extends AreaTemplate
         entity_id: binary_sensor.motion_detectors_${area_id}
         to: "off"
     action:
-      - service: rest_command.fetch_motion_history
+      - service: rest_command.get_motion_history
         data:
           timestamp: "{{ (now() - timedelta(minutes=state_attr('sensor.motion_lighting_auto_context_window_${area_id}', 'minutes'))).isoformat() }}"
           entity_id: "binary_sensor.motion_detectors_${area_id}"
         response_variable: motion_history
       - variables:
-          motion_history_content: "{{ motion_history.content[0] if motion_history_content is not none else [] }}"
+          motion_history_content: >
+            {% if motion_history and motion_history.content %}
+              {{ motion_history.content[0] }}
+            {% else %}
+              []
+            {% endif %}
           motion_states: >
             {% set raw_states = motion_history_content %}
             {% set on_states = raw_states

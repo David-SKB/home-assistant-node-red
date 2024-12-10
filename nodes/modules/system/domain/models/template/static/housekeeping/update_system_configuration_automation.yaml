@@ -1,0 +1,12 @@
+automation:
+  - id: update_system_configuration
+    alias: "Update System Configuration"
+    trigger:
+      - platform: homeassistant
+        event: start
+      - platform: state
+        entity_id: sensor.system_configuration_count
+    action:
+      - service: input_button.press
+        target:
+          entity_id: input_button.system_configuration_updated

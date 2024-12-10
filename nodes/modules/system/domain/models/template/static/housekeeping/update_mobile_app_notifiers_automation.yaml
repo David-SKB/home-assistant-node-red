@@ -1,0 +1,51 @@
+automation:
+  - id: update_mobile_app_notifiers
+    alias: "Update Mobile App Notifiers"
+    trigger:
+      - platform: state
+        entity_id: input_button.system_configuration_updated
+      - platform: state
+        entity_id: input_button.refresh_mobile_app_notifiers
+    action:
+      - service: rest_command.get_servives
+        response_variable: get_services_response
+      - variables:
+          service_response_content: >
+            {% if get_services_response and get_services_response.content %}
+              {{ get_services_response.content }}
+            {% else %}
+              []
+            {% endif %}
+          notify_services: >
+            {% set ns = namespace(mobile_app_services=[]) %}
+            {% for service, details in service_response_content
+              | selectattr('domain', 'eq', 'notify')
+              | map(attribute='services')
+              | map('dictsort')
+              | map('list')
+              | first %}
+              {% if service.startswith('mobile_app_') %}
+                {% set ns.mobile_app_services = ns.mobile_app_services + [service] %}
+              {% endif %}
+            {% endfor %}
+            {{ ns.mobile_app_services }}
+          exclusions: >
+            {{ state_attr('select.mobile_app_notify_service_exclusions', 'options') | default([]) }}
+          inclusions: >
+            {% set notify_service_users = state_attr('sensor.mobile_app_notifiers', 'notify_services_users') %}
+            {% set excluded_users = state_attr('select.user_notify_service_exclusions', 'options') | default([]) | list %}
+            {% set exclusions_list = exclusions | list %}
+            {% set notify_set = notify_services | list %}
+            {% set inclusions_list = notify_services | list %}
+            {{
+              notify_service_users 
+              | rejectattr('service', 'in', exclusions_list)
+              | rejectattr('user_friendly_name', 'in', excluded_users)
+              | map(attribute='service')
+              | list 
+            }}
+      - service: input_select.set_options
+        data:
+          entity_id: input_select.mobile_app_notify_services
+          options: "{{ notify_services if notify_services | length > 0 else ['None'] }}"
+    mode: single

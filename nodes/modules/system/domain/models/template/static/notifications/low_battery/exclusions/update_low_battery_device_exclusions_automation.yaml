@@ -1,0 +1,23 @@
+automation:
+  - id: update_low_battery_device_exclusions
+    alias: "Update Low Battery Device Exclusions"
+    trigger:
+      - platform: state
+        entity_id: input_button.add_low_battery_device_exclusion
+        id: "ADD"
+      - platform: state
+        entity_id: input_button.remove_low_battery_device_exclusion
+        id: "REMOVE"
+    action:
+      - choose:
+          - conditions:
+              - condition: trigger
+                id: "ADD"
+            sequence:
+              - service: script.add_low_battery_device_exclusion
+          - conditions:
+              - condition: trigger
+                id: "REMOVE"
+            sequence:
+              - service: script.remove_low_battery_device_exclusion
+    mode: single

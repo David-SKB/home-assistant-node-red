@@ -51,19 +51,19 @@ class AverageMotionDetectionIntervalAreaSensor extends AreaTemplate {
             {% endif %}
 
           seconds: >
-            {% set ms = state_attr('sensor.average_motion_detection_interval_${area_id}', 'ms') | float %}
+            {% set ms = this.attributes.ms | float %}
             {{ ms / 1000 }}
 
           minutes: >
-            {% set ms = state_attr('sensor.average_motion_detection_interval_${area_id}', 'ms') | float %}
+            {% set ms = this.attributes.ms | float %}
             {{ ms / 60000 }}
 
           hours: >
-            {% set ms = state_attr('sensor.average_motion_detection_interval_${area_id}', 'ms') | float %}
+            {% set ms = this.attributes.ms | float %}
             {{ ms / 3600000 }}
 
           days: >
-            {% set ms = state_attr('sensor.average_motion_detection_interval_${area_id}', 'ms') | float %}
+            {% set ms = this.attributes.ms | float %}
             {{ ms / 86400000 }}`;
 
 }

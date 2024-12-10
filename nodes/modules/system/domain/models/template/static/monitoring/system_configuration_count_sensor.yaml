@@ -1,0 +1,6 @@
+sensor:
+  - platform: template
+    sensors:
+      system_configuration_count:
+        friendly_name: "System Configuration Count"
+        value_template: "{{ states | length }}"

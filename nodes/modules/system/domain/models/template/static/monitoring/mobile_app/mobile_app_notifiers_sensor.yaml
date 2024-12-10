@@ -1,0 +1,45 @@
+sensor:
+  - platform: template
+    sensors:
+      mobile_app_notifiers:
+        friendly_name: "Mobile App Notifiers"
+        value_template: "{{ ( state_attr('select.mobile_app_notify_service_inclusions', 'options') | default([]) ) | length }}"
+        attribute_templates:
+          notify_services: "{{ state_attr('select.mobile_app_notify_service_inclusions', 'options') | default([]) }}"
+          users: >
+            {% set notify_services = this.attributes.notify_services %}
+            {% set people = integration_entities('person') | list %}
+            {% set user_devices = namespace(data=[]) %}
+
+            {% for person in people %}
+              {% set trackers = state_attr(person, 'device_trackers') | default([]) %}
+              {% set user_id = state_attr(person, 'id') %}
+              {% set ns = namespace(mapping={}) %}
+
+              {% for tracker in trackers %}
+                {% set tracker_name = tracker.split('.')[-1] %}
+                {% set matching_service = notify_services | select('search', tracker_name) | first %}
+                {% set ns.mapping = dict(ns.mapping.items() | list + [(tracker, matching_service or None)]) %}
+              {% endfor %}
+
+              {% set user_devices.data = user_devices.data + [{'person': person, 'devices': ns.mapping, 'id': user_id}] %}
+            {% endfor %}
+
+            {{ user_devices.data | default([]) | list }}
+          notify_services_users: >
+            {% set notify_services = state_attr('input_select.mobile_app_notify_services', 'options') %}
+            {% set people = integration_entities('person') | list %}
+            {% set ns = namespace(services_users=[]) %}
+
+            {% for person in people %}
+              {% set trackers = state_attr(person, 'device_trackers') | default([]) %}
+              {% set user_id = state_attr(person, 'id') %}
+              {% set user_friendly_name = state_attr(person, 'friendly_name') %}
+
+              {% for tracker in trackers %}
+                {% set tracker_name = tracker.split('.')[-1] %}
+                {% set matching_service = notify_services | select('search', tracker_name) | first %}
+                {% set ns.services_users = ns.services_users + [{"service": matching_service or None, "user_id": user_id, "user_friendly_name": user_friendly_name}] %}               {% endfor %}
+            {% endfor %}
+
+            {{ ns.services_users | default([]) | list }}
