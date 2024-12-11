@@ -4,23 +4,40 @@ automation:
     trigger:
       - platform: state
         entity_id: sensor.low_battery_devices
-    trigger:
       - platform: state
         entity_id: input_button.send_low_battery_notifications
-    trigger:
       - platform: state
         entity_id: input_button.system_configuration_updated
     condition:
-      - condition: template
-        value_template: "{{ state_attr('sensor.low_battery_devices', 'devices') | length > 0 }}"
+      - condition: or
+        conditions:
+          - condition: template
+            value_template: "{{ state_attr('sensor.low_battery_devices', 'devices') | length > 0 }}"
+          - condition: and
+            conditions:
+              - condition: template
+                value_template: "{{ state_attr('sensor.low_battery_devices', 'devices') | length == 0 }}"
+              - condition: template
+                value_template: >
+                  {{ (state_attr('input_select.low_battery_notifications', 'options') | reject('equalto', 'None') | list) | length > 0 }}
     action:
-      - delay: "00:00:01" 
+      - delay: "00:00:01"
+      - variables:
+          exclusions: >
+            {{ (states('input_text.low_battery_devices_exclusions') | default('')).split(',') }}
+          low_battery_devices: >
+            {{ state_attr('sensor.low_battery_devices', 'devices') }}
+          current_notifications: >
+            {{ state_attr('input_select.low_battery_notifications', 'options') | default([]) }}
+          alert_threshold: "{{ states('input_number.low_battery_alert_threshold') | int }}"
+          warning_threshold: "{{ states('input_number.low_battery_warning_threshold') | int }}"
+
       - repeat:
-          for_each: >
-            {% set exclusions = (states('input_text.low_battery_devices_exclusions') | default('')).split(',') %}
-            {% set low_battery_devices = state_attr('sensor.low_battery_devices', 'devices') %}
-            {{ low_battery_devices | rejectattr('device_name', 'in', exclusions) | list }}
+          for_each: "{{ low_battery_devices }}"
           sequence:
+            - variables:
+                device_slug: "{{ repeat.item.device_name | slugify }}"
+                battery_level: "{{ repeat.item.battery_level }}"
             - choose:
                 - conditions:
                     - condition: template
@@ -28,17 +45,28 @@ automation:
                         {{ states('input_select.low_battery_notifications_mode') == 'ON' }}
                     - condition: template
                       value_template: >
-                        {{ repeat.item.battery_level < states('input_number.low_battery_alert_threshold') | int }}
+                        {{ battery_level < alert_threshold }}
                   sequence:
                     - service: persistent_notification.create
                       data:
                         message: >
                           Battery alert! The battery of device **{{ repeat.item.device_name }}** is below the threshold.
-                          Current battery level: **{{ repeat.item.battery_level }}%**.
+                          Current battery level: **{{ battery_level }}%**.
                           Please recharge it soon.
                         title: Low Battery Alert - {{ repeat.item.device_name }}
-                        notification_id: low_battery_notification_{{ repeat.item.device_name | replace(' ', '_') }}
-            - delay: "00:00:01" # 1-second delay to ensure alerts are processed first
+                        notification_id: low_battery_notification_{{ device_slug }}
+                    - service: input_select.set_options
+                      data:
+                        entity_id: input_select.low_battery_notifications
+                        options: >
+                          {% set updated_notifications = (current_notifications + [repeat.item.device_name]) | unique %}
+                          {% set filtered_notifications = updated_notifications | reject('equalto', 'None') | list %}
+                          {% if filtered_notifications | length == 0 %}
+                            ['None']
+                          {% else %}
+                            {{ filtered_notifications }}
+                          {% endif %}
+            - delay: "00:00:01"
             - choose:
                 - conditions:
                     - condition: template
@@ -46,21 +74,44 @@ automation:
                         {{ states('input_select.low_battery_notifications_mode') in ['ON', 'WARNINGS'] }}
                     - condition: template
                       value_template: >
-                        {{ repeat.item.battery_level < states('input_number.low_battery_warning_threshold') | int }}
+                        {{ battery_level < warning_threshold }}
                   sequence:
                     - service: persistent_notification.create
                       data:
                         message: >
                           Battery warning! The battery of device **{{ repeat.item.device_name }}** is below the warning threshold.
-                          Current battery level: **{{ repeat.item.battery_level }}%**.
+                          Current battery level: **{{ battery_level }}%**.
                           Consider recharging soon.
                         title: Low Battery Warning - {{ repeat.item.device_name }}
-                        notification_id: low_battery_notification_{{ repeat.item.device_name | replace(' ', '_') }}
+                        notification_id: low_battery_notification_{{ device_slug }}
                     - delay: "00:00:01"
                     - service: notify.mobile_app
                       data_template:
                         message: >
                           Battery warning! The battery of device **{{ repeat.item.device_name }}** is below the warning threshold.
-                          Current battery level: **{{ repeat.item.battery_level }}%**.
+                          Current battery level: **{{ battery_level }}%**.
                           Consider recharging soon.
                         title: Low Battery Warning - {{ repeat.item.device_name }}
+
+      - repeat:
+          for_each: "{{ current_notifications }}"
+          sequence:
+            - variables:
+                device_name: "{{ repeat.item }}"
+                device_slug: "{{ repeat.item | slugify }}"
+            - condition: template
+              value_template: >
+                {{ device_name not in (low_battery_devices | map(attribute='device_name') | list) }}
+            - service: persistent_notification.dismiss
+              data:
+                notification_id: low_battery_notification_{{ device_slug }}
+            - service: input_select.set_options
+              data:
+                entity_id: input_select.low_battery_notifications
+                options: >
+                  {% set updated_notifications = current_notifications | reject('equalto', device_name) | list %}
+                  {% if updated_notifications | length == 0 %}
+                    ['None']
+                  {% else %}
+                    {{ updated_notifications }}
+                  {% endif %}
