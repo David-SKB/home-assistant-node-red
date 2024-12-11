@@ -4,11 +4,11 @@ automation:
     mode: restart
     trigger:
       - platform: state
-        entity_id: sensor.low_battery_devices
+        entity_id: input_button.system_configuration_updated
       - platform: state
         entity_id: input_button.send_low_battery_notifications
       - platform: state
-        entity_id: input_button.system_configuration_updated
+        entity_id: sensor.low_battery_devices
     condition:
       - condition: or
         conditions:

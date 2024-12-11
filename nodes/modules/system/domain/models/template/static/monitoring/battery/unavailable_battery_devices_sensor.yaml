@@ -1,15 +1,17 @@
 template:
   - sensor:
-      - name: "Battery Devices"
-        unique_id: "battery_devices"
+      - name: "Unavailable Battery Devices"
+        unique_id: "unavailable_battery_devices"
         state: >
           {{ this.attributes.devices | length }}
         attributes:
           devices: >
             {% set ns = namespace(battery_devices=[]) %}
+            {% set unavailable_states = ['unavailable', 'unknown'] %}
             {% for entity in states 
               if entity.attributes.device_class == 'battery' 
-              and entity.attributes.unit_of_measurement == '%' %}
+              and entity.attributes.unit_of_measurement == '%' 
+              and entity.state in unavailable_states %}
               {% set device_id = device_id(entity.entity_id) %}
               {% set device_name = device_attr(device_id, 'name_by_user') 
                 if device_attr(device_id, 'name_by_user') 

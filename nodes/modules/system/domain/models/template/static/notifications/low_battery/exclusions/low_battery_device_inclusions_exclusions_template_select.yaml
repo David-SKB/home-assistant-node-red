@@ -19,7 +19,7 @@ template:
             states('input_text.low_battery_device_inclusions_state') is defined and
             states('input_text.low_battery_device_exclusions') is defined and
             states('sensor.battery_devices') is defined and
-            states('sensor.low_battery_devices') is defined
+            state_attr('select.low_battery_device_exclusions', 'options') is defined
           }}
 
   - select:
