@@ -1,5 +1,5 @@
 input_boolean:
-  settings_toggle_ui:
-    name: Settings Toggle UI
+  ui_settings_toggle:
+    name: UI Settings Toggle
     initial: false
     icon: mdi:cog
