@@ -1,6 +1,7 @@
 automation:
   - id: low_battery_notifications
     alias: "Low Battery Notifications"
+    mode: restart
     trigger:
       - platform: state
         entity_id: sensor.low_battery_devices
@@ -27,8 +28,6 @@ automation:
             {{ (states('input_text.low_battery_devices_exclusions') | default('')).split(',') }}
           low_battery_devices: >
             {{ state_attr('sensor.low_battery_devices', 'devices') }}
-          current_notifications: >
-            {{ state_attr('input_select.low_battery_notifications', 'options') | default([]) }}
           alert_threshold: "{{ states('input_number.low_battery_alert_threshold') | int }}"
           warning_threshold: "{{ states('input_number.low_battery_warning_threshold') | int }}"
 
@@ -59,8 +58,10 @@ automation:
                       data:
                         entity_id: input_select.low_battery_notifications
                         options: >
-                          {% set updated_notifications = (current_notifications + [repeat.item.device_name]) | unique %}
-                          {% set filtered_notifications = updated_notifications | reject('equalto', 'None') | list %}
+                          {% set current_notifications = state_attr('input_select.low_battery_notifications', 'options') | default([]) %}
+                          {% set updated_notifications = (current_notifications | reject('equalto', 'None') | list) %}
+                          {% set new_notifications = updated_notifications + [repeat.item.device_name] %}
+                          {% set filtered_notifications = new_notifications | unique | list %}
                           {% if filtered_notifications | length == 0 %}
                             ['None']
                           {% else %}
@@ -94,7 +95,8 @@ automation:
                         title: Low Battery Warning - {{ repeat.item.device_name }}
 
       - repeat:
-          for_each: "{{ current_notifications }}"
+          for_each: >
+            {{ state_attr('input_select.low_battery_notifications', 'options') | default([]) }}
           sequence:
             - variables:
                 device_name: "{{ repeat.item }}"
@@ -109,6 +111,7 @@ automation:
               data:
                 entity_id: input_select.low_battery_notifications
                 options: >
+                  {% set current_notifications = state_attr('input_select.low_battery_notifications', 'options') | default([]) %}
                   {% set updated_notifications = current_notifications | reject('equalto', device_name) | list %}
                   {% if updated_notifications | length == 0 %}
                     ['None']
