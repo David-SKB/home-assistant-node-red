@@ -1,6 +1,0 @@
-input_text:
-  doorbell_entity_inclusions_state:
-    name: Doorbell Entity Inclusions State
-
-  doorbell_entity_exclusions_state:
-    name: Doorbell Entity Exclusions State
