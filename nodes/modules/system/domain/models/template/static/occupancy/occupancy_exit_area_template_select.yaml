@@ -18,7 +18,7 @@ template:
               value: "{{ option }}"
           - service: input_text.set_value
             target:
-              entity_id: input_text.occupancy_exit_area
+              entity_id: input_text.occupancy_exit_area_state
             data:
               value: >
                 {% set ns = namespace(areas=[]) %}
