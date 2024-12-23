@@ -29,7 +29,8 @@ class MotionLightingAutoMinimumTimeoutAreaSensor extends AreaTemplate {
 
   build = (area_id = this.area_id, { area_name = this.area_name  }) =>
 
-`template:
+`
+template:
   - sensor:
       - name: "Motion Lighting Auto Minimum Timeout ${area_name}"
         unique_id: "motion_lighting_auto_minimum_timeout_${area_id}"
@@ -38,33 +39,51 @@ class MotionLightingAutoMinimumTimeoutAreaSensor extends AreaTemplate {
           {{ states('input_number.motion_lighting_auto_minimum_timeout_${area_id}') }}
         attributes:
           ms: >
-            {% set uom = state_attr('input_number.motion_lighting_auto_minimum_timeout_${area_id}', 'unit_of_measurement') | lower %}
-            {% set value = states('input_number.motion_lighting_auto_minimum_timeout_${area_id}') | float %}
-            {% if uom == 'minutes' %}
-              {{ value * 60000 }}
-            {% elif uom == 'seconds' %}
-              {{ value * 1000 }}
-            {% elif uom == 'ms' %}
-              {{ value }}
+            {% set uom = state_attr('input_number.motion_lighting_auto_minimum_timeout_${area_id}', 'unit_of_measurement') %}
+            {% set value = states('input_number.motion_lighting_auto_minimum_timeout_${area_id}') %}
+            
+            {% if uom is string and value is string %}
+
+              {% set uom = uom | lower %}
+              {% set value = value | float %}
+              {% if uom == 'minutes' %}
+                {{ value * 60000 }}
+              {% elif uom == 'seconds' %}
+                {{ value * 1000 }}
+              {% elif uom == 'ms' %}
+                {{ value }}
+              {% else %}
+                {{ None }}
+              {% endif %}
+
             {% else %}
-              0
+              {{ None }}
             {% endif %}
-
           seconds: >
-            {% set ms = state_attr('sensor.motion_lighting_auto_minimum_timeout_${area_id}', 'ms') | float %}
-            {{ ms / 1000 }}
-
+            {% if this.attributes.ms is defined %}
+              {{ (this.attributes.ms | float(0)) / 1000 }}
+            {% else %}
+              {{ None }}
+            {% endif %}
           minutes: >
-            {% set ms = state_attr('sensor.motion_lighting_auto_minimum_timeout_${area_id}', 'ms') | float %}
-            {{ ms / 60000 }}
-
+            {% if this.attributes.ms is defined %}
+              {{ (this.attributes.ms | float(0)) / 60000 }}
+            {% else %}
+              {{ None }}
+            {% endif %}
           hours: >
-            {% set ms = state_attr('sensor.motion_lighting_auto_minimum_timeout_${area_id}', 'ms') | float %}
-            {{ ms / 3600000 }}
-
+            {% if this.attributes.ms is defined %}
+              {{ (this.attributes.ms | float(0)) / 3600000 }}
+            {% else %}
+              {{ None }}
+            {% endif %}
           days: >
-            {% set ms = state_attr('sensor.motion_lighting_auto_minimum_timeout_${area_id}', 'ms') | float %}
-            {{ ms / 86400000 }}`;
+            {% if this.attributes.ms is defined %}
+              {{ (this.attributes.ms | float(0)) / 86400000 }}
+            {% else %}
+              {{ None }}
+            {% endif %}
+`;
 
 }
 

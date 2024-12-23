@@ -1,9 +1,0 @@
-input_select:
-  low_battery_notifications_mode:
-    name: Low Battery Notifications Mode
-    options:
-      - "ON"
-      - "OFF"
-      - "WARNINGS"
-    initial: "ON"
-    icon: mdi:battery-alert

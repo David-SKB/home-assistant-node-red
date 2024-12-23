@@ -1,0 +1,63 @@
+script:
+  send_low_battery_mobile_app_notifications:
+    alias: "Send Low Battery Mobile App Notifications"
+    description: "Sends mobile app notifications for low battery."
+    mode: single
+    fields:
+      battery_level:
+        description: "The current battery level of the device."
+        example: 15
+      device_name:
+        description: "The name of the device."
+        example: "Smart Sensor"
+      type:
+        description: "The type of notification: e.g. 'Alert' or 'Warning'."
+        example: "alert"
+      notify_services:
+        description: "A list of notify services to send the notification to."
+        example: "['mobile_app_device_1', 'mobile_app_device_2']"
+      critical:
+        description: "Set priority: 1 for critical (0 or 1)."
+        example: 1
+      volume:
+        description: "Volume of the notification (0 to 1)."
+        example: 0.7
+      sound:
+        description: "Sound file to play with the notification (default='default_sound')."
+        example: "custom_alert_sound.wav"
+    sequence:
+      - variables:
+          notification_type: >
+            {% if type %}
+              {{ type | lower }}
+            {% else %}
+              notification
+            {% endif %}
+          notification_title: >
+            Low Battery {{ notification_type | title }} - {{ device_name }} [{{ battery_level }}%]
+          notification_message: >
+            The battery level of {{ device_name }} is below the {{ notification_type }} threshold.
+            Current battery level: {{ battery_level }}%. Please recharge it soon.
+          normalized_notify_services: >
+            {% if notify_services is string %}
+              [{{ notify_services }}]
+            {% else %}
+              {{ notify_services }}
+            {% endif %}
+          sound_file: >
+            {% if sound %}
+              {{ sound }}
+            {% else %}
+              {{ states('input_text.low_battery_notification_sound') | default('default') }}
+            {% endif %}
+      - repeat:
+          for_each: "{{ normalized_notify_services }}"
+          sequence:
+            - service: script.send_mobile_app_notification
+              data:
+                message: "{{ notification_message }}"
+                title: "{{ notification_title }}"
+                critical: "{{ critical }}"
+                volume: "{{ volume }}"
+                sound: "{{ sound_file }}"
+                notify_service: "{{ repeat.item }}"

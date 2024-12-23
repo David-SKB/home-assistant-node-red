@@ -1,0 +1,9 @@
+input_select:
+  doorbell_notification_priority:
+    name: Doorbell Notification Priority
+    options:
+      - "SILENT"
+      - "ON"
+      - "CRITICAL"
+      - "OFF"
+    initial: "ON"

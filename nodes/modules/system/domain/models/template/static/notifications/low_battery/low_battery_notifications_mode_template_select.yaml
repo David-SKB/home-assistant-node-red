@@ -1,0 +1,34 @@
+template:
+  - select:
+      - name: "Low Battery Notifications Mode"
+        unique_id: low_battery_notifications_mode
+        state: "{{ states('input_text.low_battery_notifications_mode_state') }}"
+        options: >
+          {{
+            [
+              'ON',
+              'OFF',
+              'WARNINGS'
+            ]
+          }}
+        select_option:
+          - service: input_text.set_value
+            target:
+              entity_id: input_text.low_battery_notifications_mode_state
+            data:
+              value: "{{ option }}"
+          - choose:
+              - conditions:
+                  - "{{ option in ['ON', 'WARNINGS'] }}"
+                sequence:
+                  - service: automation.turn_on
+                    target:
+                      entity_id: automation.low_battery_notifications
+              - conditions:
+                  - "{{ option == 'OFF' }}"
+                sequence:
+                  - service: automation.turn_off
+                    target:
+                      entity_id: automation.low_battery_notifications
+        availability: >
+          {{ states('input_text.low_battery_notifications_mode_state') is defined }}

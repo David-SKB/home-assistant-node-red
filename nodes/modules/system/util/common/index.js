@@ -3,6 +3,7 @@ const append = require("./append");
 const exists = require("./exists");
 const getFileNameFromPath = require("./getFileNameFromPath");
 const getState = require("./getState");
+const indentString = require("./indentString");
 const mapArrayToDict = require("./mapArrayToDict");
 const status = require("./status");
 const stripCharacter = require("./stripCharacter");
@@ -14,6 +15,7 @@ module.exports = {
     exists,
     getFileNameFromPath,
     getState,
+    indentString,
     mapArrayToDict,
     status,
     stripCharacter,

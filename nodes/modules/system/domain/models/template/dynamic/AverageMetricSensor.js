@@ -77,7 +77,7 @@ ${this.inclusionsFilter(inclusions)}
         {% set average_state = unique_states | sum / unique_states | length %}
         {{ average_state | round(1) }}
         {% else %}
-        Unavailable
+          {{ None }}
         {% endif %}`;
 
 // Utility Functions

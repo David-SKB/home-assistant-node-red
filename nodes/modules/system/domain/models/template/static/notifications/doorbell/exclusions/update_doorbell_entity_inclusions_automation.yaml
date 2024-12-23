@@ -1,0 +1,23 @@
+automation:
+  - id: update_doorbell_entity_inclusions
+    alias: "Update Doorbell Entity Inclusions"
+    trigger:
+      - platform: state
+        entity_id: input_button.add_doorbell_entity_inclusion
+        id: "ADD"
+      - platform: state
+        entity_id: input_button.remove_doorbell_entity_inclusion
+        id: "REMOVE"
+    action:
+      - choose:
+          - conditions:
+              - condition: trigger
+                id: "ADD"
+            sequence:
+              - service: script.add_doorbell_entity_inclusion
+          - conditions:
+              - condition: trigger
+                id: "REMOVE"
+            sequence:
+              - service: script.remove_doorbell_entity_inclusion
+    mode: single

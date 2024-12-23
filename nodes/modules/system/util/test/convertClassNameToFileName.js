@@ -31,10 +31,13 @@ function convertClassNameToFileName(template_path, {
   const pathParts = template_path.split(template_directory);
   if (visible) console.log(`pathParts: ${pathParts}`);
 
+  // If not an Area/Domain template etc. Return 
+  if (template_path.endsWith(suffix)) return path.join(prefix, pathParts[1]);
+
   // Extract context path
   const context_path = pathParts.length > 1 ? pathParts[1].split(template_name)[0] : ''; 
   if (visible) console.log(`context_path: ${context_path}`);
-
+  
   // Extract iterator context from context path
   const iterator_context = context_path.split('/')[0];
   if (visible) console.log(`iterator_context: ${iterator_context}`);

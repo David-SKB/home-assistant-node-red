@@ -4,6 +4,7 @@ const AverageMotionDetectionIntervalAreaInputNumber = require("./AverageMotionDe
 const AverageMotionDetectionIntervalAreaSensor = require("./AverageMotionDetectionIntervalAreaSensor");
 const CalculateAverageMotionDetectionIntervalAreaAutomation = require("./CalculateAverageMotionDetectionIntervalAreaAutomation");
 const CalculateAverageMotionDetectionIntervalAreaToggleAutomation = require("./CalculateAverageMotionDetectionIntervalAreaToggleAutomation");
+const MotionDetectionToggleAreaInputBoolean = require("./MotionDetectionToggleAreaInputBoolean");
 const MotionDetectionToggleAreaSwitch = require("./MotionDetectionToggleAreaSwitch");
 const MotionDetectionToggleSwitchGroup = require("./MotionDetectionToggleSwitchGroup");
 const MotionDetectorsAreaBinarySensor = require("./MotionDetectorsAreaBinarySensor");
@@ -15,6 +16,7 @@ module.exports = {
     AverageMotionDetectionIntervalAreaSensor,
     CalculateAverageMotionDetectionIntervalAreaAutomation,
     CalculateAverageMotionDetectionIntervalAreaToggleAutomation,
+    MotionDetectionToggleAreaInputBoolean,
     MotionDetectionToggleAreaSwitch,
     MotionDetectionToggleSwitchGroup,
     MotionDetectorsAreaBinarySensor

@@ -32,7 +32,6 @@ class AverageMotionDetectionDurationAreaInputNumber extends AreaTemplate {
 `input_number:
   average_motion_detection_duration_${area_id}:
     name: Average Motion Detection Duration ${area_name}
-    initial: 0
     min: 0
     max: 86400
     step: 1

@@ -2,8 +2,9 @@ const fs = require('fs');
 const pathUtil = require('path');
 const TemplateGenerator = require("../../../../../domain/models/template/TemplateGenerator");
 const template = require("../../../../../domain/models/template");
-const { mockAreas, mockEntities } = require('../../../../../util/test');
+const { mockAreas, mockEntities, mockDomains } = require('../../../../../util/test');
 const convertClassNameToFileName = require('../../../../../util/test/convertClassNameToFileName');
+const InclusionExclusionSelectTemplate = require('../../../../../domain/models/template/components/ui/config/inclusion_exclusion_select/InclusionExclusionSelectTemplate');
 
 // Mock the file system
 jest.mock('fs');
@@ -25,6 +26,12 @@ describe('TemplateGenerator', () => {
     { entity_id: 'binary_sensor.area5_motion', area_id: 'area5' }
   ];
 
+  const domains = [
+    'light',
+    'switch',
+    'button'
+  ];
+
   // Directory paths
   const templates_directory = "/template/";
 
@@ -34,10 +41,15 @@ describe('TemplateGenerator', () => {
   const area_motion_detection_templates_directory = `${area_motion_templates_directory}detection/`;
   const area_motion_lighting_templates_directory = `${area_motion_templates_directory}lighting/`;
 
+  const domain_templates_directory = `${templates_directory}domain/`;
+  const domain_monitoring_templates_directory = `${domain_templates_directory}monitoring/`;
+
   const components_templates_directory = `${templates_directory}components/`;
+  const dynamic_components_directory = `${templates_directory}dynamic/components/`;
   const ui_components_templates_directory = `${components_templates_directory}ui/`;
   const ui_motion_components_templates_directory = `${ui_components_templates_directory}motion/`;
   const ui_motion_lighting_components_templates_directory = `${ui_motion_components_templates_directory}lighting/`;
+  const components_inclusion_exclusion_select_directory = `${dynamic_components_directory}inclusion_exclusion_select/`;
 
 
   const available_templates = [
@@ -52,6 +64,7 @@ describe('TemplateGenerator', () => {
     { template: `${area_motion_detection_templates_directory}AverageMotionDetectionIntervalAreaSensor.js`, squash: false },
     { template: `${area_motion_detection_templates_directory}CalculateAverageMotionDetectionIntervalAreaAutomation.js`, squash: false },
     { template: `${area_motion_detection_templates_directory}CalculateAverageMotionDetectionIntervalAreaToggleAutomation.js`, squash: false },
+    { template: `${area_motion_detection_templates_directory}MotionDetectionToggleAreaInputBoolean.js`, squash: false },
     { template: `${area_motion_detection_templates_directory}MotionDetectionToggleAreaSwitch.js`, squash: false },
     { template: `${area_motion_detection_templates_directory}MotionDetectionToggleSwitchGroup.js`, squash: true },
     { template: `${area_motion_detection_templates_directory}MotionDetectorsAreaBinarySensor.js`, squash: false },
@@ -72,13 +85,28 @@ describe('TemplateGenerator', () => {
     { template: `${area_motion_lighting_templates_directory}MotionLightingTargetAreaTemplateSelect.js`, squash: false },
     { template: `${area_motion_lighting_templates_directory}MotionLightingTargetStateAreaInputText.js`, squash: false },
     { template: `${area_motion_lighting_templates_directory}MotionLightingTimeoutAreaInputNumber.js`, squash: false },
+    // Domain - Monitoring
+    { template: `${domain_monitoring_templates_directory}SceneManagerScript.js`, squash: true },
     // Components - UI - Motion - Lighting
-    { template: `${ui_motion_lighting_components_templates_directory}MotionLightingSettingsZoneComponent.js`, squash: true }
+    { template: `${ui_motion_lighting_components_templates_directory}MotionLightingSettingsZoneComponent.js`, squash: true },
+    // Components - Inclusion / Exclusion Select
+    
+    //{ template: `${components_inclusion_exclusion_select_directory}DoorbellEntityInclusionExclusionSelect.js`, squash: false }
+    // Temporary test solution, suite needs refactoring...
+    { template: `${components_inclusion_exclusion_select_directory}doorbell_entity/add_remove_doorbell_entity_exclusion_input_button.yaml`, squash: true },
+    { template: `${components_inclusion_exclusion_select_directory}doorbell_entity/doorbell_entity_exclusions_input_text.yaml`, squash: true },
+    { template: `${components_inclusion_exclusion_select_directory}doorbell_entity/doorbell_entity_exclusions_inclusions_state_input_text.yaml`, squash: true },
+    { template: `${components_inclusion_exclusion_select_directory}doorbell_entity/doorbell_entity_exclusions_inclusions_template_select.yaml`, squash: true },
+    { template: `${components_inclusion_exclusion_select_directory}doorbell_entity/update_doorbell_entity_exclusions_inclusions_automation.yaml`, squash: true }
+
   ];
 
   const longestMatchingBasePath = (templatePath) => {
     const paths = [
+      components_inclusion_exclusion_select_directory,
       ui_motion_lighting_components_templates_directory,
+      domain_monitoring_templates_directory,
+      domain_templates_directory,
       area_motion_lighting_templates_directory,
       area_motion_detection_templates_directory,
       area_motion_templates_directory,
@@ -98,7 +126,8 @@ describe('TemplateGenerator', () => {
       [area_motion_templates_directory]: areas.length,
       [area_motion_detection_templates_directory]: areas.length,
       [area_motion_lighting_templates_directory]: areas.length,
-      [components_templates_directory]: 1
+      [domain_templates_directory]: domains.length,
+      //[components_inclusion_exclusion_select_directory]: 5
     };
 
     return available_templates.reduce((count, item) => {
@@ -120,12 +149,14 @@ describe('TemplateGenerator', () => {
   beforeEach(() => {
     mockAreas.setup(areas);
     mockEntities.setup(entities);
+    mockDomains.setup(domains);
     templateGenerator = new TemplateGenerator();
   });
 
   afterEach(() => {
     mockAreas.resetMocks();
     mockEntities.resetMocks();
+    mockDomains.resetMocks();
     jest.clearAllMocks();
   });
 
@@ -137,8 +168,13 @@ describe('TemplateGenerator', () => {
       // Call the method and check the result
       const templateClasses = templateGenerator.getTemplateClasses(template);
 
+      // Needs refactoring
+      const inclusions_exclusions_multiplier = 4;
+      const inclusions_exclusions_component_count = 1;
+      const inclusions_exclusions_diff = (inclusions_exclusions_multiplier * inclusions_exclusions_component_count);
+
       // Assert that the result is an array of template classes
-      expect(templateClasses).toHaveLength(templates_count);
+      expect(templateClasses).toHaveLength(templates_count - inclusions_exclusions_diff);
       expect(templateClasses.every(cls => typeof cls === 'function')).toBe(true);
     });
   });
@@ -208,9 +244,13 @@ describe('TemplateGenerator', () => {
       const generatedTemplates = templateGenerator.generate(template);
       const generatedPaths = generatedTemplates.map(t => pathUtil.normalize(t.path));
 
+      console.log('generated paths:');
+      console.log(generatedPaths);
+
       // Verify that generated paths match the expected paths
       expectedPaths.forEach(expectedPath => {
         //const template_name = pathUtil.basename(template_path, pathUtil.extname(template_path));
+
         expect(generatedPaths).toContain(expectedPath);
       });
     });

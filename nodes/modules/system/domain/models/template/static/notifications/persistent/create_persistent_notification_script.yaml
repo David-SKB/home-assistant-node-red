@@ -1,0 +1,21 @@
+script:
+  create_persistent_notification:
+    alias: "Create Persistent Notification"
+    description: "Creates a persistent notification with customizable options"
+    fields:
+      message:
+        description: "Message content of the notification"
+        example: "Notification Message"
+      title:
+        description: "Title of the notification"
+        example: "Notification Title"
+      notification_id:
+        description: "Unique ID for the notification to allow updates/dismissals"
+        example: "unique_notification_id"
+    sequence:
+      - service: persistent_notification.create
+        data:
+          message: "{{ message }}"
+          title: "{{ title }}"
+          notification_id: "{{ notification_id }}"
+    mode: single

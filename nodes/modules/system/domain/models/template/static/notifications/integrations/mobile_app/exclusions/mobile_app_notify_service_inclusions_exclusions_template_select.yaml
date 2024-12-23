@@ -4,9 +4,9 @@ template:
         state: >
           {{ (states('input_text.mobile_app_notify_service_inclusions_state') | default('')) }}
         options: >
-          {% set notify_service_users = state_attr('sensor.mobile_app_notifiers', 'notify_services_users') %}
-          {% set excluded_users = state_attr('select.user_notify_service_exclusions', 'options') | default([]) | list %}
-          {% set exclusions_list = state_attr('select.mobile_app_notify_service_exclusions', 'options') | default([]) | list %}
+          {% set notify_service_users = state_attr('sensor.mobile_app_notifiers', 'notify_services_users') | default([]) %}
+          {% set excluded_users = state_attr('select.user_notify_service_exclusions', 'options') | default([]) %}
+          {% set exclusions_list = state_attr('select.mobile_app_notify_service_exclusions', 'options') | default([]) %}
           {{
             notify_service_users 
             | rejectattr('service', 'in', exclusions_list)
@@ -20,13 +20,6 @@ template:
               entity_id: input_text.mobile_app_notify_service_inclusions_state
             data:
               value: "{{ option }}"
-        availability: >
-          {{
-            states('input_text.mobile_app_notify_service_inclusions_state') is defined and
-            states('sensor.mobile_app_notifiers') is defined and
-            states('select.user_notify_service_exclusions') is defined and
-            states('select.mobile_app_notify_service_exclusions') is defined
-          }}
 
   - select:
       - name: "Mobile App Notify Service Exclusions"
@@ -40,9 +33,3 @@ template:
               entity_id: input_text.mobile_app_notify_service_exclusions_state
             data:
               value: "{{ option }}"
-        availability: >
-          {{
-            states('input_text.mobile_app_notify_service_exclusions_state') is defined and
-            states('input_text.mobile_app_notify_service_exclusions') is defined and
-            states('select.mobile_app_notify_service_inclusions') is defined
-          }}

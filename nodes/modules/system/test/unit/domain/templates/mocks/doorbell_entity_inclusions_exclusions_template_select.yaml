@@ -1,0 +1,36 @@
+template:
+  - select:
+      - unique_id: "doorbell_entity_inclusions"
+        name: "Doorbell Entity Inclusions"
+        state: >
+          {{ (states('input_text.doorbell_entity_inclusions_state') | default('')) }}
+        options: >
+          {{ (states('input_text.doorbell_entity_inclusions') | default('')).split(',') }}
+        select_option:
+          - service: input_text.set_value
+            target:
+              entity_id: input_text.doorbell_entity_inclusions_state
+            data:
+              value: "{{ option }}"
+
+  - select:
+      - unique_id: "doorbell_entity_exclusions"
+        name: "Doorbell Entity Exclusions"
+        state: >
+          {{ (states('input_text.doorbell_entity_exclusions_state') | default('')) }}
+        options: >
+          {% set inclusions = (states('input_text.doorbell_entity_inclusions') | default('')).split(',') %}
+          {% set domain = (states('input_select.doorbell_entity_domain') | default('binary_sensor')) | slugify %}
+          {{
+            states
+            | selectattr('domain', 'eq', domain)
+            | rejectattr('entity_id', 'in', inclusions)
+            | map(attribute="entity_id")
+            | list
+          }}
+        select_option:
+          - service: input_text.set_value
+            target:
+              entity_id: input_text.doorbell_entity_exclusions_state
+            data:
+              value: "{{ option }}"

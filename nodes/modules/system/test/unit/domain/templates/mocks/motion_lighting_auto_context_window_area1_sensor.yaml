@@ -7,30 +7,47 @@ template:
           {{ states('input_number.motion_lighting_auto_context_window_area1') }}
         attributes:
           ms: >
-            {% set uom = state_attr('input_number.motion_lighting_auto_context_window_area1', 'unit_of_measurement') | lower %}
-            {% set value = states('input_number.motion_lighting_auto_context_window_area1') | float %}
-            {% if uom == 'minutes' %}
-              {{ value * 60000 }}
-            {% elif uom == 'seconds' %}
-              {{ value * 1000 }}
-            {% elif uom == 'ms' %}
-              {{ value }}
+            {% set uom = state_attr('input_number.motion_lighting_auto_context_window_area1', 'unit_of_measurement') %}
+            {% set value = states('input_number.motion_lighting_auto_context_window_area1') %}
+            
+            {% if uom is string and value is string %}
+
+              {% set uom = uom | lower %}
+              {% set value = value | float %}
+              {% if uom == 'minutes' %}
+                {{ value * 60000 }}
+              {% elif uom == 'seconds' %}
+                {{ value * 1000 }}
+              {% elif uom == 'ms' %}
+                {{ value }}
+              {% else %}
+                {{ None }}
+              {% endif %}
+
             {% else %}
-              0
+              {{ None }}
             {% endif %}
-
           seconds: >
-            {% set ms = state_attr('sensor.motion_lighting_auto_context_window_area1', 'ms') | float %}
-            {{ ms / 1000 }}
-
+            {% if this.attributes.ms is defined %}
+              {{ (this.attributes.ms | float(0)) / 1000 }}
+            {% else %}
+              {{ None }}
+            {% endif %}
           minutes: >
-            {% set ms = state_attr('sensor.motion_lighting_auto_context_window_area1', 'ms') | float %}
-            {{ ms / 60000 }}
-
+            {% if this.attributes.ms is defined %}
+              {{ (this.attributes.ms | float(0)) / 60000 }}
+            {% else %}
+              {{ None }}
+            {% endif %}
           hours: >
-            {% set ms = state_attr('sensor.motion_lighting_auto_context_window_area1', 'ms') | float %}
-            {{ ms / 3600000 }}
-
+            {% if this.attributes.ms is defined %}
+              {{ (this.attributes.ms | float(0)) / 3600000 }}
+            {% else %}
+              {{ None }}
+            {% endif %}
           days: >
-            {% set ms = state_attr('sensor.motion_lighting_auto_context_window_area1', 'ms') | float %}
-            {{ ms / 86400000 }}
+            {% if this.attributes.ms is defined %}
+              {{ (this.attributes.ms | float(0)) / 86400000 }}
+            {% else %}
+              {{ None }}
+            {% endif %}

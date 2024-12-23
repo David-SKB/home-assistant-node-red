@@ -4,16 +4,15 @@ switch:
       occupancy_mode_unoccupied:
         unique_id: "occupancy_mode_unoccupied"
         friendly_name: "Occupancy Mode Unoccupied"
-        value_template: "{{ is_state('input_select.occupancy_mode', 'UNOCCUPIED') }}"
+        value_template: "{{ is_state('select.occupancy_mode', 'UNOCCUPIED') }}"
         turn_on:
-          - service: input_select.select_option
-            entity_id: input_select.occupancy_mode
+          - service: select.select_option
+            entity_id: select.occupancy_mode
             data:
               option: UNOCCUPIED
-          - service: script.turn_on
-            entity_id: script.occupancy_mode_unoccupied
         turn_off:
-          - service: input_select.select_option
-            entity_id: input_select.occupancy_mode
+          - service: select.select_option
+            entity_id: select.occupancy_mode
             data:
               option: UNKNOWN
+        icon_template: mdi:home-export-outline

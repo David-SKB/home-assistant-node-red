@@ -59,7 +59,7 @@ class PresenceService {
             user_id = presenceEvent.getUser();
             state = presenceEvent.getState();
             timestamp = presenceEvent.getTimestamp();
-        } 
+        }
 
         // Validate user_id
         user_id = this.validateUser(user_id)

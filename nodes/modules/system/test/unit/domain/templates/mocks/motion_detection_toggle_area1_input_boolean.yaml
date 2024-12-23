@@ -1,0 +1,4 @@
+input_boolean:
+  motion_detection_toggle_area1:
+    name: "Motion Detection Toggle Area 1"
+    icon: mdi:motion-sensor-off

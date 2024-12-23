@@ -1,0 +1,69 @@
+automation:
+  - id: doorbell_notification
+    alias: "Doorbell Notification"
+    mode: single
+    trigger:
+      - platform: state
+        entity_id: input_button.send_doorbell_notification
+      - platform: state
+        entity_id: sensor.doorbell
+    action:
+      - variables:
+          doorbell_priority: "{{ states('input_select.doorbell_notification_priority') | default('ON') }}"
+          notify_services: >
+            {{ state_attr('select.mobile_app_notify_service_inclusions', 'options') | default([]) }}
+          doorbell_entity: >
+            {% set doorbell_entity_id = state_attr('sensor.doorbell', 'last_triggered_by') | default(None) %}
+            {% if doorbell_entity_id %}
+              {{ state_attr(doorbell_entity_id, 'friendly_name') | default('unknown') }}
+            {% else %}
+              'unknown'
+            {% endif %}
+          doorbell_notification_volume: >
+            {{ (states('input_text.doorbell_notification_volume') | float(0.8)) / 100 }}
+
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: "{{ doorbell_priority in ['SILENT', 'ON', 'CRITICAL'] }}"
+            sequence:
+              - service: script.create_doorbell_persistent_notification
+                data:
+                  doorbell_entity: "{{ doorbell_entity }}"
+
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: "{{ doorbell_priority == 'SILENT' }}"
+            sequence:
+              - service: script.send_doorbell_mobile_app_notifications
+                data:
+                  notify_services: "{{ notify_services }}"
+                  doorbell_entity: "{{ doorbell_entity }}"
+                  notification_volume: 0
+                  critical: 0
+          - conditions:
+              - condition: template
+                value_template: "{{ doorbell_priority == 'ON' }}"
+            sequence:
+              - service: script.send_doorbell_mobile_app_notifications
+                data:
+                  notify_services: "{{ notify_services }}"
+                  doorbell_entity: "{{ doorbell_entity }}"
+                  notification_volume: "{{ doorbell_notification_volume }}"
+                  critical: 0
+          - conditions:
+              - condition: template
+                value_template: "{{ doorbell_priority == 'CRITICAL' }}"
+            sequence:
+              - service: script.send_doorbell_mobile_app_notifications
+                data:
+                  notify_services: "{{ notify_services }}"
+                  doorbell_entity: "{{ doorbell_entity }}"
+                  notification_volume: >
+                    {% if doorbell_notification_volume < 0.8 %}
+                      {{ (0.2 * doorbell_notification_volume) + 0.8 }}
+                    {% else %}
+                      {{ [doorbell_notification_volume, 1] | min }}
+                    {% endif %}
+                  critical: 1

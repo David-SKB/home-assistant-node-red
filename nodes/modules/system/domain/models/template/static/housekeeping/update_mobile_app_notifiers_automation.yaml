@@ -1,6 +1,7 @@
 automation:
   - id: update_mobile_app_notifiers
     alias: "Update Mobile App Notifiers"
+    mode: single
     trigger:
       - platform: state
         entity_id: input_button.system_configuration_updated
@@ -32,11 +33,10 @@ automation:
           exclusions: >
             {{ state_attr('select.mobile_app_notify_service_exclusions', 'options') | default([]) }}
           inclusions: >
-            {% set notify_service_users = state_attr('sensor.mobile_app_notifiers', 'notify_services_users') %}
+            {% set notify_service_users = state_attr('sensor.mobile_app_notifiers', 'notify_services_users') | default([]) | list %}
             {% set excluded_users = state_attr('select.user_notify_service_exclusions', 'options') | default([]) | list %}
             {% set exclusions_list = exclusions | list %}
             {% set notify_set = notify_services | list %}
-            {% set inclusions_list = notify_services | list %}
             {{
               notify_service_users 
               | rejectattr('service', 'in', exclusions_list)
@@ -48,4 +48,3 @@ automation:
         data:
           entity_id: input_select.mobile_app_notify_services
           options: "{{ notify_services if notify_services | length > 0 else ['None'] }}"
-    mode: single

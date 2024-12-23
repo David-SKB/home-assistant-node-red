@@ -30,8 +30,9 @@ class MotionDetectionToggleSwitchGroup extends AreaTemplate {
   - platform: group
     name: "Motion Detection Toggle"
     unique_id: "motion_detection_toggle"
-    all: true
+    all: false
     entities:
+
 ${this.generateEntities()}`;
 
   generateEntities = () => Areas.getAreaRegistry().map(area  => 

@@ -29,7 +29,8 @@ class CalculateAverageMotionDetectionIntervalAreaAutomation extends AreaTemplate
 
   build = (area_id = this.area_id, { area_name = this.area_name }) => 
 
-`automation:
+`
+automation:
   - id: calculate_average_motion_detection_interval_${area_id}
     alias: "Calculate Average Motion Detection Interval ${area_name}"
     trigger:
@@ -42,7 +43,9 @@ class CalculateAverageMotionDetectionIntervalAreaAutomation extends AreaTemplate
     action:
       - service: rest_command.get_motion_history
         data:
-          timestamp: "{{ (now() - timedelta(minutes=state_attr('sensor.motion_lighting_auto_context_window_${area_id}', 'minutes'))).isoformat() }}"
+          timestamp: >
+            {% set context_window_minutes = state_attr('sensor.motion_lighting_auto_context_window_${area_id}', 'minutes') | float(300) %}
+            {{ (now() - timedelta(minutes=context_window_minutes)).isoformat() }}
           entity_id: "binary_sensor.motion_detectors_${area_id}"
         response_variable: motion_history
       - variables:
@@ -84,10 +87,19 @@ class CalculateAverageMotionDetectionIntervalAreaAutomation extends AreaTemplate
             {% endfor %}
             {{ ns.motion_durations }}
           avg_interval: >
-            {{ (intervals | sum / intervals | length) | round(2) if intervals | length > 0 else 0 }}
+            {% if intervals | length > 0 %}
+              {{ (intervals | sum / intervals | length) | round(2) }}
+            {% else %}
+              0
+            {% endif %}
           min_timeout: >
-            {% set min_timeout_helper = state_attr('sensor.motion_lighting_auto_minimum_timeout_${area_id}', 'seconds') | float | default(0) %}
-            {% set min_timeout_value = min_timeout_helper if min_timeout_helper > 0 else state_attr('sensor.occupancy_timeout', 'seconds') | float | default(300) %}
+            {% set min_timeout_helper = state_attr('sensor.motion_lighting_auto_minimum_timeout_${area_id}', 'seconds') | float(0) %}
+            {% set min_timeout_value = min_timeout_helper 
+              if min_timeout_helper > 0 
+              else state_attr('sensor.occupancy_timeout', 'seconds') 
+              | default(300) 
+              | float 
+            %}
             {% if intervals | length > 0 %}
               {% set current_min = intervals | min | float %}
               {{ [current_min, min_timeout_value] | min }}
@@ -95,7 +107,12 @@ class CalculateAverageMotionDetectionIntervalAreaAutomation extends AreaTemplate
               {{ min_timeout_value }}
             {% endif %}
           max_timeout: >
-            {{ state_attr('sensor.occupancy_timeout', 'seconds') | float }}
+            {% set max_timeout_value = state_attr('sensor.occupancy_timeout', 'seconds') %}
+            {% if max_timeout_value is defined %}
+              {{ max_timeout_value | float(0) }}
+            {% else %}
+              unknown
+            {% endif %}
           avg_duration: >
             {% if motion_durations | length > 0 %}
               {{ (motion_durations | sum) / motion_durations | length | round(2) }}
@@ -132,7 +149,8 @@ class CalculateAverageMotionDetectionIntervalAreaAutomation extends AreaTemplate
       - service: input_number.set_value
         data:
           entity_id: input_number.motion_lighting_auto_context_window_${area_id}
-          value: "{{ context_window }}"`;
+          value: "{{ context_window }}"
+`;
 
 }
 
