@@ -93,11 +93,11 @@ describe('TemplateGenerator', () => {
     
     //{ template: `${components_inclusion_exclusion_select_directory}DoorbellEntityInclusionExclusionSelect.js`, squash: false }
     // Temporary test solution, suite needs refactoring...
-    { template: `${components_inclusion_exclusion_select_directory}doorbell_entity/add_remove_doorbell_entity_exclusion_input_button.yaml`, squash: true },
-    { template: `${components_inclusion_exclusion_select_directory}doorbell_entity/doorbell_entity_exclusions_input_text.yaml`, squash: true },
-    { template: `${components_inclusion_exclusion_select_directory}doorbell_entity/doorbell_entity_exclusions_inclusions_state_input_text.yaml`, squash: true },
-    { template: `${components_inclusion_exclusion_select_directory}doorbell_entity/doorbell_entity_exclusions_inclusions_template_select.yaml`, squash: true },
-    { template: `${components_inclusion_exclusion_select_directory}doorbell_entity/update_doorbell_entity_exclusions_inclusions_automation.yaml`, squash: true }
+    { template: `${components_inclusion_exclusion_select_directory}doorbell_entity/add_remove_doorbell_entity_inclusion_input_button.yaml`, squash: true },
+    { template: `${components_inclusion_exclusion_select_directory}doorbell_entity/doorbell_entity_inclusions_input_text.yaml`, squash: true },
+    { template: `${components_inclusion_exclusion_select_directory}doorbell_entity/doorbell_entity_inclusions_exclusions_state_input_text.yaml`, squash: true },
+    { template: `${components_inclusion_exclusion_select_directory}doorbell_entity/doorbell_entity_inclusions_exclusions_template_select.yaml`, squash: true },
+    { template: `${components_inclusion_exclusion_select_directory}doorbell_entity/update_doorbell_entity_inclusions_exclusions_automation.yaml`, squash: true }
 
   ];
 

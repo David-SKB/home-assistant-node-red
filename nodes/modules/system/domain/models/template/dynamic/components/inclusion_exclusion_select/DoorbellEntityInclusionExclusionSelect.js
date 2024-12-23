@@ -7,7 +7,7 @@ class DoorbellEntityInclusionExclusionSelect extends InclusionExclusionSelectTem
       // Defaults
       name: 'Doorbell Entity',
       unique_id: 'doorbell_entity',
-      select_mode: 'EXCLUSION',
+      select_mode: 'INCLUSION',
       options_template: 
 
 `
