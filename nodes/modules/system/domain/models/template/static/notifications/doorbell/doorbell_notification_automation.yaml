@@ -20,7 +20,7 @@ automation:
               'unknown'
             {% endif %}
           doorbell_notification_volume: >
-            {{ (states('input_text.doorbell_notification_volume') | float(0.8)) / 100 }}
+            {{ (states('input_text.doorbell_notification_volume') | default(0.8) | float(0.8)) / 100 }}
 
       - choose:
           - conditions:

@@ -24,9 +24,9 @@ script:
           sound_file: >
             {{ states('input_text.doorbell_notification_sound') | default('default') }}
           normalized_volume: >
-            {{ ( notification_volume | float(0.7) ) | round(2) }}
+            {{ ( notification_volume | default(0.7) | float(0.7) ) | round(2) }}
           notification_critical: >
-            {{ critical | default(1) }}
+            {{ critical | default(1) | int(1)}}
       - repeat:
           for_each: "{{ notify_services }}"
           sequence:

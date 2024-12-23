@@ -32,6 +32,6 @@ script:
               sound:
                 name: "{{ sound | default('default') }}"
                 critical: >
-                  {{ critical | int(0) }}
+                  {{ critical | default(0) | int(0) }}
                 volume: >
-                  {{ volume | float(0.5) }}
+                  {{ volume | default(0.5) | float(0.5) }}

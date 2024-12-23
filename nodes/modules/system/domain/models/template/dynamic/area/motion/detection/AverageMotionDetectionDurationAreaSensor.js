@@ -44,7 +44,7 @@ class AverageMotionDetectionDurationAreaSensor extends AreaTemplate {
             {% if uom is string and value is string %}
 
               {% set uom = uom | lower %}
-              {% set value = value | float %}
+              {% set value = value | default(0) | float(0) %}
               {% if uom == 'minutes' %}
                 {{ value * 60000 }}
               {% elif uom == 'seconds' %}
@@ -60,25 +60,25 @@ class AverageMotionDetectionDurationAreaSensor extends AreaTemplate {
             {% endif %}
           seconds: >
             {% if this.attributes.ms is defined %}
-              {{ (this.attributes.ms | float(0)) / 1000 }}
+              {{ (this.attributes.ms | default(0) | float(0)) / 1000 }}
             {% else %}
               {{ None }}
             {% endif %}
           minutes: >
             {% if this.attributes.ms is defined %}
-              {{ (this.attributes.ms | float(0)) / 60000 }}
+              {{ (this.attributes.ms | default(0) | float(0)) / 60000 }}
             {% else %}
               {{ None }}
             {% endif %}
           hours: >
             {% if this.attributes.ms is defined %}
-              {{ (this.attributes.ms | float(0)) / 3600000 }}
+              {{ (this.attributes.ms | default(0) | float(0)) / 3600000 }}
             {% else %}
               {{ None }}
             {% endif %}
           days: >
             {% if this.attributes.ms is defined %}
-              {{ (this.attributes.ms | float(0)) / 86400000 }}
+              {{ (this.attributes.ms | default(0) | float(0)) / 86400000 }}
             {% else %}
               {{ None }}
             {% endif %}
