@@ -19,5 +19,5 @@ template:
             {% set average_humidity = humidity | sum / humidity | length %}
             {{ average_humidity | round(1) }}
           {% else %}
-            Unavailable
+            {{ None }}
           {% endif %}

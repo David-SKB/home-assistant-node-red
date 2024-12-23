@@ -29,7 +29,7 @@ template:
             {% endif %}
           seconds: >
             {% if this.attributes.ms is defined %}
-              {{ (this.attributes.ms default(0) | float(0)) / 1000 }}
+              {{ (this.attributes.ms | default(0) | float(0)) / 1000 }}
             {% else %}
               {{ None }}
             {% endif %}

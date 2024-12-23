@@ -19,5 +19,5 @@ template:
             {% set average_temp = temps | sum / temps | length %}
             {{ average_temp | round(1) }}
           {% else %}
-            Unavailable
+            {{ None }}
           {% endif %}
