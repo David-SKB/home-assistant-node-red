@@ -50,7 +50,7 @@ class MotionLightingAutoTimeoutAreaSensor extends AreaTemplate {
         attributes:
           sensitivity: "{{ states('input_number.motion_lighting_auto_sensetivity_${area_id}') | float(0) }}"
           avg_interval: "{{ state_attr('sensor.average_motion_detection_interval_${area_id}', 'seconds') | float(0) }}"
-          avg_duration: "{{ state_attr('sensor.average_motion_detection_duration_${area_id}', 'seconds') | float }}"
+          avg_duration: "{{ state_attr('sensor.average_motion_detection_duration_${area_id}', 'seconds') | float(0) }}"
           min_timeout: "{{ state_attr('sensor.motion_lighting_auto_minimum_timeout_${area_id}', 'seconds') | float(0) }}"
           max_timeout: "{{ state_attr('sensor.motion_lighting_auto_maximum_timeout_${area_id}', 'seconds') | float(0) }}"`;
 
