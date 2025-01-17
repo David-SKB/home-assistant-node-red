@@ -57,7 +57,7 @@ script:
               data:
                 message: "{{ notification_message }}"
                 title: "{{ notification_title }}"
-                critical: "{{ critical }}"
-                volume: "{{ volume }}"
+                critical: "{{ critical | default(0) | int(0) }}"
+                volume: "{{ volume | default(0.5) | float(0.5) }}"
                 sound: "{{ sound_file }}"
                 notify_service: "{{ repeat.item }}"
