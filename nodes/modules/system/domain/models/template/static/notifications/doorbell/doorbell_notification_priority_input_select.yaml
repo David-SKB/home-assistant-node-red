@@ -6,4 +6,3 @@ input_select:
       - "ON"
       - "CRITICAL"
       - "OFF"
-    initial: "ON"
