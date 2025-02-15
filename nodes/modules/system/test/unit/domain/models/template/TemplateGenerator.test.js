@@ -43,6 +43,7 @@ describe('TemplateGenerator', () => {
 
   const domain_templates_directory = `${templates_directory}domain/`;
   const domain_monitoring_templates_directory = `${domain_templates_directory}monitoring/`;
+  const domain_util_templates_directory = `${domain_templates_directory}util/`;
 
   const components_templates_directory = `${templates_directory}components/`;
   const dynamic_components_directory = `${templates_directory}dynamic/components/`;
@@ -87,6 +88,8 @@ describe('TemplateGenerator', () => {
     { template: `${area_motion_lighting_templates_directory}MotionLightingTimeoutAreaInputNumber.js`, squash: false },
     // Domain - Monitoring
     { template: `${domain_monitoring_templates_directory}SceneManagerScript.js`, squash: true },
+    // Domain - Util
+    { template: `${domain_util_templates_directory}ConvertTargetToEntitiesScript.js`, squash: true },
     // Components - UI - Motion - Lighting
     { template: `${ui_motion_lighting_components_templates_directory}MotionLightingSettingsZoneComponent.js`, squash: true },
     // Components - Inclusion / Exclusion Select
@@ -106,6 +109,7 @@ describe('TemplateGenerator', () => {
       components_inclusion_exclusion_select_directory,
       ui_motion_lighting_components_templates_directory,
       domain_monitoring_templates_directory,
+      domain_util_templates_directory,
       domain_templates_directory,
       area_motion_lighting_templates_directory,
       area_motion_detection_templates_directory,

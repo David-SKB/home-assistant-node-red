@@ -76,6 +76,7 @@ ${this.generateDomainList()}
               - service: script.convert_target_to_entities
                 data:
                   target: "{{ snapshot_entities }}"
+                  domains: "{{ domains }}"
                 response_variable: resolved_snapshot
               - variables:
                   snapshot_entities: >
