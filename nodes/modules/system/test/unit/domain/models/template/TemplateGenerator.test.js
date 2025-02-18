@@ -100,7 +100,13 @@ describe('TemplateGenerator', () => {
     { template: `${components_inclusion_exclusion_select_directory}doorbell_entity/doorbell_entity_inclusions_input_text.yaml`, squash: true },
     { template: `${components_inclusion_exclusion_select_directory}doorbell_entity/doorbell_entity_inclusions_exclusions_state_input_text.yaml`, squash: true },
     { template: `${components_inclusion_exclusion_select_directory}doorbell_entity/doorbell_entity_inclusions_exclusions_template_select.yaml`, squash: true },
-    { template: `${components_inclusion_exclusion_select_directory}doorbell_entity/update_doorbell_entity_inclusions_exclusions_automation.yaml`, squash: true }
+    { template: `${components_inclusion_exclusion_select_directory}doorbell_entity/update_doorbell_entity_inclusions_exclusions_automation.yaml`, squash: true },
+    
+    { template: `${components_inclusion_exclusion_select_directory}mobile_app_notify_service/add_remove_mobile_app_notify_service_exclusion_input_button.yaml`, squash: true },
+    { template: `${components_inclusion_exclusion_select_directory}mobile_app_notify_service/mobile_app_notify_service_exclusions_input_text.yaml`, squash: true },
+    { template: `${components_inclusion_exclusion_select_directory}mobile_app_notify_service/mobile_app_notify_service_exclusions_inclusions_state_input_text.yaml`, squash: true },
+    { template: `${components_inclusion_exclusion_select_directory}mobile_app_notify_service/mobile_app_notify_service_exclusions_inclusions_template_select.yaml`, squash: true },
+    { template: `${components_inclusion_exclusion_select_directory}mobile_app_notify_service/update_mobile_app_notify_service_exclusions_inclusions_automation.yaml`, squash: true },
 
   ];
 
@@ -174,7 +180,7 @@ describe('TemplateGenerator', () => {
 
       // Needs refactoring
       const inclusions_exclusions_multiplier = 4;
-      const inclusions_exclusions_component_count = 1;
+      const inclusions_exclusions_component_count = 2;
       const inclusions_exclusions_diff = (inclusions_exclusions_multiplier * inclusions_exclusions_component_count);
 
       // Assert that the result is an array of template classes

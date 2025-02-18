@@ -3,7 +3,13 @@ sensor:
     sensors:
       mobile_app_notifiers:
         friendly_name: "Mobile App Notifiers"
-        value_template: "{{ ( state_attr('select.mobile_app_notify_service_inclusions', 'options') | default([]) ) | length }}"
+        value_template: >
+          {% set mobile_app_notify_service_inclusions = state_attr('select.mobile_app_notify_service_inclusions', 'options') | default([]) %}
+          {% if mobile_app_notify_service_inclusions is not none %}
+            {{ mobile_app_notify_service_inclusions | length }}
+          {% else %}
+            0
+          {% endif %}
         attribute_templates:
           notify_services: "{{ state_attr('select.mobile_app_notify_service_inclusions', 'options') | default([]) }}"
           users: >

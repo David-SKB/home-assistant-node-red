@@ -8,7 +8,7 @@ automation:
       - platform: state
         entity_id: input_button.refresh_mobile_app_notifiers
     action:
-      - service: rest_command.get_servives
+      - service: rest_command.get_services
         response_variable: get_services_response
       - variables:
           service_response_content: >
