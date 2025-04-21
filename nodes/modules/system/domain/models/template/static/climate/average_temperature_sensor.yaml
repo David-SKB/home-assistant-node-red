@@ -7,14 +7,14 @@ template:
         device_class: "temperature"
         state: >-
           {% set sensor_list = state_attr('sensor.temperature_sensors', 'tracked_sensors')  | default([]) %}
-          {% if sensor_list and sensor_list | length > 0 %}
-            {% set temps = sensor_list
+          {% if sensor_list %}
+            {% set sensor_values = sensor_list
               | map('states')
               | reject('none')
               | reject('in', ['unknown', 'unavailable'])
               | map('float')
               | list %}
-            {% if sensor_values | length > 0 %}
+            {% if sensor_values %}
               {{ (sensor_values | sum / sensor_values | length) | round(1) }}
             {% else %}
               {{ None }}
