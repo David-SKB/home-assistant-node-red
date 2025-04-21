@@ -1,36 +1,32 @@
 template:
   - sensor:
-      - name: Average Lux
-        unit_of_measurement: lx
+      - name: "Average Lux"
+        unique_id: "average_lux"
+        icon: "mdi:weather-sunny"
+        unit_of_measurement: "lx"
+        device_class: "illuminance"
         state: >-
-          {% set domains = ["sensor"] %}
-          {% set combined_states = [] %}
-          {% set all_states = states
-            | selectattr('domain', 'in', domains)
-            | rejectattr('state', 'eq', 'unavailable')
-            | rejectattr('entity_id', 'contains', 'average')
-            | rejectattr('entity_id', 'contains', 'battery')
-            | list %}
-
-          {% set illuminance_states = all_states
-            | selectattr('entity_id', 'contains', 'illuminance')
-            | map(attribute='state')
-            | map('float')
-            | list %}
-          {% set combined_states = combined_states + illuminance_states %}
-
-          {% set lux_states = all_states
-            | selectattr('entity_id', 'contains', 'lux')
-            | map(attribute='state')
-            | map('float')
-            | list %}
-          {% set combined_states = combined_states + lux_states %}
-
-          {% set unique_states = combined_states | unique | list %}
-
-          {% if unique_states | length > 0 %}
-          {% set average_state = unique_states | sum / unique_states | length %}
-          {{ average_state | round(1) }}
+          {% set sensor_list = state_attr('sensor.lux_sensors', 'tracked_sensors')  | default([]) %}
+          {% if sensor_list %}
+            {% set sensor_values = sensor_list
+              | map('states')
+              | reject('none')
+              | reject('in', ['unknown', 'unavailable'])
+              | map('float')
+              | list %}
+            {% if sensor_values %}
+              {{ (sensor_values | sum / sensor_values | length) | round(1) }}
+            {% else %}
+              {{ None }}
+            {% endif %}
           {% else %}
             {{ None }}
           {% endif %}
+        attributes:
+          sensor_count: >
+            {% set lux_sensors = state_attr('sensor.lux_sensors', 'tracked_sensors') | default([]) %}
+            {% if lux_sensors is not none %}
+              {{ lux_sensors | length }}
+            {% else %}
+              0
+            {% endif %}

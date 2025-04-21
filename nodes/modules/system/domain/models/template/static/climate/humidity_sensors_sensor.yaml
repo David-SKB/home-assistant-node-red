@@ -1,0 +1,30 @@
+template:
+  - trigger:
+      - platform: homeassistant
+        event: start
+      - platform: state
+        entity_id: sensor.system_configuration_count
+    sensor:
+      - name: "Humidity Sensors"
+        unique_id: "humidity_sensors"
+        icon: "mdi:water-percent"
+        state: >
+          {% set available_sensors = this.attributes.tracked_sensors | default([]) %}
+          {% if available_sensors is not none %}
+            {{ available_sensors | length }}
+          {% else %}
+            0
+          {% endif %}
+        attributes:
+          tracked_sensors: >-
+            {% set humidity_sensors = states
+              | selectattr('domain', 'in', ['sensor', 'climate'])
+              | selectattr('entity_id', 'contains', 'humidity')
+              | rejectattr('entity_id', 'contains', 'battery')
+              | rejectattr('entity_id', 'contains', 'average')
+              | rejectattr('entity_id', 'eq', 'sensor.humidity_sensors')
+              | reject('none')
+              | rejectattr('state', 'eq', 'unavailable')
+              | map(attribute='entity_id')
+              | list %}
+            {{ humidity_sensors }}

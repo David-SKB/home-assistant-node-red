@@ -1,23 +1,32 @@
 template:
   - sensor:
       - name: "Average Temperature"
+        unique_id: "average_temperature"
+        icon: "mdi:thermometer"
         unit_of_measurement: "°C"
         device_class: "temperature"
         state: >-
-          {% set domains = ['sensor', 'climate'] %}
-          {% set temps = states
-            | selectattr('domain', 'in', domains)
-            | selectattr('entity_id', 'contains', 'temp')
-            | rejectattr('entity_id', 'contains', 'battery')
-            | rejectattr('entity_id', 'contains', 'average')
-            | reject('none')
-            | rejectattr('state', 'eq', 'unavailable')
-            | map(attribute='state')
-            | map('float')
-            | list %}
-          {% if temps %}
-            {% set average_temp = temps | sum / temps | length %}
-            {{ average_temp | round(1) }}
+          {% set sensor_list = state_attr('sensor.temperature_sensors', 'tracked_sensors')  | default([]) %}
+          {% if sensor_list and sensor_list | length > 0 %}
+            {% set temps = sensor_list
+              | map('states')
+              | reject('none')
+              | reject('in', ['unknown', 'unavailable'])
+              | map('float')
+              | list %}
+            {% if sensor_values | length > 0 %}
+              {{ (sensor_values | sum / sensor_values | length) | round(1) }}
+            {% else %}
+              {{ None }}
+            {% endif %}
           {% else %}
             {{ None }}
           {% endif %}
+        attributes:
+          sensor_count: >
+            {% set temperature_sensors = state_attr('sensor.temperature_sensors', 'tracked_sensors') | default([]) %}
+            {% if temperature_sensors is not none %}
+              {{ temperature_sensors | length }}
+            {% else %}
+              0
+            {% endif %}

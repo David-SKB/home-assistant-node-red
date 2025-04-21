@@ -1,0 +1,29 @@
+template:
+  - trigger:
+      - platform: homeassistant
+        event: start
+      - platform: state
+        entity_id: sensor.system_configuration_count
+    sensor:
+      - name: "Lux Sensors"
+        unique_id: "lux_sensors"
+        icon: "mdi:weather-sunny"
+        state: >
+          {% set available_sensors = this.attributes.tracked_sensors | default([]) %}
+          {% if available_sensors is not none %}
+            {{ available_sensors | length }}
+          {% else %}
+            0
+          {% endif %}
+        attributes:
+          tracked_sensors: >-
+            {% set lux_sensors = states
+              | selectattr('domain', 'in', ['sensor'])
+              | rejectattr('state', 'eq', 'unavailable')
+              | rejectattr('entity_id', 'contains', 'battery')
+              | rejectattr('entity_id', 'contains', 'average')
+              | rejectattr('entity_id', 'eq', 'sensor.lux_sensors')
+              | selectattr('entity_id', 'search', 'lux|illuminance')
+              | map(attribute='entity_id')
+              | list %}
+            {{ lux_sensors }}

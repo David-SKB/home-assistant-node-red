@@ -1,0 +1,30 @@
+template:
+  - trigger:
+      - platform: homeassistant
+        event: start
+      - platform: state
+        entity_id: sensor.system_configuration_count
+    sensor:
+      - name: "Temperature Sensors"
+        unique_id: "temperature_sensors"
+        icon: "mdi:thermometer"
+        state: >
+          {% set available_sensors = this.attributes.tracked_sensors | default([]) %}
+          {% if available_sensors is not none %}
+            {{ available_sensors | length }}
+          {% else %}
+            0
+          {% endif %}
+        attributes:
+          tracked_sensors: >-
+            {% set temperature_sensors = states
+              | selectattr('domain', 'in', ['sensor', 'climate'])
+              | selectattr('entity_id', 'contains', 'temp')
+              | rejectattr('entity_id', 'contains', 'battery')
+              | rejectattr('entity_id', 'contains', 'average')
+              | rejectattr('entity_id', 'eq', 'sensor.temperature_sensors')
+              | reject('none')
+              | rejectattr('state', 'eq', 'unavailable')
+              | map(attribute='entity_id')
+              | list %}
+            {{ temperature_sensors }}
