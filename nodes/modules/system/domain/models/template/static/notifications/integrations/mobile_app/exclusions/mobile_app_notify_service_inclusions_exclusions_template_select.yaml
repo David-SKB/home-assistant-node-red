@@ -1,0 +1,35 @@
+template:
+  - select:
+      - name: "Mobile App Notify Service Inclusions"
+        state: >
+          {{ (states('input_text.mobile_app_notify_service_inclusions_state') | default('')) }}
+        options: >
+          {% set notify_service_users = state_attr('sensor.mobile_app_notifiers', 'notify_services_users') | default([]) %}
+          {% set excluded_users = state_attr('select.user_notify_service_exclusions', 'options') | default([]) %}
+          {% set exclusions_list = state_attr('select.mobile_app_notify_service_exclusions', 'options') | default([]) %}
+          {{
+            notify_service_users 
+            | rejectattr('service', 'in', exclusions_list)
+            | rejectattr('user_friendly_name', 'in', excluded_users)
+            | map(attribute='service')
+            | list 
+          }}
+        select_option:
+          - service: input_text.set_value
+            target:
+              entity_id: input_text.mobile_app_notify_service_inclusions_state
+            data:
+              value: "{{ option }}"
+
+  - select:
+      - name: "Mobile App Notify Service Exclusions"
+        state: >
+          {{ (states('input_text.mobile_app_notify_service_exclusions_state') | default('')) }}
+        options: >
+          {{ (states('input_text.mobile_app_notify_service_exclusions') | default('')).split(',') }}
+        select_option:
+          - service: input_text.set_value
+            target:
+              entity_id: input_text.mobile_app_notify_service_exclusions_state
+            data:
+              value: "{{ option }}"

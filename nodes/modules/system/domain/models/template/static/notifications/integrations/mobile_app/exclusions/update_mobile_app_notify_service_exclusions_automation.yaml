@@ -1,0 +1,23 @@
+automation:
+  - id: update_mobile_app_notify_service_exclusions
+    alias: "Update Mobile App Notify Service Exclusions"
+    trigger:
+      - platform: state
+        entity_id: input_button.add_mobile_app_notify_service_exclusion
+        id: "ADD"
+      - platform: state
+        entity_id: input_button.remove_mobile_app_notify_service_exclusion
+        id: "REMOVE"
+    action:
+      - choose:
+          - conditions:
+              - condition: trigger
+                id: "ADD"
+            sequence:
+              - service: script.add_mobile_app_notify_service_exclusion
+          - conditions:
+              - condition: trigger
+                id: "REMOVE"
+            sequence:
+              - service: script.remove_mobile_app_notify_service_exclusion
+    mode: single

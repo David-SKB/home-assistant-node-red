@@ -1,0 +1,120 @@
+automation:
+  - id: low_battery_notifications
+    alias: "Low Battery Notifications"
+    mode: restart
+    trigger:
+      - platform: state
+        entity_id: input_button.system_configuration_updated
+      - platform: state
+        entity_id: input_button.send_low_battery_notifications
+      - platform: state
+        entity_id: sensor.low_battery_devices
+    condition:
+      - condition: or
+        conditions:
+          # Check if the devices attribute exists and has items
+          - condition: template
+            value_template: >
+              {% set devices = state_attr('sensor.low_battery_devices', 'devices') | default([]) %}
+              {{ devices | length > 0 }}
+          # Alternative check: no devices but notifications are set
+          - condition: and
+            conditions:
+              - condition: template
+                value_template: >
+                  {% set devices = state_attr('sensor.low_battery_devices', 'devices') | default([]) %}
+                  {{ devices | length == 0 }}
+              - condition: template
+                value_template: >
+                  {% set notifications = state_attr('input_select.low_battery_notifications', 'options') | default([]) %}
+                  {{ notifications | reject('equalto', 'None') | list | length > 0 }}
+    action:
+      - delay: "00:00:01"
+      - variables:
+          exclusions: >
+            {{ (states('input_text.low_battery_devices_exclusions') | default('')).split(',') }}
+          low_battery_devices: >
+            {{ state_attr('sensor.low_battery_devices', 'devices') | default([]) }}
+          notify_services: >
+            {{ state_attr('select.mobile_app_notify_service_inclusions', 'options') | default([]) }}
+          alert_threshold: "{{ states('input_number.low_battery_alert_threshold') | default(40) | int }}"
+          warning_threshold: "{{ states('input_number.low_battery_warning_threshold') | default(20) | int }}"
+      - repeat:
+          for_each: "{{ low_battery_devices }}"
+          sequence:
+            - variables:
+                device_name: "{{ repeat.item.device_name }}"
+                battery_level: "{{ repeat.item.battery_level }}"
+            - choose:
+                - conditions:
+                    - condition: template
+                      value_template: >
+                        {{ states('select.low_battery_notifications_mode') == 'ON' }}
+                    - condition: template
+                      value_template: >
+                        {{ battery_level < alert_threshold }}
+                  sequence:
+                    - service: script.create_low_battery_persistent_notification
+                      data:
+                        battery_level: "{{ battery_level }}"
+                        device_name: "{{ device_name }}"
+                        type: "alert"
+                    - service: input_select.set_options
+                      data:
+                        entity_id: input_select.low_battery_notifications
+                        options: >
+                          {% set current_notifications = state_attr('input_select.low_battery_notifications', 'options') | default([]) %}
+                          {% set updated_notifications = (current_notifications | reject('equalto', 'None') | list) %}
+                          {% set new_notifications = updated_notifications + [device_name] %}
+                          {% set filtered_notifications = new_notifications | unique | list %}
+                          {% if filtered_notifications | length == 0 %}
+                            ['None']
+                          {% else %}
+                            {{ filtered_notifications }}
+                          {% endif %}
+            - choose:
+                - conditions:
+                    - condition: template
+                      value_template: >
+                        {{ states('select.low_battery_notifications_mode') in ['ON', 'WARNINGS'] }}
+                    - condition: template
+                      value_template: >
+                        {{ battery_level < warning_threshold }}
+                  sequence:
+                    - service: script.create_low_battery_persistent_notification
+                      data:
+                        battery_level: "{{ battery_level }}"
+                        device_name: "{{ device_name }}"
+                        type: "warning"
+                    - service: script.send_low_battery_mobile_app_notifications
+                      data:
+                        battery_level: "{{ battery_level }}"
+                        device_name: "{{ device_name }}"
+                        type: "warning"
+                        notify_services: "{{ notify_services }}"
+                        sound: "{{ states('input_text.low_battery_notification_sound') | default('default') }}"
+      - repeat:
+          for_each: >
+            {{ state_attr('input_select.low_battery_notifications', 'options') | default([]) }}
+          sequence:
+            - variables:
+                device_name: "{{ repeat.item }}"
+                device_slug: "{{ device_name | slugify }}"
+            - condition: template
+              value_template: >
+                {% set devices = low_battery_devices | map(attribute='device_name') | list %}
+                {{ device_name not in devices }}
+            - service: script.dismiss_persistent_notification
+              data:
+                notification_id: "low_battery_notification_{{ device_slug }}"
+            - service: input_select.set_options
+              data:
+                entity_id: input_select.low_battery_notifications
+                options: >
+                  {% set current_notifications = state_attr('input_select.low_battery_notifications', 'options') | default([]) %}
+                  {% set updated_notifications = current_notifications | reject('equalto', device_name) | list %}
+                  {% if updated_notifications | length == 0 %}
+                    ['None']
+                  {% else %}
+                    {{ updated_notifications }}
+                  {% endif %}

@@ -1,23 +1,32 @@
 template:
   - sensor:
       - name: "Average Humidity"
+        unique_id: "average_humidity"
+        icon: "mdi:water-percent"
         unit_of_measurement: "°C"
         device_class: "humidity"
         state: >-
-          {% set domains = ['sensor', 'climate'] %}
-          {% set humidity = states
-            | selectattr('domain', 'in', domains)
-            | selectattr('entity_id', 'contains', 'humidity')
-            | rejectattr('entity_id', 'contains', 'battery')
-            | rejectattr('entity_id', 'contains', 'average')
-            | reject('none')
-            | rejectattr('state', 'eq', 'unavailable')
-            | map(attribute='state')
-            | map('float')
-            | list %}
-          {% if humidity %}
-            {% set average_humidity = humidity | sum / humidity | length %}
-            {{ average_humidity | round(1) }}
+          {% set sensor_list = state_attr('sensor.humidity_sensors', 'tracked_sensors')  | default([]) %}
+          {% if sensor_list %}
+            {% set sensor_values = sensor_list
+              | map('states')
+              | reject('none')
+              | reject('in', ['unknown', 'unavailable'])
+              | map('float')
+              | list %}
+            {% if sensor_values %}
+              {{ (sensor_values | sum / sensor_values | length) | round(1) }}
+            {% else %}
+              {{ None }}
+            {% endif %}
           {% else %}
-            Unavailable
+            {{ None }}
           {% endif %}
+        attributes:
+          sensor_count: >
+            {% set humidity_sensors = state_attr('sensor.humidity_sensors', 'tracked_sensors') | default([]) %}
+            {% if humidity_sensors is not none %}
+              {{ humidity_sensors | length }}
+            {% else %}
+              0
+            {% endif %}

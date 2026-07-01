@@ -1,0 +1,32 @@
+script:
+  add_mobile_app_notify_service_exclusion:
+    alias: "Add Mobile App Notify Service Exclusion"
+    sequence:
+      - variables:
+          new_exclusion: "{{ states('input_text.mobile_app_notify_service_inclusions_state') }}"
+          current_exclusions: "{{ states('input_text.mobile_app_notify_service_exclusions') | default('') }}"
+      - condition: template
+        value_template: "{{ new_exclusion != '' and new_exclusion not in current_exclusions.split(',') }}"
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.mobile_app_notify_service_exclusions
+        data:
+          value: >
+            {% set exclusions = current_exclusions.split(',') | reject('equalto', '') | list %}
+            {{ (exclusions + [new_exclusion]) | join(',') }}
+
+  remove_mobile_app_notify_service_exclusion:
+    alias: "Remove Mobile App Notify Service Exclusion"
+    sequence:
+      - variables:
+          removal_target: "{{ states('input_text.mobile_app_notify_service_exclusions_state') }}"
+          current_exclusions: "{{ states('input_text.mobile_app_notify_service_exclusions') | default('') }}"
+      - condition: template
+        value_template: "{{ removal_target in current_exclusions.split(',') }}"
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.mobile_app_notify_service_exclusions
+        data:
+          value: >
+            {% set exclusions = current_exclusions.split(',') | reject('equalto', removal_target) | list %}
+            {{ exclusions | join(',') }}

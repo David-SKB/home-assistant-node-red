@@ -1,0 +1,37 @@
+template:
+  - sensor:
+      - name: "Doorbell"
+        unique_id: "doorbell"
+        state: >
+          {% set doorbell_entities = state_attr('select.doorbell_entity_inclusions', 'options') | default([]) %}
+          {% set most_recent = namespace(entity=None, timestamp=0) %}
+          {% for entity in doorbell_entities %}
+            {% if states(entity) not in [none, 'unknown', 'unavailable', 'off', '', false] %}
+              {% set changed = states[entity]['last_changed'] | as_timestamp %}
+              {% if changed > most_recent.timestamp %}
+                {% set most_recent.entity = entity %}
+                {% set most_recent.timestamp = changed %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+          {% if most_recent.entity %}
+            {{ most_recent.timestamp | timestamp_custom('%Y-%m-%d %H:%M:%S') }}
+          {% else %}
+            "unknown"
+          {% endif %}
+        attributes:
+          doorbell_entities: >
+            {{ state_attr('select.doorbell_entity_inclusions', 'options') | default([]) }}
+          last_triggered_by: >
+            {% set doorbell_entities = state_attr('select.doorbell_entity_inclusions', 'options') | default([]) %}
+            {% set most_recent = namespace(entity=None, timestamp=0) %}
+            {% for entity in doorbell_entities %}
+              {% if states(entity) not in [none, 'unknown', 'unavailable'] %}
+                {% set changed = states[entity]['last_changed'] | as_timestamp %}
+                {% if changed > most_recent.timestamp %}
+                  {% set most_recent.entity = entity %}
+                  {% set most_recent.timestamp = changed %}
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+            {{ most_recent.entity if most_recent.entity else 'None' }}

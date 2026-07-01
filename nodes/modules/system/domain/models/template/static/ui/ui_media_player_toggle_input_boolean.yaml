@@ -1,0 +1,5 @@
+input_boolean:
+  ui_media_player_toggle:
+    name: UI Media Player Toggle
+    initial: false
+    icon: mdi:music

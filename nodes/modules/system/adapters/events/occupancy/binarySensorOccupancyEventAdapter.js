@@ -14,7 +14,7 @@ function binarySensorOccupancyEventAdapter(event_data) {
     const entity_id = event_data.entity_id;
     if (!exists(entity_id)) throw new Error(`Missing entity ID (event_data.entity_id): [${entity_id}]`);
 
-     const state = event_data.state;
+    const state = event_data.state;
     // if (!exists(state)) throw new Error(`Missing state (event_data.state): [${state}]`);
 
     const area_id = Entities.getEntity(entity_id).area_id;

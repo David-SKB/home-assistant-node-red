@@ -1,0 +1,24 @@
+template:
+  - select:
+      - name: "Doorbell Entity"
+        state: >
+          {{ (states('input_text.doorbell_entity_state') | default('')) }}
+        options: >
+          {% set domain = (states('input_select.doorbell_entity_domain') | default('binary_sensor')) | slugify %}
+          {{ 
+            states 
+            | selectattr('domain', 'eq', domain) 
+            | map(attribute="entity_id") 
+            | list
+          }}
+        select_option:
+          - service: input_text.set_value
+            target:
+              entity_id: input_text.doorbell_entity_state
+            data:
+              value: "{{ option }}"
+        availability: >
+          {{
+            states('input_text.doorbell_entity_state') is defined and
+            states('input_select.doorbell_entity_domain') is defined
+          }}

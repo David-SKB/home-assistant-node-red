@@ -1,0 +1,43 @@
+template:
+  - select:
+      - name: "Low Battery Device Inclusions"
+        state: >
+          {{ (states('input_text.low_battery_device_inclusions_state') | default('')) }}
+        options: >
+          {% set exclusions = (states('input_text.low_battery_device_exclusions') | default('')).split(',') %}
+          {{ state_attr('sensor.battery_devices', 'devices')
+          | rejectattr('device_name', 'in', exclusions)
+          | map(attribute='device_name') | list }}
+        select_option:
+          - service: input_text.set_value
+            target:
+              entity_id: input_text.low_battery_device_inclusions_state
+            data:
+              value: "{{ option }}"
+        availability: >
+          {{
+            states('input_text.low_battery_device_inclusions_state') is defined and
+            states('input_text.low_battery_device_exclusions') is defined and
+            states('sensor.battery_devices') is defined and
+            state_attr('select.low_battery_device_exclusions', 'options') is defined
+          }}
+
+  - select:
+      - name: "Low Battery Device Exclusions"
+        state: >
+          {{ (states('input_text.low_battery_device_exclusions_state') | default('')) }}
+        options: >
+          {{ (states('input_text.low_battery_device_exclusions') | default('')).split(',') }}
+        select_option:
+          - service: input_text.set_value
+            target:
+              entity_id: input_text.low_battery_device_exclusions_state
+            data:
+              value: "{{ option }}"
+        availability: >
+          {{
+            states('input_text.low_battery_device_exclusions_state') is defined and
+            states('input_text.low_battery_device_exclusions') is defined and
+            states('sensor.battery_devices') is defined and
+            state_attr('select.low_battery_device_inclusions', 'options') is defined
+          }}

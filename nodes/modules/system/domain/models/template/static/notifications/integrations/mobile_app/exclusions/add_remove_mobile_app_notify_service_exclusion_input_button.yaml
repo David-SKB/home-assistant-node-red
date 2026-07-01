@@ -1,0 +1,7 @@
+input_button:
+  add_mobile_app_notify_service_exclusion:
+    name: "Add Mobile App Notify Service Exclusion"
+    icon: mdi:plus
+  remove_mobile_app_notify_service_exclusion:
+    name: "Remove Mobile App Notify Service Exclusion"
+    icon: mdi:minus

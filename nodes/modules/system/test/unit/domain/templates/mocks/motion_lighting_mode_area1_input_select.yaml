@@ -2,6 +2,7 @@ input_select:
   motion_lighting_mode_area1:
     name: Motion Lighting Mode Area 1
     options:
+      - AUTO
       - TOGGLE
       - DIM
       - HYBRID

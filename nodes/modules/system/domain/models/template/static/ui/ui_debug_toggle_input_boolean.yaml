@@ -1,0 +1,5 @@
+input_boolean:
+  ui_debug_toggle:
+    name: UI Debug Toggle
+    initial: false
+    icon: mdi:cog

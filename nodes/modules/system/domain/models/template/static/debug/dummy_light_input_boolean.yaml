@@ -1,0 +1,3 @@
+input_boolean:
+  dummy_light: # Represents the on/off state of the dummy light
+    name: Dummy Light Switch

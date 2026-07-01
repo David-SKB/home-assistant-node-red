@@ -1,0 +1,27 @@
+template:
+  - sensor:
+      - name: "Battery Devices"
+        unique_id: "battery_devices"
+        state: >
+          {{ this.attributes.devices | length }}
+        attributes:
+          devices: >
+            {% set ns = namespace(battery_devices=[]) %}
+            {% for entity in states 
+              if entity.attributes.device_class == 'battery' 
+              and entity.attributes.unit_of_measurement == '%' %}
+              {% set device_id = device_id(entity.entity_id) %}
+              {% set device_name = device_attr(device_id, 'name_by_user') 
+                if device_attr(device_id, 'name_by_user') 
+                else device_attr(device_id, 'name') 
+              %} 
+              {% set ns.battery_devices = ns.battery_devices + 
+                [{
+                  'entity_id': entity.entity_id, 
+                  'name': entity.attributes.friendly_name, 
+                  'device_name': device_name if device_name else 'Unknown',
+                  'battery_level': entity.state
+                }]
+              %}
+            {% endfor %}
+            {{ ns.battery_devices }}

@@ -1,0 +1,10 @@
+input_number:
+  motion_lighting_auto_context_window_area1:
+    name: Motion Lighting Auto Context Window Area 1
+    initial: 300
+    min: 0
+    max: 86400
+    step: 1
+    mode: box
+    unit_of_measurement: Seconds
+    icon: mdi:timer-settings-outline

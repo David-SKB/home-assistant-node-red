@@ -9,6 +9,7 @@ template:
           | selectattr('domain', 'eq', 'binary_sensor')
           | selectattr('state', 'eq', 'on')
           | rejectattr('entity_id','contains','motion_detectors_area1')
+          | selectattr('attributes.device_class', 'in', ["occupancy"])
           | list %}
           {{ 'on' if motion_detection_enabled and (triggered_sensors | length > 0) else 'off' }}
         icon: >

@@ -8,6 +8,7 @@ template:
           {% set triggered_sensors = states.binary_sensor
           | selectattr('entity_id','contains','motion_detectors_')
           | selectattr('state', 'eq', 'on')
+          | selectattr('attributes.device_class', 'in', ['motion'])
           | list %}
           {{ 'on' if motion_detection_enabled and triggered_sensors | length > 0 else 'off' }}
         icon: >
