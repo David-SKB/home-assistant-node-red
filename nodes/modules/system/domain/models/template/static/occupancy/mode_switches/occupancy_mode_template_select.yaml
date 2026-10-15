@@ -1,0 +1,33 @@
+template:
+  - select:
+      - name: "Occupancy Mode"
+        state: "{{ states('input_text.occupancy_mode_state') }}"
+        options: >
+          {{ 
+            [ 'OCCUPIED',
+              'UNOCCUPIED',
+              'INACTIVITY',
+              'BYPASS',
+              'UNKNOWN'
+            ]
+          }}
+        select_option:
+          - service: input_text.set_value
+            target:
+              entity_id: input_text.occupancy_mode_state
+            data:
+              value: "{{ option }}"
+        icon: >
+          {% set occupancy_mode = states('input_text.occupancy_mode_state') %}
+          {% if occupancy_mode == 'OCCUPIED' %}
+            mdi:home-sound-out
+          {% elif occupancy_mode == 'UNOCCUPIED' %}
+            mdi:home-export-outline
+          {% elif occupancy_mode == 'INACTIVITY' %}
+            mdi:sleep
+          {% elif occupancy_mode == 'BYPASS' %}
+            mdi:motion-pause-outline
+          {% else %}
+            mdi:alert-octagon
+          {% endif %}
+        availability: "{{ states('input_text.occupancy_mode_state') is defined }}"

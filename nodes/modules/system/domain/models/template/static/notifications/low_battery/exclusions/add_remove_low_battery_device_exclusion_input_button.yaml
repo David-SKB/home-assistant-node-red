@@ -1,0 +1,8 @@
+input_button:
+  add_low_battery_device_exclusion:
+    name: "Add Low Battery Device Exclusion"
+    icon: mdi:plus
+
+  remove_low_battery_device_exclusion:
+    name: "Remove Low Battery Device Exclusion"
+    icon: mdi:minus

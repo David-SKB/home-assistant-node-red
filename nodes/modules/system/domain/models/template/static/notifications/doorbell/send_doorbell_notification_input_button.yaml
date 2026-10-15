@@ -1,0 +1,4 @@
+input_button:
+  send_doorbell_notification :
+    name: Send Doorbell Notification
+    icon: mdi:doorbell

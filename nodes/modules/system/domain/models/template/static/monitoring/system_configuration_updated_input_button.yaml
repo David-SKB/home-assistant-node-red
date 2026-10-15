@@ -1,0 +1,4 @@
+input_button:
+  system_configuration_updated:
+    name: "System Configuration Updated"
+    icon: mdi:sync

@@ -26,9 +26,6 @@ class AverageMetricSensor extends Template {
       domains: ['sensor'],
       inclusions: [metric],
       exclusions: ['average'],
-      // iterable: Areas.getAreaRegistry().map(area => (
-      //   [ metric, { area_id: area.id, area_name: area.name } ]
-      // )),
 
       // Optional Overrides
       unit_of_measurement,
@@ -80,7 +77,7 @@ ${this.inclusionsFilter(inclusions)}
         {% set average_state = unique_states | sum / unique_states | length %}
         {{ average_state | round(1) }}
         {% else %}
-        Unavailable
+          {{ None }}
         {% endif %}`;
 
 // Utility Functions

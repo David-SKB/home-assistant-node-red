@@ -1,0 +1,33 @@
+script:
+  create_low_battery_persistent_notification:
+    alias: "Create Low Battery Persistent Notification"
+    description: "Creates a persistent notification for low battery alerts or warnings."
+    fields:
+      battery_level:
+        description: "The current battery level (%) of the device."
+        example: 15
+      device_name:
+        description: "The name of the device."
+        example: "Smart Sensor"
+      type:
+        description: "The type of notification: 'alert' or 'warning'."
+        example: "alert"
+    sequence:
+      - variables:
+          notification_type: "{{ type | lower }}"
+          notification_title: >
+            Low Battery {{ notification_type | title }} - {{ device_name }}
+          notification_message: >
+            Battery {{ notification_type | title }}! The battery of device **{{ device_name }}** is below the threshold.
+            Current battery level: **{{ battery_level }}%**.
+            {% if notification_type == 'alert' %}
+              Please recharge it soon.
+            {% else %}
+              Consider recharging soon.
+            {% endif %}
+      - service: script.create_persistent_notification
+        data:
+          message: "{{ notification_message }}"
+          title: "{{ notification_title }}"
+          notification_id: "low_battery_notification_{{ device_name | slugify }}"
+    mode: single

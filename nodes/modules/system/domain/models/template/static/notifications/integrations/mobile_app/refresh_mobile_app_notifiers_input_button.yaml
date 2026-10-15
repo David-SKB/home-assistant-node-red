@@ -1,0 +1,4 @@
+input_button:
+  refresh_mobile_app_notifiers:
+    name: "Refresh Mobile App Notifiers"
+    icon: mdi:refresh

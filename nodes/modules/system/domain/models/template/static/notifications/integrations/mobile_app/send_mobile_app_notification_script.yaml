@@ -1,0 +1,37 @@
+script:
+  send_mobile_app_notification:
+    alias: "Send Mobile App Notification"
+    description: "Sends a notification with customizable options"
+    mode: single
+    fields:
+      title:
+        description: "Title of the notification"
+        example: "Notification Title"
+      message:
+        description: "Message content of the notification"
+        example: "Notification Message"
+      critical:
+        description: "Priority of the notification (default=0, critical=1)"
+        example: 1
+      volume:
+        description: "Volume of the notification sound (0-1)"
+        example: 0.5
+      sound:
+        description: "Sound file for the notification (must be imported to device app)"
+        example: "custom_notification_sound.wav"
+      notify_service:
+        description: "The notification service to use (e.g., mobile_app_<device>)"
+        example: "mobile_app_x"
+    sequence:
+      - service: "notify.{{ notify_service }}"
+        data:
+          message: "{{ message }}"
+          title: "{{ title }}"
+          data:
+            push:
+              sound:
+                name: "{{ sound | default('default') }}"
+                critical: >
+                  {{ critical | default(0) | int(0) }}
+                volume: >
+                  {{ volume | default(0.5) | float(0.5) }}

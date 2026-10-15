@@ -4,16 +4,15 @@ switch:
       occupancy_mode_occupied:
         unique_id: "occupancy_mode_occupied"
         friendly_name: "Occupancy Mode Occupied"
-        value_template: "{{ is_state('input_select.occupancy_mode', 'OCCUPIED') }}"
+        value_template: "{{ is_state('select.occupancy_mode', 'OCCUPIED') }}"
         turn_on:
-          - service: input_select.select_option
-            entity_id: input_select.occupancy_mode
+          - service: select.select_option
+            entity_id: select.occupancy_mode
             data:
               option: OCCUPIED
-          - service: script.turn_on
-            entity_id: script.occupancy_mode_occupied
         turn_off:
-          - service: input_select.select_option
-            entity_id: input_select.occupancy_mode
+          - service: select.select_option
+            entity_id: select.occupancy_mode
             data:
               option: UNKNOWN
+        icon_template: mdi:home-sound-out

@@ -1,0 +1,16 @@
+script:
+  create_doorbell_persistent_notification:
+    alias: "Create Doorbell Persistent Notification"
+    description: "Creates a persistent notification for a Doorbell."
+    fields:
+      doorbell_entity:
+        description: "The name or ID of the device."
+        example: "Doorbell Vibration"
+    sequence:
+      - service: script.create_persistent_notification
+        data:
+          message: >
+            The doorbell [**{{ doorbell_entity }}**] has been triggered.
+          title: "[ALERT] 🔔 Hostiles Inbound"
+          notification_id: "doorbell_notification_{{ doorbell_entity | slugify }}"
+    mode: single

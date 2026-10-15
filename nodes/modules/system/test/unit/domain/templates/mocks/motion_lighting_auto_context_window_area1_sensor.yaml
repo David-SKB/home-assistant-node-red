@@ -1,0 +1,53 @@
+template:
+  - sensor:
+      - name: "Motion Lighting Auto Context Window Area 1"
+        unique_id: "motion_lighting_auto_context_window_area1"
+        unit_of_measurement: "Seconds"
+        state: >
+          {{ states('input_number.motion_lighting_auto_context_window_area1') }}
+        attributes:
+          ms: >
+            {% set uom = state_attr('input_number.motion_lighting_auto_context_window_area1', 'unit_of_measurement') %}
+            {% set value = states('input_number.motion_lighting_auto_context_window_area1') %}
+            
+            {% if uom is string and value is string %}
+
+              {% set uom = uom | lower %}
+              {% set value = value | default(0) | float(0) %}
+              {% if uom == 'minutes' %}
+                {{ value * 60000 }}
+              {% elif uom == 'seconds' %}
+                {{ value * 1000 }}
+              {% elif uom == 'ms' %}
+                {{ value }}
+              {% else %}
+                {{ None }}
+              {% endif %}
+
+            {% else %}
+              {{ None }}
+            {% endif %}
+          seconds: >
+            {% if this.attributes.ms is defined %}
+              {{ (this.attributes.ms | default(0) | float(0)) / 1000 }}
+            {% else %}
+              {{ None }}
+            {% endif %}
+          minutes: >
+            {% if this.attributes.ms is defined %}
+              {{ (this.attributes.ms | default(0) | float(0)) / 60000 }}
+            {% else %}
+              {{ None }}
+            {% endif %}
+          hours: >
+            {% if this.attributes.ms is defined %}
+              {{ (this.attributes.ms | default(0) | float(0)) / 3600000 }}
+            {% else %}
+              {{ None }}
+            {% endif %}
+          days: >
+            {% if this.attributes.ms is defined %}
+              {{ (this.attributes.ms | default(0) | float(0)) / 86400000 }}
+            {% else %}
+              {{ None }}
+            {% endif %}

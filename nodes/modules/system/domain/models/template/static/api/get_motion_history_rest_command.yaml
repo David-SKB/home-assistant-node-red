@@ -1,0 +1,8 @@
+rest_command:
+  get_motion_history:
+    url: "http://127.0.0.1:8123/api/history/period/{{ timestamp }}?filter_entity_id={{ entity_id }}&minimal_response"
+    method: GET
+    headers:
+      Authorization: !secret rest_headers_secret
+      Content-Type: "application/json"
+    timeout: 30

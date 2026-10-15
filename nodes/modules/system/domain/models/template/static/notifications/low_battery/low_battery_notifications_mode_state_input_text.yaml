@@ -1,0 +1,3 @@
+input_text:
+  low_battery_notifications_mode_state:
+    name: Low Battery Notifications Mode State

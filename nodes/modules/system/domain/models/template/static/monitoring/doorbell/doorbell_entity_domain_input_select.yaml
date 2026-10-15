@@ -1,0 +1,10 @@
+input_select:
+  doorbell_entity_domain:
+    name: Doorbell Entity Domain
+    options:
+      - "Binary sensor"
+      - "Sensor"
+      - "Switch"
+      - "Input button"
+      - "Input boolean"
+    initial: "Binary sensor"

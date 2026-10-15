@@ -1,0 +1,10 @@
+input_number:
+  doorbell_notification_volume:
+    name: Doorbell Notification Volume
+    initial: 50
+    min: 0
+    max: 100
+    step: 1
+    mode: slider
+    unit_of_measurement: "%"
+    icon: mdi:volume-high

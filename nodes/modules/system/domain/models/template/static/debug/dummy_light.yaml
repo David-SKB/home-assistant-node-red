@@ -1,0 +1,12 @@
+template:
+  - light:
+      - name: "Dummy Light"
+        state: "{{ states('input_boolean.dummy_light') }}"
+        turn_on:
+          action: input_boolean.turn_on
+          data:
+            entity_id: input_boolean.dummy_light
+        turn_off:
+          action: input_boolean.turn_off
+          data:
+            entity_id: input_boolean.dummy_light

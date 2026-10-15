@@ -1,0 +1,20 @@
+template:
+  - select:
+      - name: "Area Selector"
+        state: "{{ states('input_text.areas_state') }}"
+        options: >
+          {% set ns = namespace(area_list=[]) %}
+
+          {% for area in areas() %}
+            {% set ns.area_list = ns.area_list + [area_name(area)] %}
+          {% endfor %}
+
+          {{ ns.area_list }}
+        select_option:
+          - service: input_text.set_value
+            target:
+              entity_id: input_text.areas_state
+            data:
+              value: "{{ option }}"
+        icon: mdi:home
+        availability: "{{ states('input_text.areas_state') is defined }}"

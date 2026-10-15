@@ -1,3 +1,11 @@
+const MotionLightingAutoContextWindowAreaInputNumber = require("./MotionLightingAutoContextWindowAreaInputNumber");
+const MotionLightingAutoContextWindowAreaSensor = require("./MotionLightingAutoContextWindowAreaSensor");
+const MotionLightingAutoMaximumTimeoutAreaInputNumber = require("./MotionLightingAutoMaximumTimeoutAreaInputNumber");
+const MotionLightingAutoMaximumTimeoutAreaSensor = require("./MotionLightingAutoMaximumTimeoutAreaSensor");
+const MotionLightingAutoMinimumTimeoutAreaInputNumber = require("./MotionLightingAutoMinimumTimeoutAreaInputNumber");
+const MotionLightingAutoMinimumTimeoutAreaSensor = require("./MotionLightingAutoMinimumTimeoutAreaSensor");
+const MotionLightingAutoSensetivityAreaInputNumber = require("./MotionLightingAutoSensetivityAreaInputNumber");
+const MotionLightingAutoTimeoutAreaSensor = require("./MotionLightingAutoTimeoutAreaSensor");
 const MotionLightingHybridTargetAreaInputText = require("./MotionLightingHybridTargetAreaInputText");
 const MotionLightingHybridTargetAreaTemplateSelect = require("./MotionLightingHybridTargetAreaTemplateSelect");
 const MotionLightingHybridTargetStateAreaInputText = require("./MotionLightingHybridTargetStateAreaInputText");
@@ -8,6 +16,14 @@ const MotionLightingTargetStateAreaInputText = require("./MotionLightingTargetSt
 const MotionLightingTimeoutAreaInputNumber = require("./MotionLightingTimeoutAreaInputNumber");
 
 module.exports = {
+    MotionLightingAutoContextWindowAreaInputNumber,
+    MotionLightingAutoContextWindowAreaSensor,
+    MotionLightingAutoMaximumTimeoutAreaInputNumber,
+    MotionLightingAutoMaximumTimeoutAreaSensor,
+    MotionLightingAutoMinimumTimeoutAreaInputNumber,
+    MotionLightingAutoMinimumTimeoutAreaSensor,
+    MotionLightingAutoSensetivityAreaInputNumber,
+    MotionLightingAutoTimeoutAreaSensor,
     MotionLightingHybridTargetAreaInputText,
     MotionLightingHybridTargetAreaTemplateSelect,
     MotionLightingHybridTargetStateAreaInputText,

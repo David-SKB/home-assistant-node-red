@@ -1,0 +1,21 @@
+script:
+  generate_motion_lighting_hybrid_target_area_templates:
+    alias: Generate Motion Lighting Hybrid Target Area Templates
+    description: Generate YAML templates for motion lighting hybrid targets based on areas listed in sensor.occupancy_mode.
+    sequence:
+      - variables:
+          areas: "{{ areas() }}"
+      - repeat:
+          for_each: "{{ areas }}"
+          sequence:
+            - variables:
+                area_id: "{{ repeat.item.id }}"
+                area_name: "{{ repeat.item.name }}"
+                yaml_content: >
+                  input_text:
+                    motion_lighting_hybrid_target_{{ area_id }}:
+                      name: Motion Lighting Hybrid Target {{ area_name }}
+            - service: shell_command.write_to_file
+              data:
+                file_path: "config/packages_test/motion_lighting_hybrid_target_{{ area_id }}_input_text.yaml"
+                content: "{{ yaml_content }}"

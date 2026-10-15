@@ -1,0 +1,40 @@
+script:
+  send_doorbell_mobile_app_notifications:
+    alias: "Send Doorbell Mobile App Notifications"
+    description: "Sends mobile app notifications for the doorbell."
+    mode: single
+    fields:
+      doorbell_entity:
+        description: "The friendly name of the doorbell entity triggering the notification."
+        example: "Front Doorbell"
+      notification_volume:
+        description: "The volume of the notification sound (0-1). Defaults to 0.8."
+        example: 0.8
+      critical:
+        description: "The priority of the notification (0 for normal, 1 for critical). Defaults to 1."
+        example: 1
+    sequence:
+      - variables:
+          notification_title: >
+            [ALERT] 🔔 Hostiles Inbound
+          notification_message: >
+            {{ doorbell_entity }} has been triggered.
+          notify_services: >
+            {{ state_attr('select.mobile_app_notify_service_inclusions', 'options') | default([]) }}
+          sound_file: >
+            {{ states('input_text.doorbell_notification_sound') | default('default') }}
+          normalized_volume: >
+            {{ ( notification_volume | default(0.7) | float(0.7) ) | round(2) }}
+          notification_critical: >
+            {{ critical | default(1) | int(1)}}
+      - repeat:
+          for_each: "{{ notify_services }}"
+          sequence:
+            - service: script.send_mobile_app_notification
+              data:
+                title: "{{ notification_title }}"
+                message: "{{ notification_message }}"
+                critical: "{{ notification_critical }}"
+                volume: "{{ normalized_volume }}"
+                sound: "{{ sound_file }}"
+                notify_service: "{{ repeat.item }}"

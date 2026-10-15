@@ -1,0 +1,78 @@
+script:
+  add_inclusion_exclusion_entity:
+    alias: "Add Inclusion / Exclusion Entity"
+    description: >
+      Adds an entity to the inclusion or exclusion list dynamically.
+    fields:
+      entity_inclusion_exclusion_state:
+        name: Entity Inclusion/Exclusion State
+        description: >
+          The `input_text` entity containing the current value to be added.
+        selector:
+          entity:
+            domain: input_text
+        required: true
+      entity_inclusions_exclusions:
+        name: Entity Inclusions/Exclusions
+        description: >
+          The `input_text` entity representing the list of inclusions or exclusions.
+        selector:
+          entity:
+            domain: input_text
+        required: true
+    sequence:
+      - variables:
+          new_inclusion_exclusion: "{{ states(entity_inclusion_exclusion_state) }}"
+          current_inclusions_exclusions: "{{ states(entity_inclusions_exclusions) | default('') }}"
+      - condition: template
+        value_template: >
+          {{ new_inclusion_exclusion != '' and new_inclusion_exclusion not in current_inclusions_exclusions.split(',') }}
+      - service: input_text.set_value
+        target:
+          entity_id: "{{ entity_inclusions_exclusions }}"
+        data:
+          value: >
+            {% set items = current_inclusions_exclusions.split(',') 
+              | reject('equalto', '') 
+              | reject('equalto', 'unknown') 
+              | list 
+            %}
+            {{ (items + [new_inclusion_exclusion]) | join(',') }}
+
+  remove_inclusion_exclusion_entity:
+    alias: "Remove Inclusion / Exclusion Entity"
+    description: >
+      Removes an entity from the inclusion or exclusion list dynamically.
+    fields:
+      entity_inclusion_exclusion_state:
+        name: Entity Inclusion/Exclusion State
+        description: >
+          The `input_text` entity containing the current value to be removed.
+        selector:
+          entity:
+            domain: input_text
+        required: true
+      entity_inclusions_exclusions:
+        name: Entity Inclusions/Exclusions
+        description: >
+          The `input_text` entity representing the list of inclusions or exclusions.
+        selector:
+          entity:
+            domain: input_text
+        required: true
+    sequence:
+      - variables:
+          removal_target: "{{ states(entity_inclusion_exclusion_state) }}"
+          current_inclusions_exclusions: "{{ states(entity_inclusions_exclusions) | default('') }}"
+      - condition: template
+        value_template: "{{ removal_target in current_inclusions_exclusions.split(',') }}"
+      - service: input_text.set_value
+        target:
+          entity_id: "{{ entity_inclusions_exclusions }}"
+        data:
+          value: >
+            {% set items = current_inclusions_exclusions.split(',') 
+              | reject('equalto', removal_target) 
+              | list 
+            %}
+            {{ items | join(',') }}

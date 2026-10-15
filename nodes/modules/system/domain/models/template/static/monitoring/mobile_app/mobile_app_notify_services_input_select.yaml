@@ -1,0 +1,5 @@
+input_select:
+  mobile_app_notify_services:
+    name: "Mobile App Notify Services"
+    options: ["None"]
+    initial: "None"

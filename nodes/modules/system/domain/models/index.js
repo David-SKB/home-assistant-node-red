@@ -3,6 +3,7 @@ const template = require("./template");
 const Areas = require("./Areas");
 //const ContextMonitor = require("./ContextMonitor");
 //const Devices = require("./Devices");
+const Domains = require("./Domains");
 const Entities = require("./Entities");
 const Entity = require("./Entity");
 const OccupancyEvent = require("./OccupancyEvent");
@@ -16,6 +17,7 @@ module.exports = {
     Areas,
     //ContextMonitor,
     //Devices,
+    Domains,
     Entities,
     Entity,
     OccupancyEvent,

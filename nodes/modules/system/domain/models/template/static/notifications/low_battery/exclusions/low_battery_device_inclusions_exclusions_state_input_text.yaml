@@ -1,0 +1,6 @@
+input_text:
+  low_battery_device_inclusions_state:
+    name: Low Battery Device Inclusions State
+
+  low_battery_device_exclusions_state:
+    name: Low Battery Device Exclusions State

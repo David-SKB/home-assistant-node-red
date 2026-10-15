@@ -1,0 +1,4 @@
+input_button:
+  send_low_battery_notifications:
+    name: "Send Low Battery Notifications"
+    icon: mdi:sync

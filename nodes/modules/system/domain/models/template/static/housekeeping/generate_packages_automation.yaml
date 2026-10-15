@@ -1,0 +1,12 @@
+automation:
+  - alias: "Orchestrate Dynamic Area Packages"
+    mode: restart
+    trigger:
+      - platform: homeassistant
+        event: start
+      - platform: event
+        event_type: area_registry_updated
+    action:
+      - service: shell_command.generate_template_packages
+      - delay: "00:00:05"
+      - service: homeassistant.reload_all

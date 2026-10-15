@@ -1,0 +1,80 @@
+type: grid
+cards:
+  - type: entities
+    entities:
+      - entity: input_text.system_repository
+      - entity: input_text.rest_bearer_token
+      - entity: input_number.updater_frequency
+      - entity: input_button.system_configuration_updated
+    title: General
+    layout_options:
+      grid_columns: full
+  - type: entities
+    entities:
+      - entity: select.occupancy_entry_area
+      - entity: select.occupancy_exit_area
+      - entity: select.occupancy_inactivity_area
+      - entity: input_number.occupancy_timeout
+    title: Occupancy
+    layout_options:
+      grid_columns: full
+  - type: entities
+    entities:
+      - entity: select.user_notify_service_inclusions
+      - entity: input_button.add_user_notify_service_exclusion
+      - entity: select.user_notify_service_exclusions
+      - entity: input_button.remove_user_notify_service_exclusion
+    title: User Notifications
+    layout_options:
+      grid_columns: full
+  - type: entities
+    entities:
+      - entity: input_select.mobile_app_notify_services
+        name: All Servives
+      - entity: sensor.mobile_app_notifiers
+      - entity: input_button.refresh_mobile_app_notifiers
+      - entity: select.mobile_app_notify_service_inclusions
+      - entity: input_button.add_mobile_app_notify_service_exclusion
+      - entity: select.mobile_app_notify_service_exclusions
+      - entity: input_button.remove_mobile_app_notify_service_exclusion
+    title: Mobile App Notifications
+    layout_options:
+      grid_columns: full
+  - type: entities
+    entities:
+      - entity: sensor.battery_devices
+      - entity: sensor.available_battery_devices
+      - entity: sensor.unavailable_battery_devices
+      - entity: sensor.low_battery_devices
+      - entity: select.low_battery_device_inclusions
+      - entity: input_button.add_low_battery_device_exclusion
+      - entity: select.low_battery_device_exclusions
+      - entity: input_button.remove_low_battery_device_exclusion
+      - entity: input_number.low_battery_alert_threshold
+        name: Alert Threshold
+      - entity: input_number.low_battery_warning_threshold
+        name: Warning Threshold
+      - entity: select.low_battery_notifications_mode
+      - entity: input_button.send_low_battery_notifications
+      - entity: input_select.low_battery_notifications
+      - entity: input_text.low_battery_notification_sound
+    title: Battery Notifications
+    layout_options:
+      grid_columns: full
+  - type: entities
+    entities:
+      - entity: sensor.doorbell
+      - entity: input_select.doorbell_entity_domain
+      - entity: select.doorbell_entity_exclusions
+      - entity: input_button.add_doorbell_entity_inclusion
+      - entity: select.doorbell_entity_inclusions
+      - entity: input_button.remove_doorbell_entity_inclusion
+      - entity: input_number.doorbell_notification_volume
+      - entity: input_select.doorbell_notification_priority
+      - entity: input_text.doorbell_notification_sound
+      - entity: input_button.send_doorbell_notification
+    title: Doorbell Notifications
+    layout_options:
+      grid_columns: full
+title: System Configuration
+column_span: 2

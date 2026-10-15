@@ -1,0 +1,22 @@
+template:
+  - sensor:
+      - name: "Low Battery Devices"
+        unique_id: "low_battery_devices"
+        state: >
+          {% set devices = this.attributes.devices | default([]) %}
+          {{ devices | length }}
+        attributes:
+          low_battery_alert_threshold: >
+            {{ states('input_number.low_battery_alert_threshold') | default('40') | int }}
+          low_battery_warning_threshold: >
+            {{ states('input_number.low_battery_warning_threshold') | default('20') | int }}
+          devices: >
+            {% set threshold = states('input_number.low_battery_alert_threshold') | default('40') | int %}
+            {% set devices = state_attr('sensor.available_battery_devices', 'devices') | default([]) %}
+            {% set ns = namespace(low_battery=[]) %}
+            {% for device in devices %}
+              {% if ( device.battery_level | int(0) ) < threshold %}
+                {% set ns.low_battery = ns.low_battery + [device] %}
+              {% endif %}
+            {% endfor %}
+            {{ ns.low_battery }}

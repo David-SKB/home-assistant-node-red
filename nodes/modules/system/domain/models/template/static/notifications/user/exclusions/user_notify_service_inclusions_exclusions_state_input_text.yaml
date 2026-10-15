@@ -1,0 +1,6 @@
+input_text:
+  user_notify_service_inclusions_state:
+    name: User Notify Service Inclusions State
+
+  user_notify_service_exclusions_state:
+    name: User Notify Service Exclusions State

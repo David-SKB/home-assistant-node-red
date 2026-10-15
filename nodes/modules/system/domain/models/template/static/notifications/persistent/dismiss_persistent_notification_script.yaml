@@ -1,0 +1,13 @@
+script:
+  dismiss_persistent_notification:
+    alias: "Dismiss Persistent Notification"
+    description: "Dismisses a persistent notification using its unique notification ID"
+    fields:
+      notification_id:
+        description: "Unique ID of the notification to dismiss"
+        example: "unique_notification_id"
+    sequence:
+      - service: persistent_notification.dismiss
+        data:
+          notification_id: "{{ notification_id }}"
+    mode: single

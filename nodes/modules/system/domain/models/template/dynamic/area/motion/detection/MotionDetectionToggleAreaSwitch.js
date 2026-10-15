@@ -29,20 +29,20 @@ class MotionDetectionToggleAreaSwitch extends AreaTemplate {
 
   build = (area_id = this.area_id, { area_name = this.area_name }) => 
 
-`switch:
-  - platform: template
-    switches:
-      motion_detection_toggle_${area_id}:
-        unique_id: "motion_detection_toggle_${area_id}"
-        friendly_name: "Motion Detection Toggle ${area_name}"
+`template:
+  - switch:
+      - name: Motion Detection Toggle ${area_name}
+        state: "{{ states('input_boolean.motion_detection_toggle_${area_id}') }}"
         turn_on:
-          - service: switch.turn_on
-            entity_id: switch.motion_detection_toggle_${area_id}
+          action: input_boolean.turn_on
+          target:
+            entity_id: input_boolean.motion_detection_toggle_${area_id}
         turn_off:
-          - service: switch.turn_off
-            entity_id: switch.motion_detection_toggle_${area_id}
-        icon_template: >
-          {% if is_state('switch.motion_detection_toggle_${area_id}', 'on') %}
+          action: input_boolean.turn_off
+          target:
+            entity_id: input_boolean.motion_detection_toggle_${area_id}
+        icon: >
+          {% if is_state('input_boolean.motion_detection_toggle_${area_id}', 'on') %}
             mdi:motion-sensor
           {% else %}
             mdi:motion-sensor-off

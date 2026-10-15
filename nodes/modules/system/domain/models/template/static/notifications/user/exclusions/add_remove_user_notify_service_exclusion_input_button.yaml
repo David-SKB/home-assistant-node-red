@@ -1,0 +1,8 @@
+input_button:
+  add_user_notify_service_exclusion:
+    name: "Add User Notify Service Exclusion"
+    icon: mdi:plus
+
+  remove_user_notify_service_exclusion:
+    name: "Remove User Notify Service Exclusion"
+    icon: mdi:minus

@@ -1,0 +1,41 @@
+template:
+  - select:
+      - name: "User Notify Service Inclusions"
+        state: >
+          {{ (states('input_text.user_notify_service_inclusions_state') | default('')) }}
+        options: >
+          {% set exclusions = (states('input_text.user_notify_service_exclusions') | default('')).split(',') %}
+          {% set users = integration_entities('person') 
+            | map('state_attr','friendly_name') 
+            | default([])
+            | list %}
+          {{ users | reject('in', exclusions) | list }}
+        select_option:
+          - service: input_text.set_value
+            target:
+              entity_id: input_text.user_notify_service_inclusions_state
+            data:
+              value: "{{ option }}"
+        availability: >
+          {{
+            states('input_text.user_notify_service_inclusions_state') is defined and
+            states('input_text.user_notify_service_exclusions') is defined
+          }}
+
+  - select:
+      - name: "User Notify Service Exclusions"
+        state: >
+          {{ (states('input_text.user_notify_service_exclusions_state') | default('')) }}
+        options: >
+          {{ (states('input_text.user_notify_service_exclusions') | default('')).split(',') }}
+        select_option:
+          - service: input_text.set_value
+            target:
+              entity_id: input_text.user_notify_service_exclusions_state
+            data:
+              value: "{{ option }}"
+        availability: >
+          {{
+            states('input_text.user_notify_service_exclusions_state') is defined and
+            states('input_text.user_notify_service_exclusions') is defined
+          }}

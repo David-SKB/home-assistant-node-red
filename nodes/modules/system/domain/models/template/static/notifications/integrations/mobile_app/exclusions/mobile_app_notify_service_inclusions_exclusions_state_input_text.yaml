@@ -1,0 +1,6 @@
+input_text:
+  mobile_app_notify_service_inclusions_state:
+    name: Mobile App Notify Service Inclusions State
+
+  mobile_app_notify_service_exclusions_state:
+    name: Mobile App Notify Service Exclusions State

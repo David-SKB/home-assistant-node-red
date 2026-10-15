@@ -1,4 +1,5 @@
 const mockAreas = require("./mockAreas");
+const mockDomains = require("./mockDomains");
 const mockEntities = require("./mockEntities");
 const mockFunction = require("./mockFunction");
 const mockGlobal = require("./mockGlobal");
@@ -8,6 +9,7 @@ const normalizeMultilineString = require("./normalizeMultilineString");
 
 module.exports = {
     mockAreas,
+    mockDomains,
     mockEntities,
     mockFunction,
     mockGlobal,

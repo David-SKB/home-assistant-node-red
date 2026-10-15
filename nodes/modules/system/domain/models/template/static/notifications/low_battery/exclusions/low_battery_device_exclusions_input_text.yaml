@@ -1,0 +1,3 @@
+input_text:
+  low_battery_device_exclusions:
+    name: Low Battery Device Exclusions

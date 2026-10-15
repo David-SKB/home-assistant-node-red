@@ -1,0 +1,8 @@
+input_button:
+  add_doorbell_entity_inclusion:
+    name: "Add Doorbell Entity Inclusion"
+    icon: mdi:plus
+
+  remove_doorbell_entity_inclusion:
+    name: "Remove Doorbell Entity Inclusion"
+    icon: mdi:minus
