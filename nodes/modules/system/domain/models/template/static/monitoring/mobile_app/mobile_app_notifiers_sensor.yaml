@@ -1,16 +1,14 @@
-sensor:
-  - platform: template
-    sensors:
-      mobile_app_notifiers:
-        friendly_name: "Mobile App Notifiers"
-        value_template: >
+template:
+  - sensor:
+      - name: "Mobile App Notifiers"
+        state: >
           {% set mobile_app_notify_service_inclusions = state_attr('select.mobile_app_notify_service_inclusions', 'options') | default([]) %}
           {% if mobile_app_notify_service_inclusions is not none %}
             {{ mobile_app_notify_service_inclusions | length }}
           {% else %}
             0
           {% endif %}
-        attribute_templates:
+        attributes:
           notify_services: "{{ state_attr('select.mobile_app_notify_service_inclusions', 'options') | default([]) }}"
           users: >
             {% set notify_services = this.attributes.notify_services | default([]) %}

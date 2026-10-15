@@ -1,13 +1,12 @@
-light:
-  - platform: template
-    lights:
-      dummy_light:
-        unique_id: "dummy_light"
-        friendly_name: "Dummy Light"
-        value_template: "{{ is_state('input_boolean.dummy_light', 'on') }}"
+template:
+  - light:
+      - name: "Dummy Light"
+        state: "{{ states('input_boolean.dummy_light') }}"
         turn_on:
-          - service: input_boolean.turn_on
+          action: input_boolean.turn_on
+          data:
             entity_id: input_boolean.dummy_light
         turn_off:
-          - service: input_boolean.turn_off
+          action: input_boolean.turn_off
+          data:
             entity_id: input_boolean.dummy_light

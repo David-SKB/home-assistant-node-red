@@ -27,7 +27,6 @@ class Domains {
         // Check if the id exists in the domain list
         return this.domains.includes(id);
     }
-    
 
     getDomains() {
         // Get the loaded domain registry

@@ -199,6 +199,7 @@ module.exports = {
 
   // Customising the editor
   editorTheme: {
+    theme: "midnight-red",
     projects: {
       // To enable the Projects feature, set this value to true
       enabled: false,
